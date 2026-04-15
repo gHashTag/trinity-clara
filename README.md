@@ -19,17 +19,48 @@ This repository contains the complete DARPA CLARA PA-25-07-02 submission package
 
 Formal specifications for bounded rationality and explainable AI reasoning:
 
-| Spec | Description | Ring | Status |
-|------|-------------|------|--------|
-| `ternary_logic.t27` | Kleene K3 semantics with logical operations | 18 | Sealed |
-| `proof_trace.t27` | Bounded proof traces (≤10 steps) | 19 | Sealed |
-| `datalog_engine.t27` | Forward-chaining Datalog O(n) | 20 | Sealed |
-| `restraint.t27` | Bounded rationality parameters | 21 | Sealed |
-| `explainability.t27` | XAI explanations (≤10 steps) | 22 | Sealed |
-| `asp_solver.t27` | Answer Set Programming with NAF | 23 | Sealed |
-| `composition.t27` | ML+AR composition patterns | 24 | Sealed |
+| Spec | Description | Status |
+|------|-------------|--------|
+| `ternary_logic.t27` | Kleene K3 semantics with logical operations (AND, OR, NOT, IMPLIES, EQUIV) | ✅ Created |
+| `proof_trace.t27` | Bounded proof trace mechanism (≤10 steps) | ✅ Created |
+| `datalog_engine.t27` | Datalog reasoning engine with forward-chaining O(n) | ✅ Created |
+| `asp_solver.t27` | Answer Set Programming solver with NAF semantics | ✅ Created |
+| `explainability.t27` | XAI mechanisms (feature importance, attention) | ✅ Created |
+| `restraint.t27` | Bounded rationality (UNKNOWN→FALSE, toxicity block) | ✅ Created |
+| `composition.t27` | ML+AR composition patterns (7 patterns) | ✅ Created |
+| `coa_planning.t27` | Course of Action planning with constraints | ✅ Created |
 
 **Total TA1 Test Coverage:** 93 test cases, 19 invariants, 13 benchmarks
+
+**✅ Phase Complete:** All 8 AR .t27 specifications created in `specs/ar/`
+
+---
+
+## Recent Updates (2026-04-15)
+
+### Specifications Completed
+
+All 8 formal AR specifications have been created and are now part of the submission:
+
+1. **`ternary_logic.t27`** — Kleene K3 logic operations (AND, OR, NOT, IMPLIES, EQUIV)
+2. **`proof_trace.t27`** — Bounded proof trace mechanism (≤10 steps)
+3. **`datalog_engine.t27`** — Datalog reasoning engine with forward-chaining O(n)
+4. **`asp_solver.t27`** — Answer Set Programming solver with NAF semantics
+5. **`explainability.t27`** — XAI mechanisms (feature importance, attention)
+6. **`restraint.t27`** — Bounded rationality (UNKNOWN→FALSE, toxicity block)
+7. **`composition.t27`** — ML+AR composition patterns (7 patterns)
+8. **`coa_planning.t27`** — Course of Action planning with constraints
+
+### Examples Verified
+
+All 4 Python examples have been tested and verified working:
+
+1. ✅ **Example 1 (Medical Diagnosis)** — ML+VSA+AR+XAI pipeline fully functional
+2. ✅ **Example 2 (Legal QA)** — VSA semantic memory + AR retrieval
+3. ✅ **Example 3 (Autonomous Driving)** — RL policy + VSA encoding + safety rules
+4. ✅ **Example 4 (VSA Analogy)** — VSA operations with analogical reasoning
+
+**Bug Fixed:** Typo in Example 1 (`diagnise` → `diagnose`)
 
 ---
 

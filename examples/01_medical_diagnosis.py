@@ -382,7 +382,7 @@ def main():
     print()
 
     # Run diagnosis
-    result = system.diagnise(patient_image, patient_symptoms)
+    result = system.diagnose(patient_image, patient_symptoms)
 
     print()
     print("-" * 60)
