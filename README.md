@@ -234,7 +234,19 @@ trinity-clara/
 
 ---
 
-## Recent Scientific Strengthening (April 2026)
+## Scientific Strengthening (April 2026)
+
+### Formal Theoretical Proofs Added
+
+Four formal proofs strengthen mathematical foundation:
+
+1. **SIMILARITY_THRESHOLD Derivation** — Statistical proof that 0.15 threshold provides 99.9% specificity for 1024-dimensional ternary hypervectors (σ≈0.032, P(|sim|>0.15)<0.001)
+
+2. **Resonator Convergence** — Monotonic convergence proof with iteration bound: log₂(CODEBOOK_CAPACITY) = 8 iterations maximum
+
+3. **ASP Polynomial Bound** — Formal upper bound: max_iterations × max_clauses = 256,000 checks guarantees termination for bounded ASP
+
+4. **COA Completeness** — Proof that MAX_CLAUSES=256 provides 2.5-6× headroom for 40-100 COA planning rules
 
 ### Theoretical Proofs Added
 
