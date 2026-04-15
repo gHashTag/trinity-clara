@@ -1,0 +1,21 @@
+Trinity CLARA - DARPA PA-25-07-02 Submission Package
+Copyright 2026 Trinity S³AI (t27) Project
+
+This product includes software developed by the Trinity S³AI (t27) Project
+for the DARPA CLARA (Common Learning Repository for AI) solicitation
+PA-25-07-02.
+
+Project Repository: https://github.com/gHashTag/trinity-clara
+Main Repository: https://github.com/gHashTag/t27
+
+The Trinity S³AI (t27) Project is a research initiative focused on
+ternary computing architectures for AI reasoning, including:
+- Kleene K3 ternary logic for automated reasoning
+- Vector Symbolic Architecture (VSA) for compositional reasoning
+- Bounded rationality with restraint mechanisms
+- Explainable AI with proof trace limitations
+
+This submission package contains formal specifications, examples, and
+evidence demonstrating compliance with DARPA CLARA requirements for
+Technical Area 1 (Argumentation & Reasoning) and Technical Area 2
+(Composition).

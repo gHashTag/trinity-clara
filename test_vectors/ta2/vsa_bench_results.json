@@ -1,0 +1,99 @@
+{
+  "dimension": 1024,
+  "timestamp": "2026-04-15T13:10:07.450310+00:00",
+  "total_tests": 9,
+  "passed": 0,
+  "failed": 9,
+  "results": [
+    {
+      "name": "bind",
+      "mean_time_ns": 61587.32,
+      "std_time_ns": 5032.97,
+      "min_time_ns": 58340.08,
+      "max_time_ns": 70283.66,
+      "ops_per_sec": 16237.11,
+      "target_ns": 1000.0,
+      "target_met": false
+    },
+    {
+      "name": "unbind",
+      "mean_time_ns": 106310.79,
+      "std_time_ns": 1523.04,
+      "min_time_ns": 105201.17,
+      "max_time_ns": 108965.58,
+      "ops_per_sec": 9406.38,
+      "target_ns": 1000.0,
+      "target_met": false
+    },
+    {
+      "name": "bundle2",
+      "mean_time_ns": 60851.02,
+      "std_time_ns": 1734.3,
+      "min_time_ns": 59651.04,
+      "max_time_ns": 63847.17,
+      "ops_per_sec": 16433.58,
+      "target_ns": 2000.0,
+      "target_met": false
+    },
+    {
+      "name": "bundle3",
+      "mean_time_ns": 76056.58,
+      "std_time_ns": 3372.3,
+      "min_time_ns": 72987.19,
+      "max_time_ns": 79914.6,
+      "ops_per_sec": 13148.11,
+      "target_ns": 1500.0,
+      "target_met": false
+    },
+    {
+      "name": "cosine_similarity",
+      "mean_time_ns": 115321.35,
+      "std_time_ns": 7764.91,
+      "min_time_ns": 106834.22,
+      "max_time_ns": 124209.26,
+      "ops_per_sec": 8671.42,
+      "target_ns": 5000.0,
+      "target_met": false
+    },
+    {
+      "name": "hamming_distance",
+      "mean_time_ns": 42022.63,
+      "std_time_ns": 1896.03,
+      "min_time_ns": 40533.2,
+      "max_time_ns": 45204.83,
+      "ops_per_sec": 23796.7,
+      "target_ns": 1000.0,
+      "target_met": false
+    },
+    {
+      "name": "hamming_similarity",
+      "mean_time_ns": 46321.06,
+      "std_time_ns": 6071.69,
+      "min_time_ns": 41607.36,
+      "max_time_ns": 55535.23,
+      "ops_per_sec": 21588.45,
+      "target_ns": 1000.0,
+      "target_met": false
+    },
+    {
+      "name": "dot_product",
+      "mean_time_ns": 47283.63,
+      "std_time_ns": 7586.18,
+      "min_time_ns": 40309.63,
+      "max_time_ns": 57866.93,
+      "ops_per_sec": 21148.97,
+      "target_ns": 1000.0,
+      "target_met": false
+    },
+    {
+      "name": "permute",
+      "mean_time_ns": 46346.11,
+      "std_time_ns": 3994.68,
+      "min_time_ns": 43063.6,
+      "max_time_ns": 51056.53,
+      "ops_per_sec": 21576.78,
+      "target_ns": 500.0,
+      "target_met": false
+    }
+  ]
+}

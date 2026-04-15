@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Licensed under Apache License 2.0 —
+# http://www.apache.org/licenses/LICENSE-2.0
 """
 Example 3: Autonomous Driving with RL + VSA + Safety Constraints
 ================================================================
@@ -14,7 +17,6 @@ This example demonstrates autonomous driving decision-making with:
 Safety-critical system with bounded rationality and explicit safety checks.
 
 Author: T27 Trinity Ternary Project
-SPDX-License-Identifier: Apache-2.0
 """
 
 from dataclasses import dataclass

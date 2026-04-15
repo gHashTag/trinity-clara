@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Licensed under Apache License 2.0 —
+# http://www.apache.org/licenses/LICENSE-2.0
 """
 Example 1: Medical Diagnosis Pipeline
 =====================================
@@ -12,7 +15,6 @@ This example demonstrates a complete medical diagnosis pipeline where:
 4. XAI generates explainable output
 
 Author: T27 Trinity Ternary Project
-License: Apache 2.0
 """
 
 from dataclasses import dataclass

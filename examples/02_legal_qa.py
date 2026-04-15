@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Licensed under Apache License 2.0 —
+# http://www.apache.org/licenses/LICENSE-2.0
 """
 Example 2: Legal Document QA with VSA Semantic Memory
 ======================================================
@@ -12,7 +15,6 @@ This example demonstrates question answering over legal documents using:
 4. Bounded step limit for explainability
 
 Author: T27 Trinity Ternary Project
-SPDX-License-Identifier: Apache-2.0
 """
 
 from dataclasses import dataclass
