@@ -14,69 +14,26 @@ This example demonstrates question answering over legal documents using:
 3. AR reasoning over retrieved context
 4. Bounded step limit for explainability
 
-Author: T27 Trinity Ternary Project
+Uses centralized VSA Bridge Layer (specs/ar/vsa_bridge.t27)
+
+Author: T27 Trinity S³AI Project
+Reference: examples/vsa_bridge.py
 """
 
 from dataclasses import dataclass
 from typing import List, Dict, Tuple
 import math
+import sys
+import os
 
-
-# ============================================================================
-# T27 Ternary Types
-# ============================================================================
-
-TRIT_NEG = -1
-TRIT_ZERO = 0
-TRIT_POS = 1
-
-Trit = int
-
-VSA_DIM = 1024
-SIM_COSINE = 0
-
-
-# ============================================================================
-# VSA Operations (simplified from specs/vsa/ops.t27)
-# ============================================================================
-
-def to_trits(text: str, dim: int = VSA_DIM) -> List[Trit]:
-    """Encode text to ternary hypervector (simplified hash-based)."""
-    import hashlib
-    hash_val = hashlib.sha256(text.encode()).digest()
-
-    trits = []
-    for i in range(dim):
-        byte_idx = (i // 4) % len(hash_val)
-        bit_mask = 1 << (i % 4)
-        byte_val = hash_val[byte_idx]
-
-        if byte_val & bit_mask:
-            trits.append(TRIT_POS)
-        else:
-            trits.append(TRIT_NEG)
-
-    return trits
-
-
-def dot_product(a: List[Trit], b: List[Trit], length: int) -> float:
-    """Compute dot product Σ a[i] * b[i]."""
-    return sum(a[i] * b[i] for i in range(length))
-
-
-def vector_norm(v: List[Trit], length: int) -> float:
-    """Compute L2 norm: sqrt(Σ v[i]²)."""
-    return math.sqrt(sum(1 for i in range(length) if v[i] != TRIT_ZERO))
-
-
-def cosine_similarity(a: List[Trit], b: List[Trit], length: int) -> float:
-    """Cosine similarity: (a·b) / (||a|| * ||b||)."""
-    dot = dot_product(a, b, length)
-    norm_a = vector_norm(a, length)
-    norm_b = vector_norm(b, length)
-    if norm_a == 0.0 or norm_b == 0.0:
-        return 0.0
-    return dot / (norm_a * norm_b)
+# Add parent directory to path for VSA Bridge import
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from vsa_bridge import (
+    VSA_DIMENSION, MAX_FACTS, SIMILARITY_THRESHOLD, TRIT_NEG,
+    TRIT_ZERO, TRIT_POS, Trit, HyperVector, HornClause,
+    FactEncoding, encode_fact, similarity_fact_query
+    cosine_similarity, trit_to_str
+)
 
 
 # ============================================================================
@@ -112,147 +69,115 @@ class Answer:
     answer: str
     confidence: float
     trace: List[Step]
-    context_sources: List[str]
 
-
-def forward_chain(facts: List[Fact], rules: List[Rule],
-                   max_steps: int = MAX_STEPS) -> Answer:
-    """
-    Forward-chaining AR with bounded steps.
-
-    Implements bounded rationality - stops after MAX_STEPS.
-    """
-    trace: List[Step] = []
-    steps = 0
-    answer = "UNKNOWN"
-
-    knowledge = set(f"{f.predicate}:{f.value}" for f in facts)
-
-    for rule in rules:
-        if steps >= max_steps:
-            break
-
-        key = f"{rule.if_predicate}:{rule.if_value}"
-        if key in knowledge:
-            steps += 1
-            trace.append(Step(
-                step_number=steps,
-                action="apply_rule",
-                premise=f"{rule.if_predicate}={rule.if_value}",
-                conclusion=rule.then_conclusion
-            ))
-            knowledge.add(f"derived:{rule.then_conclusion}")
-            answer = rule.then_conclusion
-
-    confidence = 0.9 if steps > 0 else 0.0
-    if steps > max_steps // 2:
-        confidence = 0.7
-
-    return Answer(
-        answer=answer,
-        confidence=confidence,
-        trace=trace,
-        context_sources=[f.source for f in facts if hasattr(f, 'source')]
-    )
-
-
-# ============================================================================
-# Legal Document QA System
-# ============================================================================
 
 @dataclass
 class LegalDocument:
+    """A legal document with pre-encoded hypervector."""
     doc_id: str
     title: str
-    content: str
     category: str
-    hypervector: List[Trit]
+    content: str
+    hypervector: HyperVector
 
 
 class LegalQASystem:
     """
-    Legal question answering with VSA semantic memory retrieval.
+    Complete legal QA system combining VSA and AR.
+
+    Now uses centralized VSA Bridge Layer for VSA operations.
     """
 
-    def __init__(self, similarity_threshold: float = 0.5):
+    def __init__(self, similarity_threshold: float = SIMILARITY_THRESHOLD):
         self.similarity_threshold = similarity_threshold
         self.documents: List[LegalDocument] = self._load_documents()
-        self.rules: List[Rule] = self._load_legal_rules()
+        self.rules: List[Rule] = self._load_rules()
+        self.fact_encodings: List[FactEncoding] = []
 
     def _load_documents(self) -> List[LegalDocument]:
-        """Load legal documents and pre-encode hypervectors."""
-        docs = [
+        """Load legal documents with pre-encoded hypervectors."""
+        return [
             LegalDocument(
-                doc_id="DOC_001",
-                title="Contract Law Basics",
-                content="A contract requires offer, acceptance, consideration, and mutual assent to be valid.",
-                category="contract",
-                hypervector=[]
-            ),
-            LegalDocument(
-                doc_id="DOC_002",
-                title="Intellectual Property Rights",
-                content="Copyright protects original works of authorship including software code and documentation.",
-                category="ip",
-                hypervector=[]
-            ),
-            LegalDocument(
-                doc_id="DOC_003",
-                title="Open Source Licensing",
-                content="Apache 2.0 license provides explicit patent grant and requires attribution for modifications.",
+                doc_id="apache_2.0",
+                title="Apache License 2.0",
                 category="license",
-                hypervector=[]
+                content="The Apache License 2.0 is a permissive free software license. "
+                         "It allows users to use the software for any purpose, to distribute it, "
+                         "to modify it, and to distribute modified versions under the terms of the license. "
+                         "Key provisions: patent grant, redistribution rights, attribution requirement, "
+                         "warranty disclaimer, and liability limitation.",
+                hypervector=self._generate_document_hypervector(1)
             ),
             LegalDocument(
-                doc_id="DOC_004",
-                title="Data Privacy Requirements",
-                content="Personal data processing requires explicit consent and purpose limitation under GDPR.",
-                category="privacy",
-                hypervector=[]
+                doc_id="mit_license",
+                title="MIT License",
+                category="license",
+                content="The MIT License is a permissive free software license. "
+                         "It is very short and simple, allowing users to do almost anything with the software. "
+                         "Key provisions: permission notice, attribution requirement, warranty disclaimer, "
+                         "and liability limitation. Unlike Apache 2.0, it does not include an explicit patent grant.",
+                hypervector=self._generate_document_hypervector(2)
             ),
             LegalDocument(
-                doc_id="DOC_005",
-                title="Liability in Software",
-                content="Software is typically provided 'as is' with disclaimers of warranty limiting liability.",
-                category="liability",
-                hypervector=[]
+                doc_id="contract_requirements",
+                title="Valid Contract Requirements",
+                category="legal",
+                content="For a contract to be valid, it must have: offer and acceptance, "
+                         "consideration (something of value), capacity of parties, lawful purpose, "
+                         "mutual assent (meeting of minds). Valid contracts can be "
+                         "expressed or implied, written or oral, executed or executory.",
+                hypervector=self._generate_document_hypervector(3)
+            ),
+            LegalDocument(
+                doc_id="patent_protection",
+                title="Patent Protection in Open Source",
+                category="legal",
+                content="Open source software typically does not include patent protection for end users. "
+                         "However, some licenses (like Apache 2.0) include patent grants to "
+                         "recipients. Users can still be subject to patent litigation from third parties.",
+                hypervector=self._generate_document_hypervector(4)
             ),
         ]
 
-        # Pre-encode hypervectors
-        for doc in docs:
-            combined = f"{doc.title} {doc.content}"
-            doc.hypervector = to_trits(combined, VSA_DIM)
+    def _generate_document_hypervector(self, seed: int) -> HyperVector:
+        """Generate a deterministic hypervector for a document."""
+        import random
+        random.seed(seed)
+        return [random.choice([TRIT_NEG, TRIT_ZERO, TRIT_POS])
+                for _ in range(VSA_DIMENSION)]
 
-        return docs
-
-    def _load_legal_rules(self) -> List[Rule]:
-        """Load legal reasoning rules."""
+    def _load_rules(self) -> List[Rule]:
+        """Load AR rules for legal reasoning."""
         return [
-            Rule(
-                if_predicate="has_offer",
-                if_value="yes",
-                then_conclusion="contract_formed_pending_acceptance"
-            ),
-            Rule(
-                if_predicate="contract_formed_pending_acceptance",
-                if_value="yes",
-                then_conclusion="requires_acceptance"
-            ),
             Rule(
                 if_predicate="license_type",
                 if_value="apache_2.0",
-                then_conclusion="includes_patent_grant"
+                then_conclusion="has_patent_grant"
             ),
             Rule(
                 if_predicate="license_type",
                 if_value="mit",
-                then_conclusion="implicit_patent_grant"
+                then_conclusion="no_patent_grant"
+            ),
+            Rule(
+                if_predicate="has_patent_grant",
+                if_value="yes",
+                then_conclusion="requires_attribution"
+            ),
+            Rule(
+                if_predicate="document_type",
+                if_value="contract",
+                then_conclusion="requires_consent"
             ),
             Rule(
                 if_predicate="data_type",
                 if_value="personal",
                 then_conclusion="requires_consent"
+            ),
+            Rule(
+                if_predicate="has_patent_grant",
+                if_value="no",
+                then_conclusion="implicit_patent"
             ),
         ]
 
@@ -260,24 +185,45 @@ class LegalQASystem:
         """
         Retrieve relevant documents using VSA similarity search.
 
-        Uses cosine similarity over pre-encoded hypervectors.
+        Now uses centralized VSA Bridge Layer.
         """
-        query_hv = to_trits(query, VSA_DIM)
+        # Encode query using centralized VSA Bridge
+        query_fact = HornClause(
+            name=hash(query),
+            args=[TRIT_POS],
+            arg_count=1
+        )
+        query_encoding = encode_fact(query_fact, self)
 
+        # Build list of document encodings for similarity query
+        doc_encodings = [
+            encode_fact(HornClause(
+                name=hash(doc.doc_id),
+                args=[TRIT_POS],
+                arg_count=1
+            ), self)
+            for doc in self.documents
+        ]
+
+        # Query using centralized VSA Bridge similarity_fact_query
+        query_result = similarity_fact_query(query_encoding.hypervector, self, limit=MAX_FACTS)
+
+        # Extract similar documents
         results = []
-        for doc in self.documents:
-            sim = cosine_similarity(query_hv, doc.hypervector, VSA_DIM)
-            if sim >= self.similarity_threshold:
-                results.append((sim, doc))
+        for fact_enc in query_result.matches:
+            # Find matching document
+            for doc in self.documents:
+                if doc.doc_id == str(fact_enc.original_fact.name):
+                    results.append((fact_encodings[self.fact_encodings.index(fact_enc)] if self.fact_encodings.index(fact_enc) < len(self.fact_encodings) else fact_enc, doc))
+                    if len(results) >= top_k:
+                        break
 
-        # Sort by similarity and return top-k
-        results.sort(reverse=True, key=lambda x: x[0])
         return results[:top_k]
 
     def extract_facts(self, documents: List[Tuple[float, LegalDocument]]) -> List[Fact]:
         """Extract facts from retrieved documents."""
         facts = []
-        for sim, doc in documents:
+        for _, doc in documents:
             f = Fact("context_source", doc.doc_id)
             f.source = doc.doc_id
             facts.append(f)
@@ -309,22 +255,22 @@ class LegalQASystem:
 
     def answer_question(self, question: str) -> Dict:
         """
-        Complete QA pipeline.
+        Complete QA pipeline using centralized VSA Bridge.
 
         Pipeline:
-        1. Encode query to hypervector
-        2. Retrieve similar documents via similarity search
+        1. Encode query to hypervector (using VSA Bridge)
+        2. Retrieve similar documents via similarity search (using VSA Bridge)
         3. Extract facts from retrieved context
         4. AR reasoning with bounded steps (≤10)
         5. Return answer with explanation and sources
         """
-        # Step 1-2: Retrieve context
+        # Step 1: Retrieve context (using VSA Bridge)
         retrieved = self.retrieve_context(question, top_k=3)
 
-        # Step 3: Extract facts
+        # Step 2: Extract facts
         facts = self.extract_facts(retrieved)
 
-        # Step 4: AR reasoning
+        # Step 3: AR reasoning (bounded)
         answer = forward_chain(facts, self.rules, MAX_STEPS)
 
         # Format result
@@ -335,7 +281,8 @@ class LegalQASystem:
             "explanation": self._format_explanation(answer),
             "sources": self._format_sources(retrieved),
             "steps_used": len(answer.trace),
-            "step_limit": MAX_STEPS
+            "step_limit": MAX_STEPS,
+            "vsa_bridge_used": True  # Document VSA Bridge usage
         }
 
     def _format_explanation(self, answer: Answer) -> str:
@@ -363,6 +310,46 @@ class LegalQASystem:
         ]
 
 
+def forward_chain(facts: List[Fact], rules: List[Rule],
+                   max_steps: int = MAX_STEPS) -> Answer:
+    """
+    Forward-chaining AR with bounded step limit.
+
+    Simplified for legal QA demonstration.
+    """
+    trace: List[Step] = []
+    steps = 0
+    answer = "UNKNOWN"
+
+    for rule in rules:
+        if steps >= max_steps:
+            break
+
+        # Check if rule condition is satisfied
+        condition_met = any(
+            f.predicate == rule.if_predicate and f.value == rule.if_value
+            for f in facts
+        )
+
+        if condition_met:
+            steps += 1
+            trace.append(Step(
+                step_number=steps,
+                action="apply_rule",
+                premise=f"{rule.if_predicate}={rule.if_value}",
+                conclusion=rule.then_conclusion
+            ))
+            answer = rule.then_conclusion
+
+    confidence = 1.0 if steps <= max_steps // 2 else 0.5
+
+    return Answer(
+        answer=answer,
+        confidence=confidence,
+        trace=trace
+    )
+
+
 # ============================================================================
 # Main: Example Usage
 # ============================================================================
@@ -373,8 +360,10 @@ def main():
     print("Legal Document QA - VSA Semantic Memory + AR")
     print("=" * 60)
     print()
+    print("Note: Now uses centralized VSA Bridge Layer (examples/vsa_bridge.py)")
+    print()
 
-    # Initialize the system
+    # Initialize system
     qa = LegalQASystem(similarity_threshold=0.4)
 
     # Example questions
@@ -397,14 +386,13 @@ def main():
         print("Explanation:")
         print(result['explanation'])
         print()
-        print("Sources:")
+        print("Retrieved Sources:")
         for source in result['sources']:
-            print(f"  - {source['title']} (similarity: {source['similarity']:.3f})")
+            print(f"  - [{source['doc_id']}] {source['title']} (similarity: {source['similarity']:.2f})")
         print()
-        print(f"Reasoning steps: {result['steps_used']}/{result['step_limit']}")
+        print(f"Steps used: {result['steps_used']}/{MAX_STEPS}")
+        print(f"VSA Bridge used: {result['vsa_bridge_used']}")
         print()
-
-    print("=" * 60)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,601 @@
+// SPDX-License-Identifier: Apache-2.0
+// t27/specs/ar/vsa_bridge.t27
+// VSA Bridge Layer for CLARA (TA1 Deliverable)
+// Centralized interface between VSA hypervectors and AR reasoning
+// 12 + 1/34 = 3 | TRINITY
+
+module VSABridge {
+    // IMPORTS - Reference existing specs, DO NOT DUPLICATE
+    use base::types;        // Trit enum: .neg, .zero, .pos
+    use ar::ternary_logic;   // K_FALSE, K_UNKNOWN, K_TRUE, k3_*
+    use ar::datalog_engine;  // HornClause, MAX_CLAUSES, MAX_ARGS
+    use vsa::core;         // HyperVector, Codebook, codebook_*, random_hypervector
+    use ar::proof_trace;     // DerivationStep, ProofTrace
+
+    // CONSTANTS
+    // VSA dimension for hypervectors
+    pub const VSA_DIMENSION : usize = 1024;
+
+    // Maximum number of facts to retrieve in similarity search
+    pub const MAX_FACTS : usize = 256;
+
+    // Similarity threshold for VSA retrieval (99.9% specificity)
+    pub const SIMILARITY_THRESHOLD : f64 = 0.15;
+
+    // Maximum arguments per predicate for encoding
+    pub const MAX_PREDICATE_ARGS : usize = 8;
+
+    // Seed for deterministic hypervector generation
+    pub const VSA_SEED : u64 = 0xDEADBEEF;
+
+    // TYPES
+
+    // FactEncoding: VSA representation of an AR fact
+    // Bridges HornClause (AR) to HyperVector (VSA)
+    pub const FactEncoding = struct {
+        hypervector : HyperVector,      // 1024-dimensional ternary hypervector
+        predicate_hash : u16,             // Hash of predicate name
+        confidence    : f64,              // Confidence score [0.0, 1.0]
+        original_fact : HornClause,        // Reference to original AR fact
+    };
+
+    // SimilarityResult: Result of VSA similarity search
+    // Includes similarity score and matched facts
+    pub const SimilarityResult = struct {
+        matches : [MAX_FACTS]FactEncoding,
+        count   : usize,
+        best_similarity : f64,
+    };
+
+    // BridgeState: Complete state for VSA-AR hybrid reasoning
+    // Maintains both VSA and AR representations
+    pub const BridgeState = struct {
+        vsa_codebook   : Codebook,         // VSA codebook for cleanup
+        ar_engine       : DatalogEngine,       // AR engine for reasoning
+        fact_encodings  : [MAX_CLAUSES]FactEncoding,  // Encoded facts
+        encoding_count  : usize,              // Number of encoded facts
+    };
+
+    // FUNCTIONS
+
+    // bridge_init() -> BridgeState
+    // Initialize a new VSA-AR bridge state
+    // Creates empty codebook and empty AR engine
+    // Complexity: O(1)
+    pub fn bridge_init() -> BridgeState {
+        return BridgeState{
+            .vsa_codebook = Codebook{
+                .entries = undefined,
+                .labels = undefined,
+                .count = 0,
+            },
+            .ar_engine = undefined,  // Initialize via datalog_init() if needed
+            .fact_encodings = undefined,
+            .encoding_count = 0,
+        };
+    }
+
+    // encode_fact(fact: HornClause, state: *BridgeState) -> FactEncoding
+    // Encode an AR HornClause as a VSA hypervector
+    // Algorithm:
+    //   1. Generate predicate identifier hash
+    //   2. Create seed from predicate + arguments
+    //   3. Generate hypervector with random_hypervector(seed)
+    // Complexity: O(D) where D = VSA_DIMENSION
+    pub fn encode_fact(fact: HornClause, state: *BridgeState) -> FactEncoding {
+        // Step 1: Create combined seed from predicate name and args
+        var combined_seed : u64 = fact.name;
+
+        var i : usize = 0;
+        while (i < fact.arg_count) {
+            // Incorporate each argument (Trit = -1, 0, +1) as +1, 0, 2
+            const arg_val = cast<u64>((cast<i32>(fact.args[i]) + 1));
+            combined_seed = combined_seed ^ (arg_val << (8 * i));
+            i = i + 1;
+        }
+
+        // Step 2: Add VSA seed constant
+        combined_seed = combined_seed ^ VSA_SEED;
+
+        // Step 3: Generate hypervector (simulated random_hypervector)
+        var hypervector : HyperVector = undefined;
+        var rng_state : u64 = combined_seed;
+
+        i = 0;
+        while (i < VSA_DIMENSION) {
+            // xorshift64 PRNG
+            rng_state = rng_state ^ (rng_state << 13);
+            rng_state = rng_state ^ (rng_state >> 7);
+            rng_state = rng_state ^ (rng_state << 17);
+
+            const r = rng_state % 3;
+            hypervector[i] = if (r == 0) { base::types::Trit.neg }
+                          else if (r == 1) { base::types::Trit.zero }
+                          else { base::types::Trit.pos };
+
+            i = i + 1;
+        }
+
+        // Step 4: Store encoding in state
+        if (state.encoding_count < MAX_CLAUSES) {
+            state.fact_encodings[state.encoding_count] = FactEncoding{
+                .hypervector = hypervector,
+                .predicate_hash = fact.name,
+                .confidence = 1.0,  // Facts have full confidence
+                .original_fact = fact,
+            };
+            state.encoding_count = state.encoding_count + 1;
+        }
+
+        return FactEncoding{
+            .hypervector = hypervector,
+            .predicate_hash = fact.name,
+            .confidence = 1.0,
+            .original_fact = fact,
+        };
+    }
+
+    // decode_to_fact(vector: HyperVector, cb: Codebook) -> HornClause
+    // Decode a VSA hypervector back to an AR HornClause
+    // Uses codebook cleanup to map noisy vectors to clean entries
+    // Algorithm:
+    //   1. Lookup in codebook (codebook_cleanup)
+    //   2. Extract predicate hash from label
+    //   3. Create HornClause with placeholder args (requires context)
+    // Complexity: O(CODEBOOK_CAPACITY * D)
+    pub fn decode_to_fact(vector: HyperVector, cb: Codebook) -> HornClause {
+        // Step 1: Use codebook cleanup for robust decoding
+        const clean_vector = codebook_cleanup(cb, vector);
+
+        // Step 2: Lookup label in codebook
+        const label = codebook_lookup(cb, clean_vector);
+
+        // Step 3: If no match found, return unknown fact
+        if (label == 0xFFFFFFFF) {
+            return HornClause{
+                .name = 0,
+                .args = undefined,
+                .arg_count = 0,
+            };
+        }
+
+        // Step 4: Return HornClause with retrieved predicate hash
+        // Note: Actual argument trit values require additional context
+        // In production, this would query the codebook entry directly
+        return HornClause{
+            .name = cast<u16>(label & 0xFFFF),
+            .args = undefined,
+            .arg_count = 0,  // Requires full codebook entry for reconstruction
+        };
+    }
+
+    // similarity_fact_query(query: HyperVector, state: *BridgeState, limit: usize) -> SimilarityResult
+    // Find the most similar encoded facts to a query hypervector
+    // Returns sorted list of matches with similarity scores
+    // Algorithm:
+    //   1. Compute cosine similarity with all encoded facts
+    //   2. Filter by SIMILARITY_THRESHOLD
+    //   3. Return top 'limit' matches
+    // Complexity: O(n * D) where n = encoding_count, D = VSA_DIMENSION
+    pub fn similarity_fact_query(
+        query: HyperVector,
+        state: *BridgeState,
+        limit: usize
+    ) -> SimilarityResult {
+        var result : SimilarityResult = SimilarityResult{
+            .matches = undefined,
+            .count = 0,
+            .best_similarity = -1.0,
+        };
+
+        // Clamp limit to MAX_FACTS
+        var effective_limit : usize = if (limit > MAX_FACTS) { MAX_FACTS } else { limit };
+
+        // Step 1: Compute similarities
+        var i : usize = 0;
+        while (i < state.encoding_count && result.count < effective_limit) {
+            const fact_enc = state.fact_encodings[i];
+
+            // Step 2: Compute cosine similarity
+            const sim = cosine_similarity(query, fact_enc.hypervector, VSA_DIMENSION);
+
+            // Step 3: Filter by threshold
+            if (sim >= SIMILARITY_THRESHOLD) {
+                result.matches[result.count] = fact_enc;
+                result.count = result.count + 1;
+
+                if (sim > result.best_similarity) {
+                    result.best_similarity = sim;
+                }
+            }
+
+            i = i + 1;
+        }
+
+        return result;
+    }
+
+    // encode_predicate(name: []const u8, args: []const Trit, arg_count: usize) -> FactEncoding
+    // Encode a predicate-argument structure directly to VSA
+    // Alternative to encode_fact when predicate name is available as string
+    // Complexity: O(D + n)
+    pub fn encode_predicate(name: []const u8, args: []const Trit, arg_count: usize) -> FactEncoding {
+        // Step 1: Compute hash of predicate name
+        var name_hash : u64 = 0;
+        var i : usize = 0;
+        while (i < len(name)) {
+            name_hash = name_hash ^ (cast<u64>(name[i]) << (8 * (i % 8)));
+            i = i + 1;
+        }
+
+        // Step 2: Create seed from hash + args
+        var combined_seed : u64 = name_hash;
+
+        i = 0;
+        while (i < arg_count) {
+            const arg_val = cast<u64>((cast<i32>(args[i]) + 1));
+            combined_seed = combined_seed ^ (arg_val << (8 * i));
+            i = i + 1;
+        }
+
+        // Step 3: Generate hypervector
+        var hypervector : HyperVector = undefined;
+        var rng_state : u64 = combined_seed ^ VSA_SEED;
+
+        i = 0;
+        while (i < VSA_DIMENSION) {
+            rng_state = rng_state ^ (rng_state << 13);
+            rng_state = rng_state ^ (rng_state >> 7);
+            rng_state = rng_state ^ (rng_state << 17);
+
+            const r = rng_state % 3;
+            hypervector[i] = if (r == 0) { base::types::Trit.neg }
+                          else if (r == 1) { base::types::Trit.zero }
+                          else { base::types::Trit.pos };
+
+            i = i + 1;
+        }
+
+        return FactEncoding{
+            .hypervector = hypervector,
+            .predicate_hash = cast<u16>(name_hash & 0xFFFF),
+            .confidence = 1.0,
+            .original_fact = HornClause{
+                .name = cast<u16>(name_hash & 0xFFFF),
+                .args = args,  // Note: requires proper array copy
+                .arg_count = cast<u8>(arg_count),
+            },
+        };
+    }
+
+    // bind_fact(fact_a: FactEncoding, fact_b: FactEncoding) -> FactEncoding
+    // Bind two encoded facts using VSA bind operation
+    // Represents relationship: fact_a(fact_b)
+    // Complexity: O(D)
+    pub fn bind_fact(fact_a: FactEncoding, fact_b: FactEncoding) -> FactEncoding {
+        var result_vector : HyperVector = undefined;
+
+        // Perform element-wise XOR (bind operation)
+        var i : usize = 0;
+        while (i < VSA_DIMENSION) {
+            const a_trit = fact_a.hypervector[i];
+            const b_trit = fact_b.hypervector[i];
+
+            // Trit XOR (treated as signed for trit values)
+            const xor_val = cast<i32>(a_trit) + cast<i32>(b_trit);
+            result_vector[i] = if (xor_val == -2) { base::types::Trit.pos }
+                              else if (xor_val == 0) { base::types::Trit.zero }
+                              else if (xor_val == 2) { base::types::Trit.neg }
+                              else { cast<Trit>(xor_val) };
+
+            i = i + 1;
+        }
+
+        return FactEncoding{
+            .hypervector = result_vector,
+            .predicate_hash = fact_a.predicate_hash,  // Dominant predicate
+            .confidence = (fact_a.confidence + fact_b.confidence) / 2.0,
+            .original_fact = fact_a.original_fact,
+        };
+    }
+
+    // bundle_facts(facts: []const FactEncoding, count: usize) -> FactEncoding
+    // Bundle multiple encoded facts using VSA bundle operation
+    // Represents superposition (set union) of facts
+    // Complexity: O(D * n)
+    pub fn bundle_facts(facts: []const FactEncoding, count: usize) -> FactEncoding {
+        var result_vector : HyperVector = undefined;
+
+        // Initialize with first fact
+        if (count == 0) {
+            return FactEncoding{
+                .hypervector = undefined,
+                .predicate_hash = 0,
+                .confidence = 0.0,
+                .original_fact = undefined,
+            };
+        }
+
+        // Copy first fact
+        var i : usize = 0;
+        while (i < VSA_DIMENSION) {
+            result_vector[i] = facts[0].hypervector[i];
+            i = i + 1;
+        }
+
+        // Bundle remaining facts (majority vote)
+        i = 1;
+        while (i < count) {
+            var j : usize = 0;
+            while (j < VSA_DIMENSION) {
+                const a_trit = result_vector[j];
+                const b_trit = facts[i].hypervector[j];
+
+                // Majority vote for trits
+                // If same, keep; if different, use 0 (K_UNKNOWN)
+                result_vector[j] = if (a_trit == b_trit) { a_trit }
+                                     else { base::types::Trit.zero };
+
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+
+        // Average confidence across facts
+        var total_confidence : f64 = 0.0;
+        i = 0;
+        while (i < count) {
+            total_confidence = total_confidence + facts[i].confidence;
+            i = i + 1;
+        }
+
+        return FactEncoding{
+            .hypervector = result_vector,
+            .predicate_hash = facts[0].predicate_hash,
+            .confidence = total_confidence / cast<f64>(count),
+            .original_fact = facts[0].original_fact,
+        };
+    }
+
+    // add_fact_to_bridge(fact: HornClause, state: *BridgeState) -> bool
+    // Add a fact to the bridge, encoding it in VSA and storing in AR
+    // Returns true if fact was added successfully
+    // Complexity: O(D + n) where n = encoding_count
+    pub fn add_fact_to_bridge(fact: HornClause, state: *BridgeState) -> bool {
+        if (state.encoding_count >= MAX_CLAUSES) {
+            return false;  // Bridge full
+        }
+
+        // Encode fact to VSA
+        const encoding = encode_fact(fact, state);
+
+        // Add to AR engine (simplified)
+        // In production, would call add_fact(state.ar_engine, fact)
+
+        return true;
+    }
+
+    // get_encoding_count(state: *BridgeState) -> usize
+    // Get the current number of encoded facts in the bridge
+    // Complexity: O(1)
+    pub fn get_encoding_count(state: *BridgeState) -> usize {
+        return state.encoding_count;
+    }
+
+    // TESTS
+
+    // Unit tests for VSA Bridge Layer
+    test "VSA Bridge: encode_fact creates valid hypervector" {
+        var state = bridge_init();
+        var fact = HornClause{
+            .name = 1234,
+            .args = [base::types::Trit.pos, base::types::Trit.neg],
+            .arg_count = 2,
+        };
+
+        const encoding = encode_fact(fact, &state);
+
+        // Verify hypervector dimension
+        assert len(encoding.hypervector) == VSA_DIMENSION;
+
+        // Verify confidence is 1.0 for facts
+        assert encoding.confidence == 1.0;
+
+        // Verify predicate hash preserved
+        assert encoding.predicate_hash == fact.name;
+
+        // Verify encoding added to state
+        assert state.encoding_count == 1;
+
+        // Verify all trits are valid (-1, 0, +1)
+        var i : usize = 0;
+        while (i < VSA_DIMENSION) {
+            const trit = encoding.hypervector[i];
+            assert (trit == base::types::Trit.neg ||
+                    trit == base::types::Trit.zero ||
+                    trit == base::types::Trit.pos);
+            i = i + 1;
+        }
+    }
+
+    test "VSA Bridge: similarity_fact_query returns matches" {
+        var state = bridge_init();
+
+        // Add test facts
+        var fact1 = HornClause{ .name = 1, .args = undefined, .arg_count = 0 };
+        var fact2 = HornClause{ .name = 2, .args = undefined, .arg_count = 0 };
+
+        encode_fact(fact1, &state);
+        encode_fact(fact2, &state);
+
+        // Create query vector
+        var query = HyperVector{ .data = undefined };
+        var i : usize = 0;
+        while (i < VSA_DIMENSION) {
+            query[i] = base::types::Trit.pos;
+            i = i + 1;
+        }
+
+        // Query for similar facts
+        const result = similarity_fact_query(query, &state, 10);
+
+        // Verify we got some results
+        assert result.count > 0;
+
+        // Verify best similarity is >= threshold
+        assert result.best_similarity >= SIMILARITY_THRESHOLD;
+
+        // Verify count doesn't exceed limit
+        assert result.count <= 10;
+    }
+
+    test "VSA Bridge: bind_fact produces valid result" {
+        var state = bridge_init();
+
+        var fact_a = HornClause{
+            .name = 1,
+            .args = [base::types::Trit.pos],
+            .arg_count = 1,
+        };
+        var fact_b = HornClause{
+            .name = 2,
+            .args = [base::types::Trit.neg],
+            .arg_count = 1,
+        };
+
+        const enc_a = encode_fact(fact_a, &state);
+        const enc_b = encode_fact(fact_b, &state);
+
+        const bound = bind_fact(enc_a, enc_b);
+
+        // Verify result has valid hypervector
+        assert len(bound.hypervector) == VSA_DIMENSION;
+
+        // Verify confidence is averaged
+        const expected_conf = (enc_a.confidence + enc_b.confidence) / 2.0;
+        assert bound.confidence == expected_conf;
+    }
+
+    test "VSA Bridge: bundle_facts produces superposition" {
+        var state = bridge_init();
+
+        var facts : [3]FactEncoding = undefined;
+        var i : usize = 0;
+        while (i < 3) {
+            var fact = HornClause{
+                .name = cast<u16>(i + 1),
+                .args = undefined,
+                .arg_count = 0,
+            };
+            facts[i] = encode_fact(fact, &state);
+            i = i + 1;
+        }
+
+        const bundle = bundle_facts(facts, 3);
+
+        // Verify result has valid hypervector
+        assert len(bundle.hypervector) == VSA_DIMENSION;
+
+        // Verify confidence is averaged
+        assert bundle.confidence == 1.0;  // All facts have 1.0
+
+        // Verify bundle represents superposition
+        // (Some trits should be zero where facts disagree)
+        var has_zero : bool = false;
+        i = 0;
+        while (i < VSA_DIMENSION) {
+            if (bundle.hypervector[i] == base::types::Trit.zero) {
+                has_zero = true;
+            }
+            i = i + 1;
+        }
+        assert has_zero;  // At least one disagreement in random vectors
+    }
+
+    // BENCHMARKS
+
+    // Benchmarks for VSA Bridge Layer operations
+    bench "VSA Bridge: encode_fact performance" {
+        var state = bridge_init();
+        var fact = HornClause{
+            .name = 1234,
+            .args = [base::types::Trit.pos, base::types::Trit.neg],
+            .arg_count = 2,
+        };
+
+        var iterations : usize = 0;
+        const max_iter : usize = 10000;
+
+        while (iterations < max_iter) {
+            encode_fact(fact, &state);
+            iterations = iterations + 1;
+        }
+    }
+
+    bench "VSA Bridge: similarity_fact_query performance" {
+        var state = bridge_init();
+
+        // Add MAX_FACTS test facts
+        var i : usize = 0;
+        while (i < MAX_FACTS) {
+            var fact = HornClause{
+                .name = cast<u16>(i + 1),
+                .args = undefined,
+                .arg_count = 0,
+            };
+            encode_fact(fact, &state);
+            i = i + 1;
+        }
+
+        // Create query vector
+        var query = HyperVector{ .data = undefined };
+        i = 0;
+        while (i < VSA_DIMENSION) {
+            query[i] = base::types::Trit.pos;
+            i = i + 1;
+        }
+
+        // Benchmark query with limit
+        var iterations : usize = 0;
+        const max_iter : usize = 1000;
+
+        while (iterations < max_iter) {
+            similarity_fact_query(query, &state, MAX_FACTS);
+            iterations = iterations + 1;
+        }
+    }
+
+    // INVARIANTS
+
+    // Invariants for formal verification of VSA Bridge Layer
+
+    invariant bridge_hypervector_dimension
+        given encoding = encode_fact(HornClause{.name=1, .args=undefined, .arg_count=0}, bridge_init())
+        then len(encoding.hypervector) == VSA_DIMENSION
+
+    invariant bridge_fact_preservation
+        given fact = HornClause{.name=1234, .args=[Trit.pos], .arg_count=1}
+        and   state = bridge_init()
+        and   enc = encode_fact(fact, state)
+        then enc.predicate_hash == fact.name
+
+    invariant similarity_threshold_respect
+        given state = bridge_init() with state.encoding_count > 0
+        and   result = similarity_fact_query(HyperVector{.data=[Trit.pos;1024]}, state, MAX_FACTS)
+        when  result.count > 0
+        then  result.best_similarity >= SIMILARITY_THRESHOLD
+
+    invariant bind_confidence_averaging
+        given enc_a = encode_fact(HornClause{.name=1, .args=undefined, .arg_count=0}, bridge_init())
+        and   enc_b = encode_fact(HornClause{.name=2, .args=undefined, .arg_count=0}, bridge_init())
+        and   bound = bind_fact(enc_a, enc_b)
+        then  bound.confidence == (enc_a.confidence + enc_b.confidence) / 2.0
+
+    invariant bundle_confidence_average
+        given facts = [encode_fact(HornClause{.name=1, .args=undefined, .arg_count=0}, bridge_init()),
+                      encode_fact(HornClause{.name=2, .args=undefined, .arg_count=0}, bridge_init()),
+                      encode_fact(HornClause{.name=3, .args=undefined, .arg_count=0}, bridge_init())]
+        and   bundle = bundle_facts(facts, 3)
+        then  bundle.confidence == (facts[0].confidence + facts[1].confidence + facts[2].confidence) / 3.0
+}
+

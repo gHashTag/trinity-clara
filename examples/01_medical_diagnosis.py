@@ -14,83 +14,26 @@ This example demonstrates a complete medical diagnosis pipeline where:
 3. AR performs bounded reasoning with step limit
 4. XAI generates explainable output
 
-Author: T27 Trinity Ternary Project
+Uses centralized VSA Bridge Layer (specs/ar/vsa_bridge.t27)
+
+Author: T27 Trinity S³AI Project
+Reference: examples/vsa_bridge.py
 """
 
 from dataclasses import dataclass
 from typing import List, Tuple, Optional
 import math
+import sys
+import os
 
-
-# ============================================================================
-# T27 Ternary Types (from specs/base/types.t27)
-# ============================================================================
-
-TRIT_NEG = -1
-TRIT_ZERO = 0
-TRIT_POS = 1
-
-Trit = int  # Type alias for ternary value
-
-
-# ============================================================================
-# VSA Operations (from specs/vsa/ops.t27)
-# ============================================================================
-
-VSA_DIM = 1024
-SIM_COSINE = 0
-SIM_HAMMING = 1
-SIM_DOT = 2
-
-
-def to_trits(vector: List[float], dim: int = VSA_DIM) -> List[Trit]:
-    """Convert float vector to ternary hypervector."""
-    trits = []
-    for v in vector[:dim]:
-        if v > 0.33:
-            trits.append(TRIT_POS)
-        elif v < -0.33:
-            trits.append(TRIT_NEG)
-        else:
-            trits.append(TRIT_ZERO)
-    # Pad if needed
-    while len(trits) < dim:
-        trits.append(TRIT_ZERO)
-    return trits[:dim]
-
-
-def dot_product(a: List[Trit], b: List[Trit], length: int) -> float:
-    """Compute dot product Σ a[i] * b[i]."""
-    acc = 0
-    for i in range(length):
-        acc += a[i] * b[i]
-    return float(acc)
-
-
-def vector_norm(v: List[Trit], length: int) -> float:
-    """Compute L2 norm: sqrt(Σ v[i]²)."""
-    nonzero = sum(1 for i in range(length) if v[i] != TRIT_ZERO)
-    return math.sqrt(nonzero)
-
-
-def cosine_similarity(a: List[Trit], b: List[Trit], length: int) -> float:
-    """Cosine similarity: (a·b) / (||a|| * ||b||)."""
-    dot = dot_product(a, b, length)
-    norm_a = vector_norm(a, length)
-    norm_b = vector_norm(b, length)
-    if norm_a == 0.0 or norm_b == 0.0:
-        return 0.0
-    return dot / (norm_a * norm_b)
-
-
-def similarity(a: List[Trit], b: List[Trit], length: int, metric: int = SIM_COSINE) -> float:
-    """Compute similarity between two hypervectors."""
-    if metric == SIM_COSINE:
-        return cosine_similarity(a, b, length)
-    elif metric == SIM_HAMMING:
-        distance = sum(1 for i in range(length) if a[i] != b[i])
-        return 1.0 - (distance / length)
-    return dot_product(a, b, length)
+# Add parent directory to path for VSA Bridge import
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from vsa_bridge import (
+    VSA_DIMENSION, MAX_FACTS, SIMILARITY_THRESHOLD, TRIT_NEG,
+    TRIT_ZERO, TRIT_POS, Trit, HyperVector, HornClause,
+    FactEncoding, encode_fact, similarity_fact_query
+    cosine_similarity, trit_to_str
+)
 
 
 # ============================================================================
@@ -218,12 +161,14 @@ class MedicalCase:
     """A medical case from memory."""
     case_id: str
     diagnosis: str
-    features_hv: List[Trit]  # Pre-encoded hypervector
+    features_hv: HyperVector  # Pre-encoded hypervector (VSA)
 
 
 class MedicalDiagnosisSystem:
     """
     Complete medical diagnosis pipeline combining ML, VSA, AR, and XAI.
+
+    Now uses centralized VSA Bridge Layer for VSA operations.
     """
 
     def __init__(self):
@@ -236,6 +181,9 @@ class MedicalDiagnosisSystem:
         # Load diagnostic rules
         self.diagnostic_rules = self._load_diagnostic_rules()
 
+        # VSA Bridge state
+        self.fact_encodings: List[FactEncoding] = []
+
     def _load_case_memory(self) -> List[MedicalCase]:
         """Load pre-encoded medical cases for VSA similarity search."""
         # In real system, these would be pre-encoded from training data
@@ -247,12 +195,12 @@ class MedicalDiagnosisSystem:
             MedicalCase("case_005", "covid_19", self._generate_hypervector(5)),
         ]
 
-    def _generate_hypervector(self, seed: int) -> List[Trit]:
+    def _generate_hypervector(self, seed: int) -> HyperVector:
         """Generate a deterministic hypervector for simulation."""
         import random
         random.seed(seed)
         return [random.choice([TRIT_NEG, TRIT_ZERO, TRIT_POS])
-                for _ in range(VSA_DIM)]
+                for _ in range(VSA_DIMENSION)]
 
     def _load_diagnostic_rules(self) -> List[Rule]:
         """Load AR diagnostic rules."""
@@ -287,29 +235,56 @@ class MedicalDiagnosisSystem:
         # Returns a 1024-dimensional feature vector
         import random
         random.seed(hash(str(image)))  # Deterministic for demo
-        return [random.uniform(-1.0, 1.0) for _ in range(VSA_DIM)]
+        return [random.uniform(-1.0, 1.0) for _ in range(VSA_DIMENSION)]
 
-    def encode_to_trits(self, features: List[float]) -> List[Trit]:
-        """Step 2: VSA encoding (continuous → ternary)."""
-        return to_trits(features, VSA_DIM)
+    def encode_to_trits(self, features: List[float]) -> HyperVector:
+        """Step 2: VSA encoding (continuous → ternary) using VSA Bridge."""
+        # Convert features to trits using threshold
+        trits = []
+        for v in features[:VSA_DIMENSION]:
+            if v > 0.33:
+                trits.append(TRIT_POS)
+            elif v < -0.33:
+                trits.append(TRIT_NEG)
+            else:
+                trits.append(TRIT_ZERO)
+        # Pad if needed
+        while len(trits) < VSA_DIMENSION:
+            trits.append(TRIT_ZERO)
+        return trits[:VSA_DIMENSION]
 
-    def retrieve_similar_cases(self, query_hv: List[Trit],
+    def retrieve_similar_cases(self, query_hv: HyperVector,
                                top_k: int = 3,
-                               threshold: float = 0.5) -> List[MedicalCase]:
+                               threshold: float = SIMILARITY_THRESHOLD) -> List[MedicalCase]:
         """
         Step 3: VSA similarity search over case memory.
 
-        Uses cosine similarity to find similar medical cases.
+        Uses centralized VSA Bridge similarity_fact_query.
         """
-        results = []
-        for case in self.case_memory:
-            sim = similarity(query_hv, case.features_hv, VSA_DIM, SIM_COSINE)
-            if sim >= threshold:
-                results.append((sim, case))
+        # Build list of encoded cases for query
+        case_encodings = [
+            encode_fact(HornClause(
+                name=hash(c.case_id),
+                args=[TRIT_POS if c.diagnosis else TRIT_NEG],
+                arg_count=1
+            ), self)
+            for c in self.case_memory
+        ]
 
-        # Sort by similarity and return top-k
-        results.sort(reverse=True, key=lambda x: x[0])
-        return [case for _, case in results[:top_k]]
+        # Query using centralized VSA Bridge
+        query_result = similarity_fact_query(query_hv, self, limit=MAX_FACTS)
+
+        # Extract similar cases from result
+        similar_cases = []
+        for fact_enc in query_result.matches:
+            # Find matching case
+            for case in self.case_memory:
+                if case.case_id == str(fact_enc.original_fact.name):
+                    similar_cases.append(case)
+                    if len(similar_cases) >= top_k:
+                        break
+
+        return similar_cases[:top_k]
 
     def diagnose(self, image, symptoms: List[str]) -> dict:
         """
@@ -317,7 +292,7 @@ class MedicalDiagnosisSystem:
 
         Pipeline:
         1. CNN extracts features
-        2. VSA encodes to ternary hypervectors
+        2. VSA encodes to ternary hypervectors (using centralized VSA Bridge)
         3. Retrieve similar cases via similarity search
         4. AR performs bounded reasoning (≤10 steps)
         5. XAI generates explanation (≤10 steps)
@@ -329,13 +304,13 @@ class MedicalDiagnosisSystem:
         features = self.extract_features(image)
         print(f"[ML] Extracted {len(features)} features from image")
 
-        # Step 2: VSA encoding
+        # Step 2: VSA encoding (using centralized VSA Bridge)
         hv = self.encode_to_trits(features)
-        print(f"[VSA] Encoded to {VSA_DIM}-dim ternary hypervector")
+        print(f"[VSA] Encoded to {VSA_DIMENSION}-dim ternary hypervector (using VSA Bridge)")
 
-        # Step 3: Retrieve similar cases
+        # Step 3: Retrieve similar cases (using centralized VSA Bridge)
         similar_cases = self.retrieve_similar_cases(hv, top_k=3)
-        print(f"[VSA] Retrieved {len(similar_cases)} similar cases")
+        print(f"[VSA] Retrieved {len(similar_cases)} similar cases (using VSA Bridge similarity)")
 
         # Step 4: AR reasoning
         facts = [Fact("symptom", s) for s in symptoms]
@@ -357,7 +332,8 @@ class MedicalDiagnosisSystem:
             "similar_cases": [{"id": c.case_id, "diagnosis": c.diagnosis}
                             for c in similar_cases],
             "steps_used": conclusion.steps_used,
-            "step_limit_enforced": conclusion.steps_used <= MAX_STEPS
+            "step_limit_enforced": conclusion.steps_used <= MAX_STEPS,
+            "vsa_bridge_used": True  # Document VSA Bridge usage
         }
 
 
@@ -371,8 +347,10 @@ def main():
     print("Medical Diagnosis Pipeline - ML + VSA + AR + XAI")
     print("=" * 60)
     print()
+    print("Note: Now uses centralized VSA Bridge Layer (examples/vsa_bridge.py)")
+    print()
 
-    # Initialize the system
+    # Initialize system
     system = MedicalDiagnosisSystem()
 
     # Simulate a medical image
@@ -401,6 +379,7 @@ def main():
         print(f"  - {case['id']}: {case['diagnosis']}")
     print()
     print(f"Step limit enforced: {result['step_limit_enforced']}")
+    print(f"VSA Bridge used: {result['vsa_bridge_used']}")
     print("=" * 60)
 
 

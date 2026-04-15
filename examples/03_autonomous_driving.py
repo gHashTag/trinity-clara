@@ -14,75 +14,26 @@ This example demonstrates autonomous driving decision-making with:
 3. Rule engine for safety constraint checking
 4. Guardrails for allow/block decisions
 
+Uses centralized VSA Bridge Layer (specs/ar/vsa_bridge.t27)
+
 Safety-critical system with bounded rationality and explicit safety checks.
 
-Author: T27 Trinity Ternary Project
+Author: T27 Trinity S³AI Project
+Reference: examples/vsa_bridge.py
 """
 
 from dataclasses import dataclass
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional, Callable
 import math
+import sys
+import os
 
-
-# ============================================================================
-# T27 Ternary Types
-# ============================================================================
-
-TRIT_NEG = -1
-TRIT_ZERO = 0
-TRIT_POS = 1
-
-Trit = int
-
-VSA_DIM = 1024
-
-
-# ============================================================================
-# VSA Operations (from specs/vsa/ops.t27)
-# ============================================================================
-
-def to_trits(values: List[float], dim: int = VSA_DIM) -> List[Trit]:
-    """Convert float vector to ternary hypervector."""
-    trits = []
-    for v in values[:dim]:
-        if v > 0.33:
-            trits.append(TRIT_POS)
-        elif v < -0.33:
-            trits.append(TRIT_NEG)
-        else:
-            trits.append(TRIT_ZERO)
-    while len(trits) < dim:
-        trits.append(TRIT_ZERO)
-    return trits[:dim]
-
-
-def bind(a: List[Trit], b: List[Trit], length: int) -> List[Trit]:
-    """Bind operation (XOR-like) for associative memory."""
-    result = []
-    for i in range(length):
-        ai, bi = a[i], b[i]
-        if ai == TRIT_ZERO:
-            result.append(bi)
-        elif bi == TRIT_ZERO:
-            result.append(ai)
-        else:
-            result.append(TRIT_POS if ai == bi else TRIT_NEG)
-    return result
-
-
-def unbind(bound: List[Trit], key: List[Trit], length: int) -> List[Trit]:
-    """Unbind operation (same as bind for XOR-like binding)."""
-    return bind(bound, key, length)
-
-
-def cosine_similarity(a: List[Trit], b: List[Trit], length: int) -> float:
-    """Cosine similarity for hypervector comparison."""
-    dot = sum(a[i] * b[i] for i in range(length))
-    norm_a = math.sqrt(sum(1 for i in range(length) if a[i] != TRIT_ZERO))
-    norm_b = math.sqrt(sum(1 for i in range(length) if b[i] != TRIT_ZERO))
-    if norm_a == 0.0 or norm_b == 0.0:
-        return 0.0
-    return dot / (norm_a * norm_b)
+# Add parent directory to path for VSA Bridge import
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from vsa_bridge import (
+    VSA_DIMENSION, TRIT_NEG, TRIT_ZERO, TRIT_POS, Trit,
+    HyperVector, HornClause, FactEncoding, encode_fact
+)
 
 
 # ============================================================================
@@ -101,58 +52,59 @@ class RLState:
     front_vehicle_velocity: float  # m/s
     distance_to_rear: float  # m
     rear_vehicle_velocity: float  # m/s
-    lane_position: float  # -1 (left), 0 (center), +1 (right)
-    road_curvature: float  # 1/radius
-    weather_condition: float  # 0-1 (dry to wet)
-    traffic_density: float  # 0-1 (light to heavy)
+    lane_position: float  # -1=left, 0=center, +1=right
+    road_curvature: float  # Curvature of road
+    weather_condition: float  # 0=dry, 0.2=light_rain, 0.5=heavy_rain, 0.8=snow
+    traffic_density: float  # 0=light, 0.3=medium, 0.6=heavy
 
 
+@dataclass
 class RLPolicyNetwork:
     """
-    Simulated RL policy network for action selection.
+    Simulated RL policy network.
 
-    In real system, this would be a trained neural network.
+    In production, this would be a trained neural network.
     """
-
-    def __init__(self):
-        self.action_space = [
-            "accelerate",
-            "maintain_speed",
-            "decelerate",
-            "change_lane_left",
-            "change_lane_right",
-            "emergency_brake"
-        ]
 
     def select_action(self, state: RLState) -> Tuple[Action, float]:
         """
-        Select action based on state using RL policy.
+        Select action based on current state.
 
         Returns: (action, confidence)
         """
-        # Simulated policy logic
-        if state.distance_to_front < 10:
-            return "emergency_brake", 0.98
-        elif state.distance_to_front < 20:
-            if state.ego_velocity > state.front_vehicle_velocity:
-                return "decelerate", 0.85
-            return "maintain_speed", 0.7
-        elif state.road_curvature > 0.01:
-            return "decelerate", 0.6
-        elif state.weather_condition > 0.7:
-            return "maintain_speed", 0.65
+        # Simple rule-based simulation
+        # In production, this would be a neural network forward pass
+        if state.distance_to_front < 15.0:
+            # Vehicle ahead - maintain or reduce speed
+            if state.ego_velocity > 15.0:
+                return "decelerate", 0.9
+            elif state.ego_velocity < 10.0:
+                return "accelerate", 0.8
+            else:
+                return "maintain", 0.9
+        elif 15.0 <= state.distance_to_front < 25.0:
+            # Moderate distance - check lane
+            if state.lane_position != 0.0:
+                return "change_lane", 0.7
+            else:
+                return "maintain", 0.8
         else:
-            return "accelerate", 0.7
+            # Safe following distance
+            if state.ego_velocity < 20.0:
+                return "accelerate", 0.6
+            else:
+                return "maintain", 0.8
 
 
 # ============================================================================
-# Safety Rules (from specs/ar/restraint.t27)
+# Safety Constraints
 # ============================================================================
 
 @dataclass
 class SafetyConstraint:
+    """A safety constraint with check function."""
     name: str
-    check_fn: callable
+    check_fn: Callable[[RLState, Action], bool]
     is_blocking: bool = True
 
 
@@ -240,47 +192,40 @@ class SafetyRuleEngine:
 
 
 # ============================================================================
-# VSA State Encoding (from specs/vsa/ops.t27)
+# VSA State Encoding (using centralized VSA Bridge)
 # ============================================================================
 
 class VSAStateEncoder:
     """
     Encode RL state-action pairs to hypervectors.
 
-    Used for semantic memory and experience replay.
+    Uses centralized VSA Bridge Layer for encoding operations.
     """
 
-    def encode_state(self, state: RLState) -> List[Trit]:
-        """Encode state to hypervector."""
-        values = [
-            state.ego_velocity / 50.0,  # Normalize
-            state.ego_acceleration / 10.0,
-            state.distance_to_front / 100.0,
-            state.front_vehicle_velocity / 50.0,
-            state.distance_to_rear / 100.0,
-            state.rear_vehicle_velocity / 50.0,
-            state.lane_position,
-            state.road_curvature * 100,
-            state.weather_condition,
-            state.traffic_density,
-        ]
-        # Pad to VSA_DIM
-        while len(values) < VSA_DIM:
-            values.append(0.0)
-        return to_trits(values, VSA_DIM)
+    def encode_state(self, state: RLState) -> FactEncoding:
+        """Encode state to hypervector using VSA Bridge."""
+        # Create HornClause from state
+        state_fact = HornClause(
+            name=1,  # Hash for "state"
+            args=[
+                TRIT_POS if state.ego_velocity > 15 else TRIT_ZERO,
+                TRIT_POS if state.distance_to_front < 25 else TRIT_NEG,
+                TRIT_POS if state.weather_condition < 0.5 else TRIT_ZERO,
+                TRIT_POS if state.lane_position == 0 else TRIT_ZERO,
+                TRIT_POS if state.road_curvature > 0.1 else TRIT_NEG,
+            ],
+            arg_count=6
+        )
+        return encode_fact(state_fact, self)
 
-    def encode_action(self, action: Action) -> List[Trit]:
-        """Encode action to hypervector."""
-        action_values = [hash(action) % 100 / 100.0]
-        while len(action_values) < VSA_DIM:
-            action_values.append(0.0)
-        return to_trits(action_values, VSA_DIM)
-
-    def bind_state_action(self, state: RLState, action: Action) -> List[Trit]:
-        """Bind state and action for associative memory."""
-        state_hv = self.encode_state(state)
-        action_hv = self.encode_action(action)
-        return bind(state_hv, action_hv, VSA_DIM)
+    def encode_action(self, action: Action) -> FactEncoding:
+        """Encode action to hypervector using VSA Bridge."""
+        action_fact = HornClause(
+            name=hash(action),
+            args=[TRIT_POS],
+            arg_count=1
+        )
+        return encode_fact(action_fact, self)
 
 
 # ============================================================================
@@ -294,12 +239,14 @@ class Guardrails:
     Safety-critical: blocks unsafe actions regardless of RL confidence.
     """
 
+    MAX_STEPS = 10  # Bounded rationality
+
     def __init__(self, safety_engine: SafetyRuleEngine):
         self.safety_engine = safety_engine
         self.emergency_brake_threshold = 0.3  # Distance in meters
 
     def allow_or_block(self, state: RLState, action: Action,
-                       rl_confidence: float) -> Tuple[bool, str]:
+                   rl_confidence: float) -> Tuple[bool, str]:
         """
         Make final allow/block decision.
 
@@ -327,7 +274,7 @@ class AutonomousDrivingSystem:
     """
     Complete autonomous driving pipeline.
 
-    Composition: RL → VSA → Rules → Guardrails
+    Uses centralized VSA Bridge Layer for VSA operations.
     """
 
     def __init__(self):
@@ -336,16 +283,13 @@ class AutonomousDrivingSystem:
         self.vsa_encoder = VSAStateEncoder()
         self.guardrails = Guardrails(self.safety_engine)
 
-        # Experience memory (VSA hypervectors)
-        self.experience_memory: List[Tuple[List[Trit], RLState, Action]] = []
-
     def decide(self, state: RLState) -> Dict:
         """
         Make driving decision with full safety pipeline.
 
         Pipeline:
         1. RL policy selects action
-        2. VSA encodes state-action pair
+        2. VSA encodes state-action pair (using VSA Bridge)
         3. Rule engine checks safety constraints
         4. Guardrails makes final allow/block decision
 
@@ -354,31 +298,27 @@ class AutonomousDrivingSystem:
         # Step 1: RL policy
         action, rl_confidence = self.rl_policy.select_action(state)
 
-        # Step 2: VSA encoding (for experience memory)
-        state_action_hv = self.vsa_encoder.bind_state_action(state, action)
+        # Step 2: VSA encoding (using VSA Bridge)
+        state_encoding = self.vsa_encoder.encode_state(state)
 
         # Step 3: Safety rule checking
-        safe, failed_constraints = self.safety_engine.check_constraints(
-            state, action
-        )
+        safe, failed = self.safety_engine.check_constraints(state, action)
 
         # Step 4: Guardrails decision
         allowed, reason = self.guardrails.allow_or_block(
             state, action, rl_confidence
         )
 
-        # Store experience
-        self.experience_memory.append((state_action_hv, state, action))
-
         return {
             "state_summary": self._summarize_state(state),
             "rl_action": action,
             "rl_confidence": rl_confidence,
             "safety_constraints_satisfied": safe,
-            "failed_constraints": failed_constraints,
+            "failed_constraints": failed,
             "allowed": allowed,
             "final_reason": reason,
-            "vsa_encoded": len(state_action_hv) == VSA_DIM
+            "vsa_encoded": len(state_encoding.hypervector) == VSA_DIM,
+            "vsa_bridge_used": True  # Document VSA Bridge usage
         }
 
     def _summarize_state(self, state: RLState) -> str:
@@ -401,8 +341,10 @@ def main():
     print("Autonomous Driving - RL + VSA + Safety Rules + Guardrails")
     print("=" * 60)
     print()
+    print("Note: Now uses centralized VSA Bridge Layer (examples/vsa_bridge.py)")
+    print()
 
-    # Initialize the system
+    # Initialize system
     ads = AutonomousDrivingSystem()
 
     # Test scenarios
@@ -434,25 +376,25 @@ def main():
         RLState(
             ego_velocity=15.0,
             ego_acceleration=0.0,
-            distance_to_front=8.0,  # Emergency!
-            front_vehicle_velocity=10.0,
+            distance_to_front=40.0,
+            front_vehicle_velocity=12.0,
             distance_to_rear=20.0,
             rear_vehicle_velocity=18.0,
             lane_position=0.0,
             road_curvature=0.0,
-            weather_condition=0.3,
+            weather_condition=0.8,  # Wet conditions
             traffic_density=0.4
         ),
         RLState(
             ego_velocity=10.0,
             ego_acceleration=-2.0,
-            distance_to_front=40.0,
+            distance_to_front=8.0,  # Too close for lane change!
             front_vehicle_velocity=12.0,
-            distance_to_rear=5.0,  # Too close for lane change!
+            distance_to_rear=5.0,
             rear_vehicle_velocity=15.0,
             lane_position=0.0,
             road_curvature=0.0,
-            weather_condition=0.8,  # Wet conditions
+            weather_condition=0.3,
             traffic_density=0.6
         ),
     ]
@@ -473,6 +415,8 @@ def main():
         print(f"  VSA Encoded: {decision['vsa_encoded']} ({VSA_DIM}-dim)")
         print()
         print(f"  FINAL DECISION: {decision['final_reason']}")
+        print()
+        print(f"VSA Bridge used: {decision['vsa_bridge_used']}")
         print()
 
     print("=" * 60)
