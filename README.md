@@ -1,7 +1,6 @@
 # TRINITY CLARA — DARPA CLARA PA-25-07-02 Submission
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![CLA](https://img.shields.io/badge/CLA-100%2525-07--02-green.svg)](https://www.darpa.mil/program/common-learning-repository)
 [![Status](https://img.shields.io/badge/Status-Submission%20Ready-blue.svg)](https://img.shields.io/badge/Status-Submission%20Ready-blue.svg)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/downloads/release/python-3810/)
 
