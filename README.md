@@ -6,6 +6,7 @@
 
 **Main Repository:** [gHashTag/t27](https://github.com/gHashTag/t27)
 **Submission Repository:** [gHashTag/trinity-clara](https://github.com/gHashTag/trinity-clara)
+**Main Branch:** main
 **Solicitation:** DARPA CLARA (Common Learning Repository for AI)
 **Proposal Deadline:** 2026-04-17
 **Submission Date:** April 17, 2026
