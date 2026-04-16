@@ -295,6 +295,32 @@ Four formal proofs strengthen mathematical foundation:
 
 ---
 
+## Key Personnel & Team Qualifications
+
+### Principal Investigator — Dr. Scott A. Olsen (Wisdom Traditions Center, LLC / College of Central Florida)
+
+Dr. Scott A. Olsen, Ph.D. (Philosophy, University of Florida), J.D. (Levin College of Law), is Professor Emeritus of Philosophy & Religion at the College of Central Florida and principal of Wisdom Traditions Center, LLC. Over four decades, his work has traced a continuous line from Plato's Indefinite Dyad through Kepler, Penrose, Stakhov, and El Naschie to modern golden-ratio-based models in physics and cosmology. His books and articles — including *The Golden Section: Nature's Greatest Secret* and peer-reviewed work in *Symmetry: Culture and Science* and related journals — develop the golden mean number system as a precise mathematical language for relating discrete and continuous structures in nature. As PI, Dr. Olsen anchors the Trinity S³AI approach in a rigorously developed philosophical-mathematical framework, ensuring that the program's compositional AI methods remain grounded in interpretable, historically informed conceptions of symmetry, proportion, and abductive inference.
+
+**Key Publications Relevant to CLARA:**
+- *The Golden Section: Nature's Greatest Secret* (2006) — Walker & Company
+- "The Pivotal Role of the Golden Section in Modern Science" (2013) — Symmetry: Culture & Science
+- "The Mathematics of Harmony and Resonant States of Consciousness" (2017) — Symmetry: Culture and Science
+- *A Grand Unification of the Sciences, Arts and Consciousness* (2021) — with El Naschie, He, Marek-Crnjac
+
+### Co-Investigator — Dmitrii Vasilev (Trinity S³AI Research Group)
+
+Mr. Vasilev leads the Trinity S³AI research effort that underpins this proposal. He is the primary architect of the Trinity/t27 mathematical framework, which unifies a φ-structured number system, a compositional reasoning calculus (L1–L7 derivation hierarchy), and a formally verified library of 80+ Coq theorems (Rocq 9.1.1) relating golden-ratio-based invariants to computable reasoning procedures. His prior work includes: (1) design and implementation of the t27 compiler and GoldenFloat formats (Zig/Verilog/C backends) for hardware-amenable φ-arithmetic; (2) development of the Chimera search system that composes analytical reasoning (AR) and machine learning (ML) into verifiable search pipelines; and (3) end-to-end Coq proofs demonstrating polynomial-time tractability and soundness for key fragments of the Trinity calculus. Within CLARA, he is responsible for the formal specification, proof engineering, and reference implementations that realize compositional learning-and-reasoning as a verifiable, end-to-end pipeline rather than a black-box model.
+
+### Co-Investigator — Dr. Stergios Pellis (Physics & Applied Mathematics)
+
+Dr. Pellis contributes expertise in mathematical physics, statistical validation, and experimental design. He has worked on formalizing and statistically validating Trinity S³AI's φ-structured constants and invariants, including large-scale significance studies (e.g., p-values on the order of 10⁻⁵³ across dozens of formulas) that distinguish genuine structure from numerology. In the present project, Dr. Pellis leads the design of benchmark suites and ablation studies that compare Trinity-style compositional reasoning against existing neuro-symbolic baselines, ensuring that claimed advantages are supported by rigorous experimental evidence, confidence intervals, and reproducible test harnesses rather than anecdotal examples.
+
+### Collective Capability
+
+Together, this team combines: (1) a deep, historically informed theory of golden-ratio-based structures in science (Olsen); (2) a working, formally verified φ-centric compositional reasoning system with compiler-grade implementation (Vasilev); and (3) physics-grade statistical and experimental methodology (Pellis). This combination is unusual in that it spans from Plato's Indefinite Dyad and modern golden-ratio physics, through machine-checked proof artefacts and φ-aware type systems, to practical, DARPA-relevant benchmarks and E2E test harnesses. It positions the team to deliver not just another learning architecture, but a compositional AI framework whose internal invariants, constants, and decision procedures can be inspected, proved, and empirically validated within a single coherent theory.
+
+---
+
 ## CLARA Compliance
 
 ### TA1 Requirements (100% Complete)
