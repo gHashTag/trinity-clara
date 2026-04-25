@@ -1,0 +1,72 @@
+# ================================================================
+# L-R14: coqc trinity-clara/proofs/igla/*.v = GREEN
+# RACE INVALID if any theorem fails to compile
+# φ² + φ⁻² = 3 | TRINITY | IGLA-INV-001
+# ================================================================
+name: Coq Invariants (L-R14)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'proofs/**'
+      - '.github/workflows/coq-verify.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'proofs/**'
+  workflow_dispatch: {}
+
+jobs:
+  coq-verify:
+    name: "coqc INV-1..5 (L-R14 Gate)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Coq
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y coq
+          coqc --version
+
+      - name: INV-1 — lr_phi_optimality (BPB decreases with real gradient)
+        run: coqc proofs/igla/lr_phi_optimality.v
+
+      - name: INV-2 — igla_asha_bound (champion survives, threshold=3.5)
+        run: coqc proofs/igla/igla_asha_bound.v
+
+      - name: INV-3 — gf16_precision (error < φ⁻⁶ for d_model≥256)
+        run: coqc proofs/igla/gf16_precision.v
+
+      - name: INV-4 — nca_entropy_band (entropy ∈ [1.5, 2.8])
+        run: coqc proofs/igla/nca_entropy_band.v
+
+      - name: INV-5 — lucas_closure_gf16 (GF16 algebraically consistent)
+        run: coqc proofs/igla/lucas_closure_gf16.v
+
+      - name: L-R14 Summary
+        if: success()
+        run: |
+          echo "================================================"
+          echo "✅ L-R14: ALL Coq invariants GREEN"
+          echo "✅ INV-1 lr_phi_optimality    — PROVEN"
+          echo "✅ INV-2 asha_champion_survives — PROVEN"
+          echo "✅ INV-3 gf16_safe_domain       — PROVEN"
+          echo "✅ INV-4 nca_entropy_stability  — PROVEN"
+          echo "✅ INV-5 lucas_closure_gf16     — PROVEN"
+          echo "φ² + φ⁻² = 3 | IGLA RACE v2 VALID"
+          echo "================================================"
+
+      - name: L-R14 RACE INVALID
+        if: failure()
+        run: |
+          echo "================================================"
+          echo "❌ L-R14 VIOLATED: Coq proof failed"
+          echo "❌ RACE INVALID until all theorems compile"
+          echo "Fix: coqc proofs/igla/*.v must exit 0"
+          echo "================================================"
+          exit 1
