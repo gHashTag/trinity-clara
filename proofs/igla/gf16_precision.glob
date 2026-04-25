@@ -1,0 +1,18 @@
+DIGEST 2d7fedc2cd9eeb4b8dbfed7be7e8ef16
+Fgf16_precision
+R149:166 Stdlib.Reals.Reals <> <> lib
+R184:190 CorePhi <> <> lib
+def 243:250 <> gf16_max
+R254:254 Stdlib.Reals.Rdefinitions RbaseSymbolsImpl R defax
+def 277:284 <> gf16_min
+R288:288 Stdlib.Reals.Rdefinitions RbaseSymbolsImpl R defax
+prf 355:372 <> lucas_closure_gf16
+R400:402 Corelib.Init.Logic <> ::type_scope:x_'='_x not
+R383:386 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R399:399 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R376:378 Stdlib.Reals.Rdefinitions <> IZR def
+R387:389 Stdlib.Reals.Rdefinitions <> ::R_scope:'/'_x not
+R398:398 Stdlib.Reals.Rdefinitions <> ::R_scope:'/'_x not
+R393:395 Stdlib.Reals.Rfunctions <> ::R_scope:x_'^'_x not
+R390:392 CorePhi <> phi def
+R403:405 Stdlib.Reals.Rdefinitions <> IZR def

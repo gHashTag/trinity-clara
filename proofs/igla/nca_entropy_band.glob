@@ -1,0 +1,12 @@
+DIGEST 30589406a68323478fc395a446e46734
+Fnca_entropy_band
+R80:97 Stdlib.Reals.Reals <> <> lib
+R115:121 CorePhi <> <> lib
+def 186:196 <> entropy_min
+R200:200 Stdlib.Reals.Rdefinitions RbaseSymbolsImpl R defax
+def 221:231 <> entropy_max
+R235:235 Stdlib.Reals.Rdefinitions RbaseSymbolsImpl R defax
+prf 284:305 <> entropy_band_non_empty
+R320:322 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R309:319 nca_entropy_band <> entropy_min def
+R323:333 nca_entropy_band <> entropy_max def

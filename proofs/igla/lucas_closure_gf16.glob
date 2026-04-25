@@ -1,0 +1,26 @@
+DIGEST 8d38fcd4079c570f5a35e3ad5c038403
+Flucas_closure_gf16
+R78:95 Stdlib.Reals.Reals <> <> lib
+R113:119 CorePhi <> <> lib
+def 183:195 <> lucas_closure
+R202:204 Corelib.Init.Datatypes <> nat ind
+binder 198:198 <> n:1
+R219:226 Corelib.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R232:235 Corelib.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R273:273 Corelib.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R231:231 Corelib.Numbers.BinNums <> Z ind
+binder 227:227 <> k:2
+R269:271 Corelib.Init.Logic <> ::type_scope:x_'='_x not
+R247:250 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R268:268 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R236:238 Stdlib.Reals.Rdefinitions <> IZR def
+R242:244 Stdlib.ZArith.BinInt <> ::Z_scope:x_'^'_x not
+R245:245 lucas_closure_gf16 <> n:1 var
+R251:253 Stdlib.Reals.Rdefinitions <> ::R_scope:'/'_x not
+R267:267 Stdlib.Reals.Rdefinitions <> ::R_scope:'/'_x not
+R257:260 Stdlib.Reals.Rfunctions <> ::R_scope:x_'^'_x not
+R266:266 Stdlib.Reals.Rfunctions <> ::R_scope:x_'^'_x not
+R254:256 CorePhi <> phi def
+R262:264 Corelib.Init.Peano <> ::nat_scope:x_'*'_x not
+R265:265 lucas_closure_gf16 <> n:1 var
+R272:272 lucas_closure_gf16 <> k:2 var

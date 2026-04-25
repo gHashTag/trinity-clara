@@ -1,0 +1,34 @@
+DIGEST d8af7a28cc82fb2e25e844904580da92
+FCorePhi
+R162:179 Stdlib.Reals.Reals <> <> lib
+def 274:276 <> phi
+R280:280 Stdlib.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R285:285 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R296:299 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R287:289 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R290:293 Stdlib.Reals.R_sqrt <> sqrt def
+prf 347:372 <> phi_square_eq_phi_plus_one
+R385:387 Corelib.Init.Logic <> ::type_scope:x_'='_x not
+R381:383 Stdlib.Reals.Rfunctions <> ::R_scope:x_'^'_x not
+R378:380 CorePhi <> phi def
+R391:393 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R388:390 CorePhi <> phi def
+prf 471:494 <> phi_inv_eq_phi_minus_one
+R500:500 Corelib.Init.Logic <> ::type_scope:x_'='_x not
+R506:509 Corelib.Init.Logic <> ::type_scope:x_'='_x not
+R501:502 Stdlib.Reals.Rdefinitions <> ::R_scope:'/'_x not
+R503:505 CorePhi <> phi def
+R513:515 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R510:512 CorePhi <> phi def
+prf 604:619 <> trinity_identity
+R646:648 Corelib.Init.Logic <> ::type_scope:x_'='_x not
+R632:634 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R628:630 Stdlib.Reals.Rfunctions <> ::R_scope:x_'^'_x not
+R625:627 CorePhi <> phi def
+R635:635 Stdlib.Reals.Rfunctions <> ::R_scope:x_'^'_x not
+R641:644 Stdlib.Reals.Rfunctions <> ::R_scope:x_'^'_x not
+R636:637 Stdlib.Reals.Rdefinitions <> ::R_scope:'/'_x not
+R638:640 CorePhi <> phi def
+prf 701:707 <> phi_pos
+R714:716 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'>'_x not
+R711:713 CorePhi <> phi def

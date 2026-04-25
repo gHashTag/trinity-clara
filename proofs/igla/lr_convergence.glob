@@ -1,0 +1,28 @@
+DIGEST 2cf941e6b80093a879c6f53dd7f09691
+Flr_convergence
+R83:100 Stdlib.Reals.Reals <> <> lib
+R118:124 CorePhi <> <> lib
+def 180:182 <> bpb
+R192:192 Stdlib.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 185:188 <> loss:1
+R206:208 Corelib.Init.Datatypes <> nat ind
+binder 196:202 <> n_bytes:2
+R213:213 Stdlib.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R222:224 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R218:221 lr_convergence <> loss:1 var
+R225:227 Stdlib.Reals.Rdefinitions <> IZR def
+R230:237 Stdlib.ZArith.BinInt Z of_nat def
+R239:245 lr_convergence <> n_bytes:2 var
+prf 290:305 <> bpb_non_negative
+binder 316:319 <> loss:3
+binder 321:321 <> n:4
+R333:336 Corelib.Init.Logic <> ::type_scope:x_'->'_x not
+R328:331 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'>='_x not
+R324:327 lr_convergence <> loss:3 var
+R342:345 Corelib.Init.Logic <> ::type_scope:x_'->'_x not
+R338:340 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'>'_x not
+R337:337 lr_convergence <> n:4 var
+R356:359 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'>='_x not
+R346:348 lr_convergence <> bpb def
+R350:353 lr_convergence <> loss:3 var
+R355:355 lr_convergence <> n:4 var

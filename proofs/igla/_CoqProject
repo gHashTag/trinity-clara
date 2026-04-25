@@ -1,0 +1,8 @@
+-R . IGLA
+
+CorePhi.v
+gf16_precision.v
+igla_asha_bound.v
+lr_convergence.v
+nca_entropy_band.v
+lucas_closure_gf16.v

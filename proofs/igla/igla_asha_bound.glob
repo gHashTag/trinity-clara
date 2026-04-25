@@ -1,0 +1,9 @@
+DIGEST d7f309334f816a9bb6d4bb4518ce4683
+Figla_asha_bound
+R85:102 Stdlib.Reals.Reals <> <> lib
+R120:126 CorePhi <> <> lib
+def 196:217 <> asha_pruning_threshold
+R221:221 Stdlib.Reals.Rdefinitions RbaseSymbolsImpl R defax
+prf 269:285 <> threshold_above_3
+R311:313 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'>'_x not
+R289:310 igla_asha_bound <> asha_pruning_threshold def
