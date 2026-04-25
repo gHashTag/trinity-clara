@@ -15,6 +15,7 @@
 Require Import Coq.Reals.Reals.
 Require Import Coq.Reals.RIneq.
 Require Import Coq.micromega.Lra.
+Require Import Coq.micromega.Lia.
 Require Import Coq.Arith.Arith.
 Open Scope R_scope.
 
@@ -96,5 +97,5 @@ Proof.
       assert (sqrt 5 > 0) by (apply sqrt_pos; lra). lra.
     + apply Rinv_lt_1.
       assert (sqrt 5 > 0) by (apply sqrt_pos; lra). lra.
-    + omega.
+    + lia.
 Qed.
