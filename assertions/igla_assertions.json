@@ -1,0 +1,91 @@
+{
+  "_comment": "Rust extraction contract for IGLA INV-1..5. Generated from trinity-clara/proofs/igla/*.v",
+  "_version": "1.0.0",
+  "_phi_identity": "phi^2 + phi^(-2) = 3",
+  "_total_theorems": "84 + 5 = 89 = F_11 (Fibonacci prime)",
+  "_l_r14": "coqc proofs/igla/*.v = GREEN before RACE START",
+
+  "inv1": {
+    "id": "INV-1",
+    "file": "proofs/igla/bpb_monotone_backward.v",
+    "theorem": "bpb_decreases_with_real_gradient",
+    "corollary": "task_5d_convergence_guarantee",
+    "champion_lr": 0.004,
+    "lr_safe_lo": 0.002,
+    "lr_safe_hi": 0.007,
+    "alpha_phi": 0.1180,
+    "smoothness_L": 2.0,
+    "required_grad_mode": "real_mse",
+    "proof_qed": true,
+    "rust_check": "inv1_check_gradient_mode",
+    "violation": "GradientMode::ConstantProxy(_) => Err(InvError::Inv1BadGradient)"
+  },
+  "inv2": {
+    "id": "INV-2",
+    "file": "proofs/igla/igla_asha_bound.v",
+    "theorem": "asha_champion_survives",
+    "corollary": "champion_at_rung1_survives",
+    "bpb_prune_threshold": 3.5,
+    "warmup_blind_steps": 4000,
+    "rung_1": 1000,
+    "phi_anchor": "phi^2 + phi^(-2) + phi^(-4) = 3.472 -> ceil -> 3.5",
+    "proof_qed": true,
+    "rust_check": "inv2_check_asha_threshold",
+    "violation": "threshold < 3.5 && step < 4000 => Err(InvError::Inv2FalsePrune)"
+  },
+  "inv3": {
+    "id": "INV-3",
+    "file": "proofs/igla/gf16_precision.v",
+    "theorem": "gf16_safe_domain",
+    "d_model_min": 256,
+    "error_bound": 0.0557,
+    "error_bound_formula": "phi^(-6)",
+    "bit_split": "6:9 (phi-optimal partition of 15 GF16 bits)",
+    "proof_qed": true,
+    "rust_check": "inv3_check_d_model",
+    "violation": "d_model < 256 && gf16_enabled => Err(InvError::Inv3UnsafeDModel)"
+  },
+  "inv4": {
+    "id": "INV-4",
+    "file": "proofs/igla/nca_entropy_band.v",
+    "theorem": "nca_entropy_stability",
+    "lemma": "no_collapse_on_trinity_grid",
+    "entropy_lo": 1.5,
+    "entropy_hi": 2.8,
+    "nca_k": 9,
+    "nca_grid": 81,
+    "trinity_anchor": "K=9=3^2, grid=81=3^4=(phi^2+phi^-2)^4",
+    "proof_qed": true,
+    "rust_check": "inv4_check_nca_entropy",
+    "violation": "entropy < 1.5 || entropy > 2.8 => Err(InvError::Inv4EntropyCollapse)"
+  },
+  "inv5": {
+    "id": "INV-5",
+    "file": "proofs/igla/lucas_closure_gf16.v",
+    "theorem": "lucas_closure_gf16",
+    "corollary": "gf16_integer_tower_safe",
+    "phi_definition": "(1 + sqrt(5)) / 2",
+    "lucas_property": "phi^(2n) + phi^(-2n) in Z for all n",
+    "gf16_elements": 15,
+    "gf16_bits": 4,
+    "phi_inv6": 0.0557,
+    "proof_qed": true,
+    "rust_check": "inv5_check_lucas_closure",
+    "violation": "gf16_arithmetic_error >= phi_inv6 => Err(InvError::Inv5LucasViolation)"
+  },
+
+  "falsification_protocol": {
+    "juno_parallel": "JUNO 2026-2027: sin2_theta12 != 0.30693 at >2sigma -> Trinity falsified",
+    "igla_inv2": "champion lr=0.004 pruned at threshold=3.5 -> INV-2 falsified -> RACE INVALID",
+    "igla_inv1": "BPB non-decreasing with real_mse gradient at lr=0.004 -> INV-1 falsified",
+    "principle": "Popper-compliant: concrete condition -> concrete falsifiable result"
+  },
+
+  "victory_conditions": {
+    "bpb_target": 1.50,
+    "seeds": [42, 43, 44],
+    "p_value": 0.01,
+    "coqc_gate": "ALL proofs/igla/*.v exit 0",
+    "deadline": "2026-04-30"
+  }
+}
