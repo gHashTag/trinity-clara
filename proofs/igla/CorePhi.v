@@ -1,27 +1,19 @@
-(* CorePhi.v — Minimal phi definitions for IGLA invariants (Rocq 9.1.1 compatible) *)
-(* Issue: https://github.com/gHashTag/trios/issues/143 *)
+(* SPDX-License-Identifier: Apache-2.0 *)
+(* ================================================================
+   STUB — MOVED TO CANONICAL HOME
 
-Require Import Stdlib.Reals.Reals.
-Open Scope R_scope.
+   This file has been moved to the Trinity Coq Canonical SSOT.
+   The full proof now lives at:
 
-(* Golden ratio phi = (1 + sqrt(5)) / 2 ≈ 1.6180339887 *)
-Definition phi : R := (1 + sqrt 5) / 2.
+     gHashTag/t27/proofs/canonical/sacred/CorePhi.v
+       (logical path: Trinity.Canonical.Sacred.CorePhi)
 
-(* Key theorem: phi^2 = phi + 1 *)
-Theorem phi_square_eq_phi_plus_one :
-  phi ^ 2 = phi + 1.
-Proof. Admitted.
+   Bundle:        SAC-0
+   Title:         trinity_identity : phi^2 + phi^-2 = 3 (anchor)
+   PhD chapter:   Ch.4 Sacred Formula
+   Census:        github.com/gHashTag/trios/issues/373#issuecomment-4351659821
+   Anchor:        phi^2 + phi^-2 = 3
+   ================================================================ *)
 
-(* Key theorem: phi^(-1) = phi - 1 ≈ 0.618 *)
-Theorem phi_inv_eq_phi_minus_one :
-  (/ phi) = phi - 1.
-Proof. Admitted.
-
-(* Key theorem: phi^2 + phi^(-2) = 3 (Trinity identity) *)
-Theorem trinity_identity :
-  phi ^ 2 + (/ phi) ^ 2 = 3.
-Proof. Admitted.
-
-(* Theorem: phi > 0 *)
-Theorem phi_pos : phi > 0.
-Proof. Admitted.
+(* Re-export so downstream files keep working without code changes. *)
+From Trinity.Canonical.Sacred Require Export CorePhi.
