@@ -1,14 +1,19 @@
-(* IGLA_GF16_Precision.v — Formal GF16 precision bounds for IGLA RACE *)
-(* Issue: https://github.com/gHashTag/trios/issues/143 *)
+(* SPDX-License-Identifier: Apache-2.0 *)
+(* ================================================================
+   STUB — MOVED TO CANONICAL HOME
 
-Require Import Stdlib.Reals.Reals.
-Require Import CorePhi.
-Open Scope R_scope.
+   This file has been moved to the Trinity Coq Canonical SSOT.
+   The full proof now lives at:
 
-(* GF16 domain *)
-Definition gf16_max : R := 65504.
-Definition gf16_min : R := (-65504).
+     gHashTag/t27/proofs/canonical/igla/INV3_Gf16Precision.v
+       (logical path: Trinity.Canonical.Igla.INV3_Gf16Precision)
 
-(* Theorem: Lucas closure holds (inv-5) *)
-Theorem lucas_closure_gf16 : IZR 256 - (/ (phi ^ 10)) = IZR 256.
-Proof. Admitted.
+   Bundle:        INV-3
+   Title:         GF16 Safe Domain
+   PhD chapter:   Ch.6 GoldenFloat / Ch.9 GF vs MXFP4
+   Census:        github.com/gHashTag/trios/issues/373#issuecomment-4351659821
+   Anchor:        phi^2 + phi^-2 = 3
+   ================================================================ *)
+
+(* Re-export so downstream files keep working without code changes. *)
+From Trinity.Canonical.Igla Require Export INV3_Gf16Precision.

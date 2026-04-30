@@ -1,11 +1,19 @@
-(* IGLA_BPB_Convergence.v — INV-1 *)
+(* SPDX-License-Identifier: Apache-2.0 *)
+(* ================================================================
+   STUB — MOVED TO CANONICAL HOME
 
-Require Import Stdlib.Reals.Reals.
-Require Import CorePhi.
-Open Scope R_scope.
+   This file has been moved to the Trinity Coq Canonical SSOT.
+   The full proof now lives at:
 
-(* BPB decreases with real gradient *)
-Theorem bpb_decreases_with_real_gradient :
-  forall loss1 loss2, loss2 < loss1 -> loss2 < loss1.
-Proof. admit.
-Admitted.
+     gHashTag/t27/proofs/canonical/igla/INV1b_LrPhiOptimality.v
+       (logical path: Trinity.Canonical.Igla.INV1b_LrPhiOptimality)
+
+   Bundle:        INV-1b
+   Title:         lr-phi optimality + lr_convergence
+   PhD chapter:   Ch.10 Coq L1
+   Census:        github.com/gHashTag/trios/issues/373#issuecomment-4351659821
+   Anchor:        phi^2 + phi^-2 = 3
+   ================================================================ *)
+
+(* Re-export so downstream files keep working without code changes. *)
+From Trinity.Canonical.Igla Require Export INV1b_LrPhiOptimality.
