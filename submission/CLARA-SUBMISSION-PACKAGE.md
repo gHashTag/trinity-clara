@@ -425,7 +425,7 @@ This formal approach to adversarial robustness provides deterministic guarantees
 
 | System | Adversarial Robustness | Formal Verification | Polynomial Bounds | Ternary Logic | Energy Efficiency |
 |---------|----------------------|-------------------|--------------|---------------|-------------------|
-| TRINITY CLARA | ✅ 100% (5 categories) | ✅ 84 Coq theorems | ✅ All O(n) operations | ✅ K3 (restraint) | ✅ 49× vs GPU |
+| TRINITY CLARA | ✅ 100% (5 categories, 50/50) | ✅ IGLA: 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 falsification witnesses; upstream t27: 162 Qed / 32 Admitted / 2 Abort (audit 2026-05-12) | ✅ All O(n) operations | ✅ K3 (restraint) | ✅ 49× vs GPU |
 | System 1 | 92% (2 categories) | ✅ 12 Coq theorems | ⚠️ Partial | ⚠️ Partial | ✅ Binary | ❌ | ❌ |
 | System 2 | 87% (3 categories) | ✅ 8 Coq theorems | ⚠️ Partial | ✅ All O(n) | ❌ | ❌ | ⚠️ Partial |
 | System 3 | 83% (2 categories) | ✅ 6 Coq theorems | ⚠️ Partial | ✅ All O(n) | ❌ | ⚠️ Partial |
@@ -439,7 +439,7 @@ This formal approach to adversarial robustness provides deterministic guarantees
 
 **Unique Advantages:**
 1. **Formal Adversarial Robustness** — passed all 5 Red-Team adversarial categories in our internal evaluation (the only system among the SOA baselines we compared to do so)
-2. **84 Coq Theorems** — Formal verification pipeline (84 CLARA math-core theorems [PROVEN]; 1,325 program-wide) (.t27 → Verilog)
+2. **Formal proof-backed cognitive substrate** — IGLA proof bundle in this repo: canonical six-INV bundle **47 Qed, 4 Admitted (with declared closure paths), 1 honest `Qed`-placeholder (runtime-bound), 1 axiom, 10 falsification witnesses** (see [`../proofs/igla/_metadata.json`](../proofs/igla/_metadata.json) and [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md); post-metadata `CorePhi.v`/`hybrid_qk_gain.v` carry additional disclosed `Admitted`). Upstream `t27` proof base (audit 2026-05-12): 28 `.v` files, 218 stated Theorem/Lemma, **162 Qed / 32 Admitted / 2 Abort**. The `.t27` → Verilog semantic-preservation path is the bridge from these proofs to hardware, checked by simulation `[SIMULATED]`.
 3. **Guaranteed Polynomial Bounds** — All operations with Big-O proofs
 4. **Ternary Logic K3** — CLARA restraint compliant (UNKNOWN→FALSE bounded rationality)
 5. **GF16 Encoding** — φ-optimized confidence representation with 65,000× wider dynamic range
@@ -629,7 +629,7 @@ This formal approach distinguishes TRINITY CLARA from empirical-only systems tha
 ### 2. Complete Formal Verification Pipeline
 
 TRINITY CLARA implements the most comprehensive formal verification pipeline among SOA submissions:
-- 84 Coq theorems
+- IGLA proof bundle (this repo): 47 Qed / 4 Admitted / 1 honest placeholder / 1 axiom + 10 falsification witnesses across 8 `.v` files; upstream `t27` Coq base (audit 2026-05-12): 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files. See [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md).
 - Complete path from .t27 specifications to Verilog hardware synthesis
 - Semantic preservation guarantees for all operations
 - Formal polynomial bounds for all components
@@ -762,7 +762,7 @@ The submission package includes:
 - **100% CLARA compliance** across all requirements
 
 The system provides formal guarantees on robustness, correctness, and explainability through:
-- 84 Coq theorems
+- IGLA proof bundle (this repo): 47 Qed / 4 Admitted / 1 honest placeholder / 1 axiom + 10 falsification witnesses across 8 `.v` files; upstream `t27` Coq base (audit 2026-05-12): 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files. See [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md).
 - Complete polynomial bounds
 - Bounded proof traces (≤10 steps)
 - Ternary Logic K3 with CLARA restraint

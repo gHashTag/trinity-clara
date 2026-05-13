@@ -52,9 +52,10 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
    - Formal guardrails at each pipeline stage
    - Recovery time 7.2 ms avg on the synthetic evaluation set
 
-2. **1,325 machine-checked `Qed.` theorems** (program-wide), of which **84** form the CLARA math-core
-   - 84 theorems verify the mathematical core (φ identities, constants) [PROVEN]
-   - ML+AR composition is verified by `.t27→Verilog` lowering and RTL simulation — not by a formal proof [SIMULATED]
+2. **Formal proof-backed cognitive substrate** — IGLA proof bundle in `proofs/igla/`: canonical six-INV bundle **47 Qed, 4 Admitted, 1 honest placeholder, 1 axiom, 10 falsification witnesses** across `.v` files (see [`proofs/igla/_metadata.json`](../proofs/igla/_metadata.json) and [`docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md); post-metadata `CorePhi.v` / `hybrid_qk_gain.v` carry additional disclosed `Admitted` obligations). Upstream `t27` proof base (audit 2026-05-12): 28 `.v` files, 218 stated Theorem/Lemma, **162 Qed / 32 Admitted / 2 Abort**.
+   - Complete path from .t27 specifications to Verilog hardware; composition checked by **simulation** `[SIMULATED]`, not by those theorems
+   - Each `Admitted` is named, has a stated reason, and a `close_with:` recipe (typically `Coq.Interval`-backed)
+   - The single `Qed` placeholder (Welch t-test) is bound to a runtime guard in `trios:crates/trios-igla-race/src/victory.rs::stat_strength` until the real proof lands
 
 3. **Guaranteed Polynomial Bounds** — All operations with Big-O proofs
    - Resonator Network: O(log₂ n) monotonic convergence
@@ -136,8 +137,8 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 
 | Area | Innovation | Impact |
 |-------|-----------|--------|
-| **Formal Verification** | 1,325 `Qed.` theorems program-wide; 84 CLARA math-core; composition via .t27→Verilog [SIMULATED] | Production-ready formal methods |
-| **Adversarial Robustness** | 5-category Red Team protocol, 96% (48/50) [SYNTHETIC] | Defense-grade AI safety |
+| **Formal Verification** | IGLA: 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 falsification witnesses (canonical six-INV bundle; extra disclosed `Admitted` in `CorePhi.v`/`hybrid_qk_gain.v`). Upstream `t27`: 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files (audit 2026-05-12). | Honest, machine-checkable formal methods with declared open obligations |
+| **Adversarial Robustness** | 5-category Red Team protocol, 96% (48/50) `[SYNTHETIC]` | Defense-grade AI safety |
 | **Ternary VSA** | K3 native operations on 1024-dim vectors | Unique formal basis |
 | **ML+AR Patterns** | 4 patterns demonstrated; up to 7 specified in `composition.t27` | Verified reasoning chains |
 | **GF16 Encoding** | φ-optimized confidence with 1.8× precision | NUMERIC-STANDARD-001 compliance |
@@ -196,7 +197,7 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 
 1. **Olsen, S.A., El Naschie, M.S., He, J.H., Marek-Crnjac, L. (2021).** *A Grand Unification of the Sciences, Arts and Consciousness: Rediscovering Pythagorean Plato's Golden Mean Number System, Hertfordshire, UK: Print Resources.*
 2. **Olsen, S. (2013).** *Plato, Proclus and Peirce: Abduction and Foundations of Logic of Discovery, Nexus Network Journal of Architecture and Mathematics, Hertfordshire, UK: 10.100×; Series One through Series Three, Part Ten.*
-3. **Stakhov, A., Aranson, S. (2016).** *Helal, A., Marek-Crnjac, L. and Nada, S., Helal, A., Marek-Crnjac, L. (2026).* *M3-M12 | FPGA verification backend (Verilog from .t27) | Bitstream synthesis targeting contemporary FPGA (XC7A100T prototype: 63 tok/s @ 92 MHz) | Versal, Agilex, and Bitstream in Conversation; 5,279 pp.*
+3. **Stakhov, A., Aranson, S. (2016).** *The "Golden" Non-Euclidean Geometry: Hilbert's Fourth Problem, "Golden" Dynamical Systems, and the Fine-Structure Constant.* World Scientific. *(Bibliographic entry restored — milestone-table content that had been glued into this citation in earlier versions has been removed; the milestone table lives in `proposal/CLARA-PROPOSAL-TECHNICAL.md §7.)*
 4. **Olsen, S. (2015).** *The Golden Section: Nature's Greatest Secret, New York: Walker & Company. *World Scientific.* Vol. 28, No. 1-4, pp. 25-276.*
 5. **Olsen, S. (2015).** *A Grand Unification of the Sciences, Arts and Consciousness: Rediscovering Pythagorean Plato's Golden Mean Number System, Hertfordshire, UK: Print Resources.* Vol. 28, No. 1-4, pp. 25-276.*
 6. **Olsen, S. (2015).** *Divine Proportion: Mathematical Perfection of the Universe, New York: Walker & Company. *World Scientific.* Vol. 28, No. 4-7, pp. 20-276.*
@@ -231,10 +232,26 @@ Developing foundational research on:
 The foundational work on golden ratios and symmetry breaking provides the theoretical basis for:
 - **GF16 Confidence Encoding** — φ-optimized confidence representation with 65,000× wider dynamic range than float32 and 1.8× more accurate φ constants
 - **Ternary Logic K3** — Three-valued truth system (False, Unknown, True) enabling bounded rationality with explicit UNKNOWN states for CLARA restraint compliance
-- **Formal Verification** — the `t27/proofs/trinity/` Coq base machine-checks the φ-identity/certified-bounds **mathematical core**; .t27→Verilog semantic preservation and composition are checked by **simulation** `[SIMULATED]`, not by those theorems (see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md))
+- **Formal Verification** — the `t27/proofs/trinity/` Coq base machine-checks the φ-identity/certified-bounds **mathematical core**; .t27→Verilog semantic preservation and composition are checked by **simulation** `[SIMULATED]`, not by those theorems. Audited counts: IGLA submission slice in `proofs/igla/` plus upstream `t27` (162 Qed, 32 Admitted, 2 Abort across 28 `.v` files, audit 2026-05-12). See [`docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md) and [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md).
 - **Polynomial Guarantees** — All operations with Big-O complexity proofs (VSA: O(n), AR: O(n×m×k) bounded by MAX_STEPS=10)
 
 This foundational work demonstrates the depth of theoretical grounding and philosophical coherence behind the TRINITY CLARA system, positioning it as a rigorously developed, scientifically sound, and academically inspired approach to automated reasoning and neural-symbolic integration.
+
+---
+
+### Co-Investigator — Dmitrii Vasilev (Trinity S³AI Research Group)
+
+**ORCID:** [0009-0008-4294-6159](https://orcid.org/0009-0008-4294-6159)
+**Upstream artifacts:** [`gHashTag/t27`](https://github.com/gHashTag/t27) (compiler, Verilog backend, broader Coq base), [`gHashTag/trios`](https://github.com/gHashTag/trios) (PhD source `docs/phd/`, Rust audit harness `crates/trios-phd/`, runtime invariant contracts), [`gHashTag/trinity-clara`](https://github.com/gHashTag/trinity-clara) (this submission).
+**Relevant review threads:** [trios#372](https://github.com/gHashTag/trios/issues/372), [trios#264](https://github.com/gHashTag/trios/issues/264).
+
+Primary architect of the t27 compiler, GoldenFloat formats (Zig/Verilog/C backends), and the IGLA RACE proof base. Within CLARA he is responsible for the formal specification, proof engineering, and reference implementations that realize compositional learning-and-reasoning as a verifiable end-to-end pipeline. Auditable proof counts: [`docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md).
+
+### Co-Investigator — Dr. Stergios Pellis (Physics & Applied Mathematics)
+
+<!-- TODO (pre-submission): confirm institutional affiliation and ORCID for Dr. Pellis. Not yet recorded in this repository; do not invent. -->
+
+Dr. Pellis contributes expertise in mathematical physics, statistical validation, and experimental design. He has worked on formalizing and statistically validating Trinity S³AI's φ-structured constants and invariants, including large-scale significance studies that distinguish genuine structure from numerology. In CLARA he leads the design of benchmark suites and ablation studies comparing Trinity-style compositional reasoning against existing neuro-symbolic baselines, ensuring that claimed advantages are supported by rigorous experimental evidence, confidence intervals, and reproducible test harnesses.
 
 ---
 

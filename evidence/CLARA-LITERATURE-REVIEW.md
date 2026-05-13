@@ -30,7 +30,7 @@
 ## Trinity Context
 
 Unique contributions:
-- Formal verification of the φ-identity/certified-bounds **mathematical core** (`t27/proofs/trinity/` Coq base); ML+AR **composition** is checked by simulation `[SIMULATED]`, not by those theorems (see `REPRODUCIBILITY.md`)
+- Formal verification of the φ-identity/certified-bounds **mathematical core** (`t27/proofs/trinity/` Coq base); ML+AR **composition** is checked by simulation `[SIMULATED]`, not by those theorems (audited counts: IGLA bundle in `proofs/igla/` plus upstream `t27` 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files, audit 2026-05-12 — see [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md) and `REPRODUCIBILITY.md`)
 - Hardware-native logical operations (Trit-K3 isomorphism)
 - Defense domain examples with AR guardrails
 - Bounded rationality (MAX_STEPS=10)

@@ -75,7 +75,7 @@
 - **Finding:** None of the VSA/neuro-symbolic systems provide hardware synthesis with semantic preservation from specification to implementation.
 - **Trinity Advantage:** .t27 -> Verilog path enables FPGA-targeted formal verification with semantic preservation guaranteed.
 - **Defense Relevance:** Formal verification path is critical for Common Criteria EAL7 certification required for defense deployments.
-- **Certification Path:** 84 Coq theorems (mathematical core) + .t27 -> Verilog semantic preservation + VNNLib alignment enables EAL7 roadmap.
+- **Certification Path:** Coq proof base (mathematical core) — IGLA bundle in this repo: 47 Qed / 4 Admitted / 1 honest placeholder / 1 axiom + 10 falsification witnesses across 8 `.v` files; upstream `t27`: 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files (audit 2026-05-12) — plus `.t27` → Verilog semantic preservation + VNNLib alignment enables the EAL7 roadmap. See [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md).
 
 #### 3. Polynomial-Time Guarantee with Hardware-Native Operations
 - **Finding:** Doug provides polynomial-time guarantees via VSA types, but lacks hardware efficiency. Hardware accelerators provide efficiency but lack formal guarantees.

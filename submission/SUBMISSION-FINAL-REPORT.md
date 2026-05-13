@@ -12,7 +12,7 @@ All critical and high-priority improvements from v2.0 critical analysis have bee
 ### Changes Included
 
 Phase 1: Mortal Fixes
-- 84 Coq theorems positioning
+- Coq theorem positioning (v1.1 cited "84 theorems"; current audited counts: IGLA 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 witnesses; upstream t27 162 Qed / 32 Admitted / 2 Abort, audit 2026-05-12 — see `../docs/TRINITY_PHD_PROVENANCE.md`)
 - Fixed ASP polynomial claim
 - Added MAX_CLAUSES=256 realistic COA example
 - Expanded SOA table to 7 systems

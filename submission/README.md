@@ -14,7 +14,7 @@
   - AR-Based ML Approach (Trit-K3 isomorphism)
   - Application Task Domain + SOA Benchmark
   - Polynomial-Time Tractability Proofs (5 theorems)
-  - Demonstrated AR+ML Composition (84 Coq-verified theorems)
+  - Demonstrated AR+ML Composition (Coq-verified — current audited counts in [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md))
   - Basis for Confidence (GF16 benchmarks)
   - Metrics Coverage (CLARA requirements mapped)
   - Schedule + Milestones (24-month delivery plan)
@@ -45,7 +45,8 @@
 - `specs/coa_planning.t27` — Course-of-Action planning spec (522 lines)
 
 ### Coq Proofs
-- `coq/*.v` — 7 Coq verification files (84 theorems verified)
+- `../proofs/igla/*.v` — IGLA proof bundle (8 `.v` files: 47 Qed, 4 Admitted with stated closure paths, 1 honest placeholder, 1 axiom, 10 falsification witnesses). See [`../proofs/igla/_metadata.json`](../proofs/igla/_metadata.json) and [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md).
+- Upstream `t27` Coq base (audit 2026-05-12): 28 `.v` files, 218 stated Theorem/Lemma — 162 Qed / 32 Admitted / 2 Abort.
 
 ### Scripts
 - `scripts/demo.sh` — CLARA demo verification script

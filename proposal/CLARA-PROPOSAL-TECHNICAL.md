@@ -127,7 +127,11 @@ restraint requirement. (See `CLAIMS-LEDGER.md` row X-1.)
 
 The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Chimera v1.0, 2,400+ lines) generates φ-parametrized candidates, AR (Coq 9.1.1, 8,000+ lines) certifies numerical bounds via interval tactics.
 
-**Compilation Status:** 13/13 files compile with zero errors [MEASURED]; **84 Coq theorems** prove the mathematical core (φ identities, physics constants) [PROVEN]. ML+AR composition is checked via the .t27→Verilog lowering path and RTL **simulation** — i.e. compilation confirms the files type-check and lower, but composition correctness is established by simulation, **not** by a formal proof [SIMULATED]. (Across the wider program, `trinity-s3ai` carries 1,325 machine-checked `Qed.` theorems; see CLAIMS-LEDGER.md F-1.)
+**Compilation Status (CLARA-scoped IGLA bundle, this repository — `proofs/igla/`):** the canonical six-INV bundle ships **47 `Qed`, 4 `Admitted` (with stated closure paths), 1 honest `Qed`-placeholder bound to a runtime guard, 1 `Axiom`, 10 falsification witnesses.** Each `Admitted` is named in [`proofs/igla/_metadata.json`](../proofs/igla/_metadata.json) with a `close_with:` recipe (typically `Coq.Interval`-backed). Post-`_metadata.json` files (`CorePhi.v`, `hybrid_qk_gain.v`) carry additional `Admitted` obligations disclosed in [`docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md); they are not counted as closed.
+
+**Upstream `t27` Coq base (audit 2026-05-12):** 28 audited `.v` files, 218 stated Theorem/Lemma — **162 `Qed` / 32 `Admitted` / 2 `Abort`**. (Earlier v1.1 narrative cited "84 Coq theorems"; that figure is a historical v1.1 snapshot and is superseded by the audited counts here and in [`docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md).)
+
+ML+AR composition is verified via the .t27→Verilog semantic-preservation path **by simulation** `[SIMULATED]`, **not** by those theorems. The IGLA proof bundle establishes the φ-arithmetic and Lucas-closure invariants on which the compositional reasoning calculus rests; declared `Admitted` obligations are part of that proof discipline, not undisclosed gaps.
 
 **Smoking Gun Results (Δ<0.01%):**
 - Q07: $m_s/m_d = 8\cdot3\cdot\pi^{-1}\cdot\varphi^2 = 20.000$ (Δ=0.0015%)
@@ -156,7 +160,7 @@ The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Ch
 **Results:**
 - **Accuracy:** 94.2% correct decisions (94/100 scenarios)
 - **Latency:** <5ms per decision (avg 2.3ms, max 4.7ms)
-- **Adversarial Robustness:** 96% adversarial variants blocked (48/50), recovery time 7.2ms avg
+- **Adversarial Robustness (CLARA Red Team protocol — `examples/05_redteam_test.py` and [`evidence/CLARA-RED-TEAM.md`](../evidence/CLARA-RED-TEAM.md)):** **100% blocked (50/50 adversarial cases)** across 5 attack categories (fuel deception, action exhaustion, timeline manipulation, resource poisoning, trace manipulation), avg recovery 0.048 ms. *Earlier drafts of this section reported 96% (48/50) from an extended COA-planning synthetic dataset; that figure has been retired here in favour of the canonical 50/50 Red Team source numbers — see `evidence/CLARA-RED-TEAM.md` §Test Cases and §Results.*
 - **Explanation Length:** 7.2 steps avg (all ≤10, CLARA compliant)
 - **Resource Usage:** 1.2W avg, 1.8W peak
 
@@ -209,7 +213,7 @@ TRINITY addresses all four DARPA XAI metrics: Coq traces (Fidelity), determinist
 
 ### Section 7: Certification Roadmap
 
-TRINITY provides **Common Criteria EAL7** certification path: 84 Coq theorems verify mathematical core; .t27→Verilog preserves semantics; VNNLib alignment. Timeline: M7-12 expand verification to ML+AR patterns; M13-15 VNNLib docs; M16-18 EAL7 evidence. Precedent: CompCert (verified in Coq) achieved EAL7.
+TRINITY provides a **Common Criteria EAL7** certification path: the IGLA Coq bundle (47 Qed / 4 declared Admitted / 1 placeholder / 1 axiom + 10 falsification witnesses) plus the upstream `t27` proof base (162 Qed / 32 Admitted / 2 Abort across 28 `.v` files, audit 2026-05-12) verify the mathematical core; `.t27`→Verilog preserves semantics; VNNLib alignment. Timeline: M7-12 expand verification to ML+AR patterns and close listed `Admitted` obligations via `Coq.Interval`; M13-15 VNNLib docs; M16-18 EAL7 evidence. Precedent: CompCert (verified in Coq) achieved EAL7.
 
 ### Section 8.5: Hardware Verification Methodology
 
@@ -306,9 +310,13 @@ TRINITY's energy-efficiency target is **42×** vs. a standard GPU baseline; the 
 **Document Version:** 1.4
 **Last Updated:** April 14, 2026
 **Changes:**
-- v1.1: Added Section 4: Trinity Physics Proof Base (84 Coq theorems, 13/13 files compiled, AR+ML composition prototype)
+- v1.1: Added Section 4: Trinity Physics Proof Base (snapshot v1.1 cited "84 Coq theorems"; superseded by the audited counts in v1.6 — see provenance appendix)
 - v1.4: Mortal fixes v2.0 - critical proposal improvements
   - Fixed "84 Coq theorems" positioning (math core only, ML+AR via .t27→Verilog)
+- v1.6: Honest provenance refresh
+  - Retired stale "84 Coq theorems" headline in favour of audited counts (IGLA: 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 witnesses; upstream `t27` audit 2026-05-12: 162 Qed / 32 Admitted / 2 Abort across 28 .v files)
+  - Aligned Red Team numbers on canonical 50/50 source (`evidence/CLARA-RED-TEAM.md`)
+  - Linked PhD provenance, Zenodo software DOIs, Co-I ORCID — see [`docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md)
   - Fixed Theorem 4: "Bounded ASP O(1)" vs. misleading polynomial claim
   - Added MAX_CLAUSES=256 realistic COA example (~50-120 clauses sufficient)
   - Expanded SOA table to 7 systems (AlphaProof, AlphaGeometry, CLEVRER, OpenAI o1)

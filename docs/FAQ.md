@@ -329,7 +329,7 @@ See `evidence/CLARA-LITERATURE-REVIEW.md` for 12 foundational papers.
 
 **A:** TRINITY CLARA differs from NeSy in several key aspects:
 
-1. **Formal Verification** — TRINITY includes 84 Coq theorems and .t27 → Verilog path, providing hardware correctness guarantees that most NeSy systems lack.
+1. **Formal Verification** — TRINITY includes an auditable Coq proof base (IGLA bundle in `proofs/igla/`: 47 Qed / 4 Admitted / 1 honest placeholder / 1 axiom + 10 falsification witnesses across 8 `.v` files; upstream `t27` audit 2026-05-12: 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files) plus a `.t27` → Verilog path, providing hardware correctness guarantees that most NeSy systems lack. See [`TRINITY_PHD_PROVENANCE.md`](TRINITY_PHD_PROVENANCE.md).
 
 2. **Explicit Restraint** — TRINITY uses K3 logic with explicit UNKNOWN value for bounded rationality, whereas NeSy often uses soft constraints.
 
