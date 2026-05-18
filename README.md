@@ -1,5 +1,19 @@
 # TRINITY CLARA — DARPA CLARA PA-25-07-02 Submission
 
+> ## 📌 Post-Submission Addendum — May 19, 2026
+>
+> **All 10 CLARA argumentation-and-reasoning gaps proposed in the April 17, 2026 submission have been realized in open-RTL silicon** and submitted to the TinyTapeout SKY130A multi-project shuttle **TTSKY26b** (closed 2026-05-19).
+>
+> - 📄 Cover letter: [`submission/HARDWARE-REALIZATION-TRINET.md`](submission/HARDWARE-REALIZATION-TRINET.md)
+> - 🔬 Three chips: Φ Phi [#4914](https://github.com/gHashTag/tt-trinity-phi) · Ε Euler [#4915](https://github.com/gHashTag/tt-trinity-euler) (10 CLARA gaps) · Γ Gamma [#4913](https://github.com/gHashTag/tt-trinity-gamma)
+> - 🔐 Cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset (PhD Theorem 36.1)
+> - 🆔 DOI: [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) · License: Apache-2.0
+> - 📊 Honest performance: ~1 GOPS @ ~50 MHz @ ~1 W ternary (projected)
+>
+> This addendum supplements the original April 17, 2026 BAAT submission with hardware-realization evidence. It does not modify cost, schedule, or terms.
+
+---
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Status](https://img.shields.io/badge/Status-Submission%20Ready-blue.svg)](https://img.shields.io/badge/Status-Submission%20Ready-blue.svg)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/downloads/release/python-3810/)
