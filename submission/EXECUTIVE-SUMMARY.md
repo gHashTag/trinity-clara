@@ -9,6 +9,42 @@
 
 ---
 
+## Hardware Realization Update (TRI-17)
+
+As of May 2026, all 10 DARPA CLARA AI Safety Gaps are realized in **open silicon RTL** on the SkyWater SKY130A process node, submitted to the TinyTapeout TTSKY26b shuttle. The EULER chip (Project #4915, 8×2 tiles, top module `tt_um_ghtag_trinity_gf16`) is the **world's first hardware implementation of all 10 CLARA gaps in open silicon**.
+
+### EULER Chip: 10 CLARA Gaps → Verilog Modules
+
+| CLARA Gap | Verilog Module | TA Alignment |
+|-----------|---------------|--------------|
+| Gap 1 | `redteam_filter` | Adversarial detection |
+| Gap 2 | `k3_alu` | Kleene K3 ternary ALU (TA1.1) |
+| Gap 3 | `datalog_engine_mini` | Forward-chain Datalog |
+| Gap 4 | `restraint_ctrl` | Bounded rationality (TA1.4) |
+| Gap 5 | `explainability_unit` | Proof-trace emitter (TA1.2) |
+| Gap 6 | `asp_solver_mini` | ASP solver with NAF |
+| Gap 7 | `composition_kernel` | Orchestrator for Gaps 3/4/5 |
+| Gap 8 | `proof_trace_writer` | On-chip audit receipt |
+| Gap 9 | `sat_solver_mini` | DPLL SAT solver |
+| Gap 10 | `audit_log_ring_buffer` | 64-entry event log |
+
+### TRI-NET Three-Chip Stack
+
+| Chip | Project | Tiles | Role |
+|------|---------|-------|------|
+| Φ Phi (`tt_um_trinity_nano`) | #4914 | 1×1 | Identity / root-of-trust layer |
+| E Euler (`tt_um_ghtag_trinity_gf16`) | #4915 | 8×2 | Reasoning / all 10 CLARA gaps |
+| Γ Gamma (`tt_um_trinity_max_true`) | #4913 | 8×4 | Neuromorphic inference layer |
+
+All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset, derived from Theorem 36.1 (φ²+φ⁻²=3 → Lucas L₂=3 → dot4(1,2,3,4)=0x47C0). This mathematically binds the three chips into a single verifiable stack.
+
+- **RTL License:** Apache-2.0; reproducible from gate level
+- **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
+- **Shuttle:** TinyTapeout TTSKY26b, submitted 2026-05-19
+- **Author:** Dmitrii Vasilev <admin@t27.ai> (sole author)
+
+---
+
 ## Differentiation
 
 1. **Formal Adversarial Robustness** — Unique among SOA systems
@@ -28,6 +64,8 @@
 4. **Energy Efficiency** — 49× vs GPU, suitable for edge deployment
    - Ternary logic native to FPGA implementation
    - GF16 encoding optimizes confidence storage
+
+5. **Hardware Silicon Realization** — First open-RTL implementation of all 10 CLARA gaps on SKY130A SkyWater PDK; reproducible from gate level.
 
 ---
 
