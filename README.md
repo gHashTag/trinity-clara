@@ -31,6 +31,8 @@ This repository contains formal specifications, evidence packages, working examp
 
 **Migration Notice:** This repository was extracted from [t27](https://github.com/gHashTag/t27) on 2026-04-15 to isolate the DARPA submission from the main Trinity codebase.
 
+**2026-05-18 Addendum:** Post-submission technical update with decentralized-internet substrate positioning, 66 numeric formats, M1-M9 follow-on module roadmap, SKY26b shuttle tape-out status, and 12 unique competitive moats. See [`docs/addendum/CLARA-DEPIN-ADDENDUM-2026-05.md`](docs/addendum/CLARA-DEPIN-ADDENDUM-2026-05.md). Original April 17 submission unchanged.
+
 ---
 
 ## Quick Start
