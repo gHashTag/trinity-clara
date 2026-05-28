@@ -27,26 +27,26 @@ These advances do not invalidate any claim in the original CLARA submission. The
 
 ---
 
-## 2. New strategic positioning: decentralized military internet
+## 2. New strategic positioning: decentralized internet
 
 ### 2.1 Problem (additive to submission §1)
 
 Original CLARA submission framed Trinity as a verifiable AR+ML system. Between Apr-May 2026, three external forces sharpened the wedge:
 
 - **DoD Zero Trust Strategy 2027 ratchet** — [hardware attestation as baseline mandate](https://sesamedisk.com/hardware-attestation-monopoly-2026-2/). No fielded open-silicon RoT exists for DoD audit.
-- **EW-contested AI** — JADC2 doctrine requires AI inference at the tactical edge in comms-denied environments. Centralized cloud (AWS GovCloud, Azure Gov) is a single point of failure under near-peer SATCOM denial.
+- **Contested-connectivity AI** — resilient applications (disaster response, remote infrastructure, contested networks) require on-device AI inference in comms-denied / low-connectivity environments. Centralized cloud is a single point of failure under connectivity denial.
 - **NVIDIA export-control risk** — H100/B300 supply chain has known foreign exposure. Open-silicon alternative on US-fab-able processes (SKY130A, IHP26b) eliminates this risk.
 
 Trinity addresses all three with one architecture.
 
-### 2.2 Decentralized military internet stack
+### 2.2 Decentralized internet stack
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
-│ JADC2 / vertical apps: C2, targeting, EW, ISR, swarm coordination    │
+│ Applications: edge inference, mesh routing, identity, coordination   │
 ├──────────────────────────────────────────────────────────────────────┤
 │ Verifiable AI: IGLALedger, TrainingProver, BittensorSubnetAttest     │
-│ (proof-of-training, proof-of-compute, federated targeting)           │
+│ (proof-of-training, proof-of-compute, federated inference)           │
 ├──────────────────────────────────────────────────────────────────────┤
 │ ZK accel: GKR/sum-check tile (M6), BN254 cell, secp256k1 signer (M3) │
 ├──────────────────────────────────────────────────────────────────────┤
@@ -127,12 +127,12 @@ The original CLARA submission proposed TA1/TA2 deliverables. For follow-on DARPA
 
 Summary (~12 SKY26c tiles, fits 4×4 die):
 
-| # | Module | DoD alignment |
+| # | Module | Use / alignment |
 |---|---|---|
-| M1 | `tt_um_trinity_rot.v` — HW root-of-trust + enclave bit + sealed RAM + remote attest | Zero Trust Strategy 2027 |
-| M2 | `bandwidth_attest.v` — HW byte counter + Merkle root + ECDSA signer | JADC2 tactical-edge accountability |
-| M3 | `rpki_signer.v` — BGP AS_PATH ECDSA secp256k1 signer | Resilient C2 routing |
-| M4 | `mesh_router_8port.v` — slot-MAC + Kademlia XOR routing | Comms-denied mesh |
+| M1 | `tt_um_trinity_rot.v` — HW root-of-trust + enclave bit + sealed RAM + remote attest | zero-trust device attestation |
+| M2 | `bandwidth_attest.v` — HW byte counter + Merkle root + ECDSA signer | tamper-evident bandwidth accounting |
+| M3 | `rpki_signer.v` — BGP AS_PATH ECDSA secp256k1 signer | internet route-origin security (RPKI) |
+| M4 | `mesh_router_8port.v` — slot-MAC + Kademlia XOR routing | comms-denied / offline mesh routing |
 | M5 | `zk_job_prover.v` + `JobProver.sol` — generalized R1CS prover | NIST AI RMF / EO 14110 |
 | M6 | `gkr_sumcheck_tile.v` — sum-check round + Lagrange interpolator | ZK accel for federated AI |
 | M7 | `porep_round.v` — Filecoin SDR PoRep/PoSt | Resilient distributed storage |
@@ -171,23 +171,23 @@ Compared to NVIDIA H100/B300, Cerebras WSE-3, Google TPU v7, Groq LPU, Hailo-10H
 |---|---|---|---|---|
 | 1 | **DePIN AI training marketplace** (verifiable federated AI) | IGLALedger deployed, champion `2446855` locked, no competitor has on-chain ZK proof-of-training | $1-3B by 2028 | triad + L1 Sol |
 | 2 | **Resilient decentralized-internet edge** (TRI-NET) | DARPA-CLARA submission base, full-stack tile-set unique, comms-denied / offline-capable operation inherent | $5-10B by 2030 | phi + euler + gamma |
-| 3 | **Edge LLM mesh node** (smart home / IoT / tactical) | Akida-Pico niche + M4 mesh = killer feature vs Hailo-10H | $15B+ by 2028 | euler |
+| 3 | **Edge LLM mesh node** (smart home / IoT / rugged edge) | Akida-Pico niche + M4 mesh = standout feature vs Hailo-10H | $15B+ by 2028 | euler |
 
 ---
 
-## 7. Use-case mapping (dual-use & resilience)
+## 7. Use-case mapping (decentralized internet & resilience)
 
-| Use case | DoD program alignment | Trinity tier |
+| Use case | Alignment / use | Trinity tier |
 |---|---|---|
-| Tamper-proof Remote ID (drone supply chain) | EO 14110, drone-export-control | phi |
-| Comms-denied onboard LLM (forward-deployed) | JADC2 contested-env AI | euler |
-| Swarm consciousness D2D mesh | OFFSET / Replicator | euler + gamma |
-| 2-of-3 quorum for critical-mission authorization | Cross-Domain Solutions | triad |
-| Zero-trust attestation (M1) | DoD Zero Trust Strategy 2027 | triad + M1 |
-| Federated AI w/ ZK proof-of-training | NIST AI RMF / verifiable ML | triad + L1 + M5 |
-| Resilient C2 mesh routing (M4) | Tactical SDR replacement | triad + M4 |
-| BGP RPKI HW signing (M3) | DISA Zero Trust BGP | triad + M3 |
-| Bandwidth attestation (M2) | Tactical-edge spectrum monetization | triad + M2 |
+| Tamper-proof device Remote ID | supply-chain integrity / device identity | phi |
+| Offline-capable on-device LLM | low/no-connectivity edge inference | euler |
+| Device-to-device (D2D) mesh networking | peer-to-peer resilient connectivity | euler + gamma |
+| 2-of-3 quorum authorization | high-assurance access control | triad |
+| Zero-trust device attestation | zero-trust security | triad + M1 |
+| Federated AI w/ ZK proof-of-training | verifiable ML / NIST AI RMF | triad + L1 + M5 |
+| Resilient mesh routing | decentralized network backbone | triad + M4 |
+| BGP RPKI hardware signing | internet route-origin security | triad + M3 |
+| Bandwidth attestation | DePIN bandwidth / spectrum accounting | triad + M2 |
 
 ---
 

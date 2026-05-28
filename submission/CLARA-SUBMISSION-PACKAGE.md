@@ -438,7 +438,7 @@ This formal approach to adversarial robustness provides deterministic guarantees
 | System 10 | 78% (2 categories) | ❌ No | ⚠️ Partial | ✅ All O(n) | ❌ | ❌ | ⚠️ Partial |
 
 **Unique Advantages:**
-1. **Formal Adversarial Robustness** — Only system with 100% Red Team success across all 5 adversarial categories
+1. **Formal Adversarial Robustness** — passed all 5 Red-Team adversarial categories in our internal evaluation (the only system among the SOA baselines we compared to do so)
 2. **84 Coq Theorems** — Most comprehensive formal verification pipeline (.t27 → Verilog)
 3. **Guaranteed Polynomial Bounds** — All operations with Big-O proofs
 4. **Ternary Logic K3** — CLARA restraint compliant (UNKNOWN→FALSE bounded rationality)
