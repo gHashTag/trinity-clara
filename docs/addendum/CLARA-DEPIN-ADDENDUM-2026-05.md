@@ -175,19 +175,19 @@ Compared to NVIDIA H100/B300, Cerebras WSE-3, Google TPU v7, Groq LPU, Hailo-10H
 
 ---
 
-## 7. Use-case mapping (dual-use & resilience)
+## 7. Use-case mapping (decentralized internet & resilience)
 
-| Use case | DoD program alignment | Trinity tier |
+| Use case | Alignment / use | Trinity tier |
 |---|---|---|
-| Tamper-proof Remote ID (drone supply chain) | EO 14110, drone-export-control | phi |
-| Comms-denied onboard LLM (forward-deployed) | JADC2 contested-env AI | euler |
-| Swarm consciousness D2D mesh | OFFSET / Replicator | euler + gamma |
-| 2-of-3 quorum for critical-mission authorization | Cross-Domain Solutions | triad |
-| Zero-trust attestation (M1) | DoD Zero Trust Strategy 2027 | triad + M1 |
-| Federated AI w/ ZK proof-of-training | NIST AI RMF / verifiable ML | triad + L1 + M5 |
-| Resilient C2 mesh routing (M4) | Tactical SDR replacement | triad + M4 |
-| BGP RPKI HW signing (M3) | DISA Zero Trust BGP | triad + M3 |
-| Bandwidth attestation (M2) | Tactical-edge spectrum monetization | triad + M2 |
+| Tamper-proof device Remote ID | supply-chain integrity / device identity | phi |
+| Offline-capable on-device LLM | low/no-connectivity edge inference | euler |
+| Device-to-device (D2D) mesh networking | peer-to-peer resilient connectivity | euler + gamma |
+| 2-of-3 quorum authorization | high-assurance access control | triad |
+| Zero-trust device attestation | zero-trust security | triad + M1 |
+| Federated AI w/ ZK proof-of-training | verifiable ML / NIST AI RMF | triad + L1 + M5 |
+| Resilient mesh routing | decentralized network backbone | triad + M4 |
+| BGP RPKI hardware signing | internet route-origin security | triad + M3 |
+| Bandwidth attestation | DePIN bandwidth / spectrum accounting | triad + M2 |
 
 ---
 

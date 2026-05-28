@@ -1,16 +1,16 @@
 <!-- Licensed under Apache License 2.0 — http://www.apache.org/licenses/LICENSE-2.0 -->
 
-# Course-of-Action Planning: ML+AR for Military Logistics
+# Course-of-Action Planning: ML+AR for Resilient-Network Logistics
 
-**DARPA PA-25-07-02 — Defense Domain Example**
+**DARPA PA-25-07-02 — Resilience / DePIN Domain Example**
 **Date:** April 14, 2026
 
 ## Scenario
 
-Military logistics unit planning COA for resupply and reconnaissance. ML policy proposes actions, AR guardrails validate feasibility.
+A field deployment team plans a course of action for rolling out or restoring a resilient decentralized network (e.g., disaster-response mesh). ML policy proposes actions, AR guardrails validate feasibility.
 
-**Resources:** Fuel, Ammunition, Communications, Transport, Repair (5 types)
-**Actions:** Move, Engage, Resupply, Recon, Defend, Withdraw, Medical, Repair (8 types)
+**Resources:** Power, Spare nodes, Communications, Transport, Repair (5 types)
+**Actions:** Move, Deploy, Resupply, Survey, Stabilize, Withdraw, Medical, Repair (8 types)
 
 ## Composition Pattern: RL + Guardrails
 

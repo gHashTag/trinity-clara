@@ -160,7 +160,7 @@ The DARPA CLARA PA-25-07-02 proposal underwent a comprehensive 9-phase enhanceme
 
 ## Key Competitive Advantages Now Highlighted
 
-1. **Adversarial Robustness** — Only system with formal guarantees (0/10 SOA competitors)
+1. **Adversarial Robustness** — the only system in our SOA comparison with formal adversarial-robustness guarantees (0 of 10 compared baselines)
 2. **Domain-General** — Not limited to math/geometry like AlphaProof/AlphaGeometry
 3. **Formal Verification** — 84 Coq theorems vs. most competitors (none)
 4. **Energy Efficiency** — 42× improvement vs. GPU (with methodology)
