@@ -8,7 +8,7 @@
 **Status:** Post-submission technical update — no scope change, additive evidence + new strategic positioning
 **Author:** Dmitrii Vasilev. **v1.0.0 AI-format module co-author:** Claude Opus 4.6.
 
-> This addendum DOES NOT modify the original CLARA submission. It documents technical progress between 2026-04-17 (submission) and 2026-05-18 (this date), with focus on **how Trinity CLARA technology has matured into a decentralized-internet substrate** suitable for follow-on DARPA programs (RACE, OPTIMA, AIE, JADC2-aligned SBIRs).
+> This addendum DOES NOT modify the original CLARA submission. It documents technical progress between 2026-04-17 (submission) and 2026-05-18 (this date), with focus on **how Trinity CLARA technology has matured into a decentralized-internet substrate** suitable for follow-on DARPA programs (RACE, OPTIMA, AIE).
 
 ---
 
@@ -33,7 +33,7 @@ These advances do not invalidate any claim in the original CLARA submission. The
 
 Original CLARA submission framed Trinity as a verifiable AR+ML system. Between Apr-May 2026, three external forces sharpened the wedge:
 
-- **DoD Zero Trust Strategy 2027 ratchet** — [hardware attestation as baseline mandate](https://sesamedisk.com/hardware-attestation-monopoly-2026-2/). No fielded open-silicon RoT exists for DoD audit.
+- **Zero-Trust architecture ratchet** — [hardware attestation as baseline mandate](https://sesamedisk.com/hardware-attestation-monopoly-2026-2/) (NIST SP 800-207). No fielded open-silicon root-of-trust exists for high-assurance audit.
 - **Contested-connectivity AI** — resilient applications (disaster response, remote infrastructure, contested networks) require on-device AI inference in comms-denied / low-connectivity environments. Centralized cloud is a single point of failure under connectivity denial.
 - **NVIDIA export-control risk** — H100/B300 supply chain has known foreign exposure. Open-silicon alternative on US-fab-able processes (SKY130A, IHP26b) eliminates this risk.
 
@@ -123,7 +123,7 @@ These extend submission §AR-Engine claims about composability with neuromorphic
 
 ## 4. New module proposals for follow-on funding (M1-M9)
 
-The original CLARA submission proposed TA1/TA2 deliverables. For follow-on DARPA programs aligned with **DoD Zero Trust Strategy** and **JADC2**, we propose 9 additional modules covering 7 gaps in the decentralized-internet landscape. See [DEPIN_DECENTRALIZED_INTERNET_GAPS.md](https://github.com/gHashTag/NeuronConstant/blob/main/docs/DEPIN_DECENTRALIZED_INTERNET_GAPS.md) §3 for module table.
+The original CLARA submission proposed TA1/TA2 deliverables. For follow-on DARPA programs aligned with **zero-trust** and **resilient-networking** goals, we propose 9 additional modules covering 7 gaps in the decentralized-internet landscape. See [DEPIN_DECENTRALIZED_INTERNET_GAPS.md](https://github.com/gHashTag/NeuronConstant/blob/main/docs/DEPIN_DECENTRALIZED_INTERNET_GAPS.md) §3 for module table.
 
 Summary (~12 SKY26c tiles, fits 4×4 die):
 
@@ -221,7 +221,7 @@ Suggested follow-on budget envelope (notional, requires program-specific tailori
 | Tape-out SKY26c with M1/M2/M4 | 0-6 | $1.5M | 4×4 die, 12-tile, full RTL + cocotb + Foundry |
 | Formal verification expansion | 0-9 | $1.0M | +40 Coq theorems (124 total), R-SI-1 audit, M-of-N proofs |
 | Field trials (drone Remote ID, mesh) | 3-12 | $1.5M | 100-unit pilot kit, FAA Part 89 test |
-| ZK accel + JADC2 integration | 6-18 | $3.0M | M5/M6 silicon, Solidity bridge, gov-cloud parity test |
+| ZK accel + L1 integration | 6-18 | $3.0M | M5/M6 silicon, Solidity bridge, cloud-parity test |
 | Open-process port (IHP26b) | 9-18 | $1.0M | BSI 130nm variant, US-fab unlicensed manufacturing |
 | Program management + integration | 0-24 | $2.0M | Quarterly DARPA reviews, M&S |
 
@@ -263,9 +263,9 @@ Total notional envelope: **$10M / 24 months**. Adjustable to program scope.
 - [BitNet b1.58 2B4T arxiv](https://arxiv.org/html/2504.12285v1)
 - [Bittensor docs](https://bittensor.com)
 
-### DoD / DARPA alignment
-- DoD Zero Trust Strategy (2022 baseline, 2027 mandate)
-- JADC2 doctrine (Joint All-Domain C2)
+### DARPA / standards alignment
+- Zero-Trust architecture (NIST SP 800-207)
+- Resilient / contested-network operation
 - NIST AI Risk Management Framework (AI RMF 1.0)
 - EO 14110 — Safe, Secure, and Trustworthy AI (2023)
 - DARPA CLARA PA-25-07-02 (original submission solicitation)
