@@ -170,22 +170,21 @@ Compared to NVIDIA H100/B300, Cerebras WSE-3, Google TPU v7, Groq LPU, Hailo-10H
 | # | Wedge | Why | TAM | Trinity component |
 |---|---|---|---|---|
 | 1 | **DePIN AI training marketplace** (verifiable federated AI) | IGLALedger deployed, champion `2446855` locked, no competitor has on-chain ZK proof-of-training | $1-3B by 2028 | triad + L1 Sol |
-| 2 | **Counter-UAS / Defense edge** | DARPA-CLARA submission base, full-stack tile-set unique, comms-denied operation inherent | $5-10B by 2030 | phi + euler + gamma |
+| 2 | **Resilient decentralized-internet edge** (TRI-NET) | DARPA-CLARA submission base, full-stack tile-set unique, comms-denied / offline-capable operation inherent | $5-10B by 2030 | phi + euler + gamma |
 | 3 | **Edge LLM mesh node** (smart home / IoT / tactical) | Akida-Pico niche + M4 mesh = killer feature vs Hailo-10H | $15B+ by 2028 | euler |
 
 ---
 
-## 7. Use-case mapping (DoD relevance)
+## 7. Use-case mapping (dual-use & resilience)
 
 | Use case | DoD program alignment | Trinity tier |
 |---|---|---|
 | Tamper-proof Remote ID (drone supply chain) | EO 14110, drone-export-control | phi |
 | Comms-denied onboard LLM (forward-deployed) | JADC2 contested-env AI | euler |
-| Micro-Doppler drone classifier (anti-Houthi/Iran UAS) | Counter-UAS programs | gamma |
 | Swarm consciousness D2D mesh | OFFSET / Replicator | euler + gamma |
 | 2-of-3 quorum for critical-mission authorization | Cross-Domain Solutions | triad |
 | Zero-trust attestation (M1) | DoD Zero Trust Strategy 2027 | triad + M1 |
-| Federated targeting AI w/ ZK proof | JADC2 + NIST AI RMF | triad + L1 + M5 |
+| Federated AI w/ ZK proof-of-training | NIST AI RMF / verifiable ML | triad + L1 + M5 |
 | Resilient C2 mesh routing (M4) | Tactical SDR replacement | triad + M4 |
 | BGP RPKI HW signing (M3) | DISA Zero Trust BGP | triad + M3 |
 | Bandwidth attestation (M2) | Tactical-edge spectrum monetization | triad + M2 |
