@@ -66,6 +66,29 @@ jobs:
           opam exec -- coqc -R . IGLA nca_entropy_band.v    # INV-4 entropy ∈ [1.5, 2.8]
           opam exec -- coqc -R . IGLA lucas_closure_gf16.v  # INV-5 GF16 algebraically consistent
 
+      # CLARA soundness proofs (proofs/clara_*.v) are standalone modules: they
+      # Require Import only the Coq standard library (Coq.Arith / Coq.Bool /
+      # Coq.Lists.List / Coq.micromega.Lia), with no local load path and no
+      # cross-dependency on the IGLA modules. Compile each one in isolation.
+      # Glob-driven so theorem-85 (clara_explainability_sound.v) is gated
+      # automatically once merged, without touching this workflow again.
+      # Every merged CLARA Coq theorem MUST be machine-checked here — a proof
+      # that lands on main but is not compiled by this gate is not "PROVEN".
+      - name: Compile CLARA soundness proofs (proofs/clara_*.v)
+        working-directory: proofs
+        run: |
+          set -x
+          shopt -s nullglob
+          clara_files=(clara_*.v)
+          if [ ${#clara_files[@]} -eq 0 ]; then
+            echo "❌ No proofs/clara_*.v files found — expected at least one"
+            exit 1
+          fi
+          for f in "${clara_files[@]}"; do
+            echo "--- coqc $f ---"
+            opam exec -- coqc "$f"
+          done
+
       - name: L-R14 Summary
         if: success()
         run: |
@@ -76,6 +99,7 @@ jobs:
           echo "✅ INV-3 gf16_safe_domain       — PROVEN"
           echo "✅ INV-4 nca_entropy_stability  — PROVEN"
           echo "✅ INV-5 lucas_closure_gf16     — PROVEN"
+          echo "✅ CLARA proofs/clara_*.v       — PROVEN"
           echo "φ² + φ⁻² = 3 | IGLA RACE v2 VALID"
           echo "================================================"
 
