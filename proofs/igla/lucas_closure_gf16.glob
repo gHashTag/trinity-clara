@@ -1,9 +1,2 @@
-DIGEST dcfc3595d87037f336e73ea7a01b079a
+DIGEST b09b498173693487c67347e7a5c010db
 Flucas_closure_gf16
-R53:70 Stdlib.Reals.Reals <> <> lib
-R88:94 CorePhi <> <> lib
-prf 154:171 <> lucas_closure_gf16
-R176:178 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'<'_x_'<'_x not
-R182:184 Stdlib.Reals.Rdefinitions <> ::R_scope:x_'<'_x_'<'_x not
-R179:181 CorePhi <> phi def
-R179:181 CorePhi <> phi def

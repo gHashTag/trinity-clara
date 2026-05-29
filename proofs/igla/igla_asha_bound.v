@@ -1,6 +1,6 @@
 (* IGLA_ASHA_Bound.v — Formal ASHA pruning bounds for IGLA RACE *)
 
-Require Import Stdlib.Reals.Reals.
+Require Import Coq.Reals.Reals.
 Require Import CorePhi.
 Open Scope R_scope.
 

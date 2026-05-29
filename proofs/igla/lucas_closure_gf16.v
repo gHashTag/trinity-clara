@@ -2,8 +2,8 @@
 (* Closes L-CLARA-L2 of trios#562 — Strategy A. *)
 (* Anchor: phi^2 + phi^-2 = 3 · DOI 10.5281/zenodo.19227877 *)
 
-Require Import Stdlib.Reals.Reals.
-Require Import Stdlib.micromega.Lra.
+Require Import Coq.Reals.Reals.
+Require Import Coq.micromega.Lra.
 Require Import CorePhi.
 Open Scope R_scope.
 

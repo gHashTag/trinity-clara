@@ -22,12 +22,12 @@ jobs:
     name: "coqc INV-1..5 (L-R14 Gate)"
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    # Use the upstream Coq image. The IGLA proofs import `Stdlib.Reals.*`
-    # and `Stdlib.micromega.*`, the standard-library logical prefix used by
-    # Coq 8.20 upstream. The Ubuntu `apt` coq package (8.20.1+dfsg) ships the
-    # stdlib under the legacy `Coq` prefix only, so `Stdlib.Reals` fails to
-    # resolve there — which is why this gate was red regardless of proof
-    # content. The pinned upstream image resolves `Stdlib.*` natively.
+    # Pinned upstream Coq image (8.20.1). The stdlib logical prefix on the
+    # 8.20 line is `Coq.*` (the `Coq.` → `Stdlib.` rename only becomes the
+    # default in Rocq 9.0). The IGLA proofs in proofs/igla/ therefore use
+    # `Require Import Coq.Reals.Reals` / `Coq.micromega.Lra`; importing
+    # `Stdlib.Reals.Reals` fails here with "Cannot find a physical path bound
+    # to logical path Stdlib.Reals.Reals", which is why this gate was red.
     container:
       image: coqorg/coq:8.20.1
       options: --user root
