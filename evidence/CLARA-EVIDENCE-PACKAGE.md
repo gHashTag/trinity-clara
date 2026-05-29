@@ -359,7 +359,7 @@ Where γ = φ⁻³ = 0.2360679775 (Barbero-Immirzi parameter from Loop Quantum G
 | AR ≥2 Kinds | 3 kinds: Logic Programs, ASP, Classical | `specs/ar/` (7 spec files) |
 | ML ≥2 Kinds | 3 kinds: Neural, Bayesian, RL | `specs/nn/`, `specs/numeric/`, `specs/queen/` |
 | Polynomial bounds | All patterns O(n) or better | Theorems 1-5 in `docs/clara/CLARA-PROPOSAL-TECHNICAL.md` |
-| Composition API | 4 patterns via `compose()` | `specs/ar/composition.t27` (622 lines) |
+| Composition API | 4 patterns via `compose()` | `specs/ar/composition.t27` (674 lines) |
 
 ---
 

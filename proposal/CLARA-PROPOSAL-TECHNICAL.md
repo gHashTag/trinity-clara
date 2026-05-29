@@ -136,7 +136,7 @@ The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Ch
 
 **Composition Flow:** ML generates candidates → AR certifies via Coq interval tactics → 9 theorems verified with 50-digit precision bounds. The L1-L7 hierarchical structure maps derivation complexity to proof complexity (exactly 7 levels, satisfying CLARA depth ≤10).
 
-**Reprocibility:** `git clone https://github.com/gHashTag/t27.git && cd proofs && make` → 13/13 files compile successfully.
+**Reproducibility:** see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md) for the exact, verified build — `opam install coq coq-interval`, then `coq_makefile -f _CoqProject -o CoqMakefile && make` over the 13-file `t27/proofs/trinity/` set — with an honest `Qed.`/`Admitted` count.
 
 ### Section 4.6: Adversarial Robustness — Unique Differentiator
 
@@ -225,7 +225,7 @@ TRINITY's energy claims use standardized measurement (XC7A100T @ 92 MHz, Vivado 
 | ≥2 AR Kinds (Phase 2) | 3 AR kinds | `specs/ar/` directory |
 | ≥1 ML Kind (Phase 1) | 3 ML kinds (Neural, Bayesian, RL) | `specs/nn/`, `specs/numeric/`, `specs/queen/` |
 | ≥2 ML Kinds (Phase 2) | 3 ML kinds | Above |
-| Compositional API | 4 patterns with `compose()` | `specs/ar/composition.t27` (622 lines) |
+| Compositional API | 4 patterns with `compose()` | `specs/ar/composition.t27` (674 lines) |
 | Polynomial guarantee | O(1) K3, O(n) forward chain, O(10) trace | Theorems 1-4 above |
 | Explainability | ≤10 step traces, 3 formats | `specs/ar/explainability.t27` (476 lines) |
 | Restraint | Quality-level bounded execution | `specs/ar/restraint.t27` (553 lines) |

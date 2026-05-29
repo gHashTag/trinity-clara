@@ -5,7 +5,7 @@
 
 **Submission Date:** April 17, 2026
 **Technical Areas:** TA1 (Argumentation & Reasoning), TA2 (Composition)
-**Solicitation:** DARPA CLARA (Common Learning Repository for AI)
+**Solicitation:** DARPA CLARA (Compositional Learning-And-Reasoning for AI Complex Systems Engineering)
 
 ---
 
@@ -231,7 +231,7 @@ Developing foundational research on:
 The foundational work on golden ratios and symmetry breaking provides the theoretical basis for:
 - **GF16 Confidence Encoding** — φ-optimized confidence representation with 65,000× wider dynamic range than float32 and 1.8× more accurate φ constants
 - **Ternary Logic K3** — Three-valued truth system (False, Unknown, True) enabling bounded rationality with explicit UNKNOWN states for CLARA restraint compliance
-- **Formal Verification** — 84 Coq theorems proving semantic preservation from .t27 specifications to Verilog hardware synthesis
+- **Formal Verification** — the `t27/proofs/trinity/` Coq base machine-checks the φ-identity/certified-bounds **mathematical core**; .t27→Verilog semantic preservation and composition are checked by **simulation** `[SIMULATED]`, not by those theorems (see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md))
 - **Polynomial Guarantees** — All operations with Big-O complexity proofs (VSA: O(n), AR: O(n×m×k) bounded by MAX_STEPS=10)
 
 This foundational work demonstrates the depth of theoretical grounding and philosophical coherence behind the TRINITY CLARA system, positioning it as a rigorously developed, scientifically sound, and academically inspired approach to automated reasoning and neural-symbolic integration.

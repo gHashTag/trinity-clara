@@ -202,5 +202,50 @@ strings and unsourced superlatives.
 Items marked ⏳ require a human decision or data that must not be fabricated — per the rules,
 they are flagged here rather than invented.
 
-*Audit maintained alongside [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) (SSOT) and
-[`DISCREPANCIES.md`](DISCREPANCIES.md).*
+---
+
+# Wave 3 — Code / Proof / External-Fact Audit (B-series)
+
+**Date:** 2026-05-29
+**Method:** Direct inspection of the in-repo `proofs/` tree and the external `gHashTag/t27`
+repository (`cd proofs && make` target), byte-level line counts of `.t27` specs, and
+external-source verification (Zenodo record, DARPA CLARA solicitation, TinyTapeout shuttle).
+This pass moves from prose self-contradiction (A-series) to **claim-vs-artefact** verification:
+does the evidence the submission points to actually say what the submission says it says?
+
+Verified external facts (so the package can lean on them):
+
+- **DARPA CLARA is real:** solicitation **DARPA-PA-25-07-02**, *Compositional Learning-And-Reasoning
+  for AI Complex Systems Engineering*, announced 2026-02-04/10, Phase 1+2 capped at $2,000,000
+  ([darpa.mil/research/programs/clara](https://www.darpa.mil/research/programs/clara),
+  [CLARA FAQs PDF](https://www.darpa.mil/sites/default/files/attachment/2026-04/clara-program-darpa-faqs.pdf)).
+- **Zenodo DOI 10.5281/zenodo.19227877 is real** — *"Trinity B007: VSA Operations for Ternary
+  Computing v5.0"*, Dmitrii Vasilev (ORCID 0009-0008-4294-6159), 2026-05-12
+  ([doi.org/10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)).
+- **The external `t27` proof base is real and substantial** (the `proofs/trinity/` set builds via
+  `make`).
+
+| ID | Severity | Anomaly | Evidence | Remediation |
+|----|----------|---------|----------|-------------|
+| **B-1** | 🔴 | **"84 Coq theorems [PROVEN]" is unverifiable as stated and contradicts every authoritative source.** The number 84 appears across README, ARCHITECTURE, FAQ, proposal, submission, evidence, addendum. But: (a) the project's own Zenodo archive states **"48 statements, 35 Proven, 0 Admitted"**; (b) KEY-PERSONNEL prose says **"80+ Coq theorems"**; (c) the in-repo `proofs/` has **45 declarations, 23 Admitted, 7 Axioms**; (d) the external `t27/proofs/trinity/` (the `make` target) has **110 theorems + 54 lemmas but 32 Admitted** — not 0. No single source yields exactly 84-proven-0-admitted. | Zenodo record; `t27/proofs/`; `proofs/igla/`; README:332 | Replace the bare "84 theorems [PROVEN]" with the **verifiable** statement: the `t27/proofs/trinity/` set (13 files) builds under Coq/Rocq with `make`; cite the Zenodo-archived count and **disclose `Admitted` honestly**. Cap composition correctness at `[SIMULATED]`. |
+| **B-2** | 🔴 | **"PROVEN" overstates the actual proof state — `Admitted` ≠ proven.** The in-repo IGLA proofs are *honestly* marked `Admitted` (the files themselves cite "R5 honesty: every theorem in this file is honestly `Admitted`"), and the `t27` trinity set carries 32 `Admitted`. A claim tagged `[PROVEN]` must not include `Admitted` lemmas in its count. | `proofs/igla/hybrid_qk_gain.v:39`; `t27/proofs/trinity/*` | Down-grade to **"machine-checked where `Qed.`; remaining lemmas honestly `Admitted` (logged)"**; never fold `Admitted` into a PROVEN count. |
+| **B-3** | 🟠 | **Wrong expansion of the CLARA acronym in 5 files.** The submission writes *"DARPA CLARA (Common Learning Repository for AI)"*. The actual program is *"**Compositional Learning-And-Reasoning** for AI Complex Systems Engineering."* Misnaming the program you are applying to is a credibility hit a reviewer will catch instantly. | README:24; EXECUTIVE-SUMMARY:8; CLARA-SUBMISSION-PACKAGE:15; CLARA_TECHNICAL_NARRATIVE:5; CLARA-PREPARATION-PLAN:11 | Replace all 5 with the official name. |
+| **B-4** | 🟠 | **`composition.t27` line-count is wrong in 4 docs.** Claimed **622 lines**; actual file is **674 lines**. (A prior draft also said 247.) | `specs/ar/composition.t27` (674 by `wc -l`); proposal:228; 3 evidence docs | Correct to 674, or drop the precise count. |
+| **B-5** | 🟠 | **Reproducibility command is imprecise.** Docs say `git clone t27 && cd proofs && make → 13/13 files compile`. The `proofs/` root actually holds **18 `.v` files** across `trinity/` (13), `sacred/` (4), `gravity/` (1); only the **`trinity/` subdir is 13 files**, and `make` requires `coq-interval` + a `coq_makefile` step the docs omit. | `t27/proofs/` (18 .v); `proofs/README.md` build steps | Pin the exact path (`proofs/trinity/`), list the `opam install coq coq-interval` + `coq_makefile -f _CoqProject` prerequisites. See new `REPRODUCIBILITY.md`. |
+| **B-6** | 🟡 | **"93 tests, 19 invariants" is unverified in-repo.** Only `examples/05_redteam_test.py` and `test_vectors/ta2/redteam_tests.json` exist as test files; the 93/19 figures are not reproducible from a single command. (Inline `test`/`assert` tokens across `.t27` specs do exist but do not sum to a clean 93.) | `find` test inventory | Either point to the exact suite that yields 93/19 or tag the figure `[SIMULATED]` and stop calling it "test coverage." |
+| **B-7** | 🟡 | **`t27/proofs/` README scopes the proofs to a *physics* framework, not CLARA's ML+AR composition.** The proof base verifies the *G2 Alpha S Phi Framework v0.9* (gauge couplings, quark/lepton masses, φ identities) and is cited as `@unpublished`. Presenting it as evidence for "compositional learning-and-reasoning" over-reaches the artefact's own scope. | `t27/proofs/README.md` (`@unpublished{TrinityFramework2026}`) | Frame these theorems as proving the **mathematical/physics core (φ identities, certified bounds)** only — exactly the F-2 ledger guidance — and keep ML+AR composition at `[SIMULATED]`. |
+
+## Wave 3 remediation plan
+
+| Step | Anomaly | Action | Status in this PR |
+|------|---------|--------|-------------------|
+| 1 | B-1/B-2 | Replace "84 theorems [PROVEN]" with verifiable build-and-archive wording; disclose `Admitted` | ✅ applied |
+| 2 | B-3 | Fix CLARA acronym in all 5 files | ✅ applied |
+| 3 | B-4 | Correct `composition.t27` to 674 lines | ✅ applied |
+| 4 | B-5 | Add `REPRODUCIBILITY.md` with exact verified build steps | ✅ applied |
+| 5 | B-6 | Down-tag "93 tests/19 invariants" wording | ✅ applied |
+| 6 | B-7 | Reconcile CLAIMS-LEDGER F-2 with Zenodo/t27 facts | ✅ applied |
+| 7 | B-1/B-3/B-4 | Extend CI gate with number/acronym consistency checks | ✅ applied |
+
+*Audit maintained alongside [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) (SSOT),
+[`DISCREPANCIES.md`](DISCREPANCIES.md), and [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).*

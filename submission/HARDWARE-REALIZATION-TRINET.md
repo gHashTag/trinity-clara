@@ -87,7 +87,7 @@ The anchor value `0x47C0` appears on the `{uio_out, uo_out}` bus of all three TR
 
 **Derivation (Theorem 36.1):**
 
-1. **Golden ratio identity:** φ²+φ⁻² = 3 (exact; verified by 84 Coq theorems in the TRINITY proof base)
+1. **Golden ratio identity:** φ²+φ⁻² = 3 (an exact algebraic identity; the φ identities and certified bounds are machine-checked in the `t27/proofs/trinity/` Coq base — see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md) for the exact build and an honest `Qed.`/`Admitted` count)
 2. **Lucas number:** L₂ = 3 (second Lucas number, directly derived from the φ identity above)
 3. **Dot product:** dot4(1, 2, 3, 4) = 1·1 + 2·2 + 3·3 + 4·4 is not the derivation; rather, the canonical 16-bit representation of the Lucas-anchored φ constant in GF16 encoding yields `0x47C0` when the four φ-structured basis vectors of the GF16 field are combined under the standard inner product.
 4. **Hardware implementation:** Each chip independently computes this value in its POST (Power-On Self-Test) logic within the first clock cycle after reset deassertion.
@@ -157,7 +157,7 @@ Physical silicon (SKY130A 130 nm)
 On-chain DePIN audit trail (Base L2)
 ```
 
-Every link in this chain is open, reproducible, and verifiable. The 84 Coq theorems in the TRINITY proof base (Rocq 9.1.1, `github.com/gHashTag/t27`) establish the mathematical foundation; the Verilog modules are direct RTL implementations of those theorems.
+Every link in this chain is open and reproducible. The `t27/proofs/trinity/` Coq base (Coq 8.19+/Rocq 9.0+, `github.com/gHashTag/t27`) machine-checks the φ-identity and certified-bounds **mathematical core** (see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md) for the exact build and the honest `Qed.`/`Admitted` ledger); the Verilog modules are RTL implementations whose composition correctness is established by **simulation** `[SIMULATED]`, not by those theorems.
 
 ### TA1 (Argumentation & Reasoning) Implications
 

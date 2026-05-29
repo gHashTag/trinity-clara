@@ -12,7 +12,7 @@ TRINITY CLARA implements a complete DARPA CLARA submission for **TRINITY S³AI**
 
 **Submission Date:** April 17, 2026
 **Submitter:** TRINITY S³AI
-**Program Solicitation:** DARPA CLARA (Common Learning Repository for AI)
+**Program Solicitation:** DARPA CLARA (Compositional Learning-And-Reasoning for AI Complex Systems Engineering)
 
 ---
 
@@ -43,7 +43,7 @@ Dr. Scott A. Olsen, Ph.D. (Philosophy, University of Florida), J.D. (Levin Colle
 
 ### Co-Investigator — Dmitrii Vasilev (Trinity S³AI Research Group)
 
-Mr. Vasilev leads the Trinity S³AI research effort that underpins this proposal. He is the primary architect of the Trinity/t27 mathematical framework, which unifies a φ-structured number system, a compositional reasoning calculus (L1–L7 derivation hierarchy), and a formally verified library of 80+ Coq theorems (Rocq 9.1.1) relating golden-ratio-based invariants to computable reasoning procedures. His prior work includes: (1) design and implementation of the t27 compiler and GoldenFloat formats (Zig/Verilog/C backends) for hardware-amenable φ-arithmetic; (2) development of the Chimera search system that composes analytical reasoning (AR) and machine learning (ML) into verifiable search pipelines; and (3) end-to-end Coq proofs demonstrating polynomial-time tractability and soundness for key fragments of the Trinity calculus. Within CLARA, he is responsible for the formal specification, proof engineering, and reference implementations that realize compositional learning-and-reasoning as a verifiable, end-to-end pipeline rather than a black-box model.
+Mr. Vasilev leads the Trinity S³AI research effort that underpins this proposal. He is the primary architect of the Trinity/t27 mathematical framework, which unifies a φ-structured number system, a compositional reasoning calculus (L1–L7 derivation hierarchy), and a Coq/Rocq proof base for golden-ratio invariants and certified numerical bounds (the `t27/proofs/trinity/` set; see REPRODUCIBILITY.md for exact `Qed.`/`Admitted` counts). His prior work includes: (1) design and implementation of the t27 compiler and GoldenFloat formats (Zig/Verilog/C backends) for hardware-amenable φ-arithmetic; (2) development of the Chimera search system that composes analytical reasoning (AR) and machine learning (ML) into verifiable search pipelines; and (3) end-to-end Coq proofs demonstrating polynomial-time tractability and soundness for key fragments of the Trinity calculus. Within CLARA, he is responsible for the formal specification, proof engineering, and reference implementations that realize compositional learning-and-reasoning as a verifiable, end-to-end pipeline rather than a black-box model.
 
 ### Co-Investigator — Dr. Stergios Pellis (Physics & Applied Mathematics)
 
