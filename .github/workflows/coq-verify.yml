@@ -74,8 +74,11 @@ jobs:
       # automatically once merged, without touching this workflow again.
       # Every merged CLARA Coq theorem MUST be machine-checked here — a proof
       # that lands on main but is not compiled by this gate is not "PROVEN".
+      # NB: GitHub's default `run` shell is `sh -e` (dash), which lacks `shopt`
+      # and bash arrays. Force bash so `nullglob` + array handling work.
       - name: Compile CLARA soundness proofs (proofs/clara_*.v)
         working-directory: proofs
+        shell: bash
         run: |
           set -x
           shopt -s nullglob
