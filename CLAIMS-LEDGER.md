@@ -71,6 +71,15 @@ Any sentence in any package document that states a number **must** carry the mat
 | H-7 | Γ Gamma chip identity on TTSKY26b | Project **#750**, top module `tt_um_trinity_max_true`, 8×4 tiles | `Verified` (external registry) | [registry](https://tinytapeout.com/chips/ttsky26b/), [tt-trinity-gamma](https://github.com/gHashTag/tt-trinity-gamma) | Confirmed against live registry 2026-05-29. Retires fabricated "#4914." |
 | H-8 | TTSKY26b shuttle close date | **Closed 2026-05-18 UTC** (= 2026-05-19 06:59 Asia/Bangkok +07); ChipFoundry CI2605, SkyWater 130 nm, 275 designs, est. delivery 2026-12-20 | `Verified` (external registry) | [registry](https://tinytapeout.com/chips/ttsky26b/) | The bare "closed 2026-05-19" (UTC) is RETIRED. Always cite as "2026-05-18 UTC" with the +07 reconciliation when a local date is shown. 275 total designs ⇒ 4-digit project IDs are impossible. |
 
+## G. Authorship & toolchain consistency
+
+| ID | Claim | Canonical value | Status | Authoritative source | Notes / correction |
+|----|-------|-----------------|--------|----------------------|--------------------|
+| A-1 | Submission authorship / personnel model | **Three-person contribution model:** Dr. Scott A. Olsen — **Principal Investigator** (golden-mean number-system theory / philosophical-mathematical grounding); Dmitrii Vasilev — **Co-Investigator / technical lead** (φ-arithmetic formulas, Trinity/t27 framework, GF16 formats, TRI-NET RTL/silicon); Dr. Stergios Pellis — **Co-Investigator** (phenomenological physics formulas). Single canonical contact for Vasilev: **`admin@t27.ai`**. | `Verified` (maintainer decision 2026-05-29) | `README.md` §Key Personnel, `submission/CLARA-SUBMISSION-PACKAGE.md`, `proposal/CLARA-COST-PROPOSAL.md` §1.1; `PROJECT-AUDIT.md` A-1 (RESOLVED) | **All "sole author" / "single author" strings are RETIRED** — they contradicted the three-person team and the budgeted cost proposal. "Original work of D. Vasilev" survives **only** for the RTL/proof artifacts he authored (narrower, accurate). The `bayotkwolpep9c@hotmail.com` email in the DePIN addendum is RETIRED in favour of `admin@t27.ai`. |
+| V-1 | Coq toolchain for the proof base | **Builds under Coq 8.19+**; this repository's L-R14 gate machine-checks `proofs/igla/*.v` and `proofs/clara_*.v` in CI under **`coqorg/coq:8.20.1`** (stdlib logical prefix `Coq.*`). | `MEASURED` (CI) | `.github/workflows/coq-verify.yml` (pinned container) | The bare **"Rocq 9.1.1" / "Coq 9.1.1"** claims are RETIRED — no Rocq 9.1.1 build exists in this repo and the gate pins 8.20.1. State the floor ("8.19+") and the CI-verified container ("coqorg/coq:8.20.1") together; never quote a single unverified version. |
+
+---
+
 ## E. Composition / coverage claims
 
 | ID | Claim | Canonical value | Status | Authoritative source | Notes / correction |

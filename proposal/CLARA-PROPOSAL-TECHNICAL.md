@@ -125,7 +125,7 @@ restraint requirement. (See `CLAIMS-LEDGER.md` row X-1.)
 
 **Status:** Operational Prototype (April 2026)
 
-The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Chimera v1.0, 2,400+ lines) generates φ-parametrized candidates, AR (Coq 9.1.1, 8,000+ lines) certifies numerical bounds via interval tactics.
+The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Chimera v1.0, 2,400+ lines) generates φ-parametrized candidates, AR (Coq 8.19+, machine-checked in CI under `coqorg/coq:8.20.1`, 8,000+ lines) certifies numerical bounds via interval tactics.
 
 **Compilation Status (CLARA-scoped IGLA bundle, this repository — `proofs/igla/`):** the canonical six-INV bundle ships **47 `Qed`, 4 `Admitted` (with stated closure paths), 1 honest `Qed`-placeholder bound to a runtime guard, 1 `Axiom`, 10 falsification witnesses.** Each `Admitted` is named in [`proofs/igla/_metadata.json`](../proofs/igla/_metadata.json) with a `close_with:` recipe (typically `Coq.Interval`-backed). Post-`_metadata.json` files (`CorePhi.v`, `hybrid_qk_gain.v`) carry additional `Admitted` obligations disclosed in [`docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md); they are not counted as closed.
 
@@ -197,7 +197,7 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 
 **Performance projection (Euler chip, ternary compute core):** ~1 GOPS @ ~50 MHz @ ~1 W ternary (projected).
 
-**License:** Apache-2.0. Sole author: Dmitrii Vasilev <admin@t27.ai>.
+**License:** Apache-2.0. Technical lead / Co-Investigator: Dmitrii Vasilev <admin@t27.ai> (PI of record: Dr. Scott A. Olsen; Co-I: Dr. Stergios Pellis — see Key Personnel).
 
 ---
 

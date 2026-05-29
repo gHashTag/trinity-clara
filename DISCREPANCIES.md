@@ -165,6 +165,39 @@ an *engineering* numeric-format choice (GF16), not as a metaphysical "secret of 
 
 ---
 
+## 🔴 D-10 — Authorship contradiction ("sole author" vs three-person PI/Co-I team)
+
+**Where.** `proposal/CLARA-PROPOSAL-TECHNICAL.md`, `submission/HARDWARE-REALIZATION-TRINET.md` (×3),
+`submission/EXECUTIVE-SUMMARY.md`, `submission/KEY-PERSONNEL-REWRITE.md` vs `README.md` /
+`submission/CLARA-SUBMISSION-PACKAGE.md` / `proposal/CLARA-COST-PROPOSAL.md`.
+
+**Problem.** The package simultaneously said "sole author: Dmitrii Vasilev" (×5) and named a
+three-person team (PI Dr. Scott A. Olsen + Co-I Vasilev + Co-I Dr. Stergios Pellis). A reviewer
+could not tell who the PI is; "sole author" also contradicts the budgeted cost proposal.
+
+**Fix (RESOLVED 2026-05-29).** Adopt the **contribution-based three-person model** — Olsen (PI,
+golden-mean theory / book grounding), Vasilev (Co-I, own φ-formulas + t27 framework + GF16 +
+TRI-NET silicon), Pellis (Co-I, phenomenological formulas). All "sole/single author" strings
+retired; "original work of D. Vasilev" kept only for the RTL/proof artifacts. Single email
+`admin@t27.ai`. See ledger **A-1** and `PROJECT-AUDIT.md` A-1.
+
+---
+
+## 🟠 D-11 — Coq toolchain version stated four different ways
+
+**Where.** `README.md` ("Rocq 9.1.1"), `proposal/CLARA-PROPOSAL-TECHNICAL.md` ("Coq 9.1.1"),
+`REPRODUCIBILITY.md` / `submission/HARDWARE-REALIZATION-TRINET.md` ("Coq 8.19+ / Rocq 9.0+"), vs
+the CI gate which pins **`coqorg/coq:8.20.1`**.
+
+**Problem.** A reviewer who clones and builds hits an immediate version mismatch; no Rocq 9.1.1
+build exists in this repo.
+
+**Fix (RESOLVED 2026-05-29).** State the build floor ("Coq 8.19+") together with the
+CI-verified container ("machine-checked in CI under `coqorg/coq:8.20.1`"). The bare "9.1.1"
+claims are retired. See ledger **V-1**.
+
+---
+
 ## Summary table
 
 | ID | Severity | Issue | Resolution owner |
@@ -178,5 +211,7 @@ an *engineering* numeric-format choice (GF16), not as a metaphysical "secret of 
 | D-7 | 🟡 | DePIN scope creep | Scope guard |
 | D-8 | 🟡 | README badge defects | Polish |
 | D-9 | 🟡 | Corrupted / off-target Key Personnel | Rewrite |
+| D-10 | 🔴 | "Sole author" vs three-person PI/Co-I team | Ledger A-1 (RESOLVED) |
+| D-11 | 🟠 | Coq version stated 4 ways vs CI 8.20.1 | Ledger V-1 (RESOLVED) |
 
 *Audit maintained alongside [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md), the package SSOT.*

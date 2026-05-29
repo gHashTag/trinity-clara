@@ -243,7 +243,7 @@ Total notional envelope: **$10M / 24 months**. Adjustable to program scope.
 - **Cross-reference repo:** [gHashTag/NeuronConstant](https://github.com/gHashTag/NeuronConstant) (live RTL + Solidity)
 - **Tape-out repos (SKY26b):** [tt-trinity-phi](https://github.com/gHashTag/tt-trinity-phi), [tt-trinity-euler](https://github.com/gHashTag/tt-trinity-euler), [tt-trinity-gamma](https://github.com/gHashTag/tt-trinity-gamma)
 - **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
-- **PI:** Dmitrii Vasilev (`bayotkwolpep9c@hotmail.com`)
+- **Submission lead / Co-Investigator:** Dmitrii Vasilev (`admin@t27.ai`) — Trinity/t27 framework, GF16 formats, TRI-NET RTL. PI of record is Dr. Scott A. Olsen; see [`submission/CLARA-SUBMISSION-PACKAGE.md`](../../submission/CLARA-SUBMISSION-PACKAGE.md) §Key Personnel.
 - **v1.0.0 AI format module co-author:** Claude Opus 4.6
 - **License:** Apache-2.0 (RTL), MIT (Solidity)
 - **Champion:** BPB=2.2393 @ step=27000 seed=43 sha=`2446855`

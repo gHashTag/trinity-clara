@@ -13,21 +13,31 @@
 
 ---
 
-## Principal Investigator
+## Technical Lead / Co-Investigator
 
 **Name:** Dmitrii Vasilev
-**Role:** Principal Investigator / Lead Architect, TRINITY S³AI
+**Role:** Co-Investigator / Lead Architect, TRINITY S³AI (technical substance: framework, formats, silicon)
 **Affiliation:** [organization / independent researcher]
 **Contact:** admin@t27.ai
 
-**Relevance to CLARA.** Sole author and maintainer of the open-source TRINITY stack that
+> **PI of record.** The Principal Investigator for this submission is **Dr. Scott A. Olsen**
+> (golden-mean number-system theory / philosophical-mathematical grounding). D. Vasilev is the
+> technical lead Co-Investigator; **Dr. Stergios Pellis** is Co-Investigator (phenomenological
+> formulas). This page describes Vasilev's contribution; the full personnel table is in
+> [`CLARA-SUBMISSION-PACKAGE.md`](CLARA-SUBMISSION-PACKAGE.md) §Key Personnel and
+> [`proposal/CLARA-COST-PROPOSAL.md`](../proposal/CLARA-COST-PROPOSAL.md) §1.1.
+
+**Relevance to CLARA.** Author and maintainer of the open-source TRINITY stack that
 constitutes the technical substance of this proposal, including:
 
 - The `.t27` specification language and its lowering path to synthesizable Verilog
   ([`t27`](https://github.com/gHashTag/t27)).
-- The formal-verification corpus — **1,325 machine-checked `Qed.` theorems** across the program
-  ([`trinity-s3ai`](https://github.com/gHashTag/trinity-s3ai)), of which 84 constitute the CLARA
-  math-core, developed under an explicit **anti-numerology / claim-status discipline**.
+- The formal-verification corpus — **2,027 machine-checked `Qed.` across 100 `.v` files, 0 real
+  `Admitted.`** in [`trinity-s3ai`](https://github.com/gHashTag/trinity-s3ai) (machine-counted by
+  `scripts/count_admitted_honest.py`, 2026-05-29; quote the counter, not the README headline).
+  The CLARA math-core subset is the `t27/proofs/trinity/` set (132 `Qed.` / 32 `Admitted`, per
+  [`CLAIMS-LEDGER.md`](../CLAIMS-LEDGER.md) F-2), developed under an explicit
+  **anti-numerology / claim-status discipline**.
 - The three open-silicon RTL designs (Φ/Ε/Γ) submitted to the TinyTapeout TTSKY26b shuttle,
   with the Euler tier implementing all 10 CLARA safety gaps as Verilog modules
   (DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877), Apache-2.0).
@@ -40,7 +50,7 @@ CLARA TA1/TA2 effort requires: formal AR specs → verified composition → open
 ## Proposed Team Structure (to be staffed under award)
 
 The cost proposal budgets a team; the following roles map personnel to CLARA deliverables. Named
-hires are to be confirmed at award; the PI covers all roles in the current prototype.
+hires are to be confirmed at award; D. Vasilev covers the technical roles in the current prototype.
 
 | Role | CLARA responsibility | Required expertise |
 |------|----------------------|--------------------|

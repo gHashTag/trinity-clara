@@ -41,7 +41,7 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 - **RTL License:** Apache-2.0; reproducible from gate level
 - **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
 - **Shuttle:** TinyTapeout TTSKY26b (submission closed 2026-05-18 UTC; [registry](https://tinytapeout.com/chips/ttsky26b/))
-- **Author:** Dmitrii Vasilev <admin@t27.ai> (sole author)
+- **Technical lead / Co-Investigator:** Dmitrii Vasilev <admin@t27.ai> (Trinity/t27 framework, GF16 formats, TRI-NET RTL — original work). Full team: Dr. Scott A. Olsen (PI), D. Vasilev (Co-I), Dr. Stergios Pellis (Co-I) — see §Key Personnel.
 
 ---
 
