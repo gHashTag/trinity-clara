@@ -6,8 +6,8 @@
 >
 > - 📄 Cover letter: [`submission/HARDWARE-REALIZATION-TRINET.md`](submission/HARDWARE-REALIZATION-TRINET.md)
 > - 🔬 Three chips: Φ Phi [#198](https://github.com/gHashTag/tt-trinity-phi) · Ε Euler [#558](https://github.com/gHashTag/tt-trinity-euler) (10 CLARA gaps) · Γ Gamma [#750](https://github.com/gHashTag/tt-trinity-gamma)
-> - 🔐 Cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset (PhD Theorem 36.1)
-> - 🆔 DOI: [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) · License: Apache-2.0
+> - 🔐 Cross-die anchor `{uio_out, uo_out} = 0x47C0` on reset — a deterministic POST / build-provenance fingerprint, **not** a mathematical proof (see [§4 of the hardware doc](submission/HARDWARE-REALIZATION-TRINET.md))
+> - 🆔 DOI: [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) — Zenodo software/RTL archive (provenance handle, not a proof source) · License: Apache-2.0
 > - 📊 Honest performance: ~1 GOPS @ ~50 MHz @ ~1 W ternary (projected)
 >
 > This addendum supplements the original April 17, 2026 BAAT submission with hardware-realization evidence. It does not modify cost, schedule, or terms.

@@ -88,9 +88,9 @@ Shuttle close: **2026-05-18 UTC** (= 2026-05-19 06:59 +07; [registry](https://ti
 
 Original submission claimed 84 Coq theorems. As of May 18:
 
-- All 84 original theorems remain valid
+- The audited Coq base remains valid (IGLA: 47 `Qed.` / 4 `Admitted` / 1 placeholder / 1 axiom + 10 witnesses; upstream `t27`: 162 `Qed.` / 32 `Admitted` / 2 `Abort`, audit 2026-05-12 — see [`../TRINITY_PHD_PROVENANCE.md`](../TRINITY_PHD_PROVENANCE.md)). The earlier "84 theorems" headline count is retired.
 - **R-SI-1 invariant proven** — zero standalone `*` operators in synthesis RTL across all three tiers (CI workflow `R-SI-1 no-star check` passes on every commit)
-- **φ-anchor 0x47C0 Theorem 36.1 holds** on phi tier (canonical seed verified at reset across all 3 tiers' simulation)
+- **φ-anchor 0x47C0 (Theorem 36.1) verified in simulation** on all 3 tiers (canonical seed at reset). [Open conjecture in hardware until dies return — a build-provenance fingerprint / POST, not a mathematical proof; falsification path: any returned die ≠ 0x47C0 at reset.]
 - **2-of-3 attestation HW + Solidity mirror** ([`MofNTrainingAttest.sol`](https://github.com/gHashTag/NeuronConstant), commit `394b76e`)
 
 ### 3.3 Numeric format zoo (66 formats, vs ~30 at submission)
@@ -165,7 +165,7 @@ Detailed RTL spec for M1 is in progress (separate document, target ~1k lines). M
 | Format zoo | n/a | n/a | n/a | n/a | n/a | n/a | ✅ 66 formats |
 | Determinism guarantee | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ R-SI-1 |
 | Multi-die quorum | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ 2-of-3 HW+Sol |
-| Formal verification | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ 84 Coq theorems |
+| Formal verification | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ audited Coq base (IGLA 47 `Qed.`/4 `Admitted`; see provenance) |
 | Open toolchain | n/a | n/a | n/a | n/a | n/a | n/a | ✅ Yosys/openXC7/OpenLane |
 
 Compared to NVIDIA H100/B300, Cerebras WSE-3, Google TPU v7, Groq LPU, Hailo-10H, BrainChip Akida — Trinity is the **only** chip with the full set of decentralized-internet primitives. We do not claim parity on raw TFLOPS; we claim primacy on verifiability + resilience + open-silicon.
