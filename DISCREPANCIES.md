@@ -48,10 +48,17 @@ core only*, yet the Executive Summary implies they verify the full `.t27→Veril
 (b) the companion repo proves **1,325** theorems, so "84 = most comprehensive" understates the
 program and invites a "which number is real?" question.
 
-**Fix (per ledger F-1/F-2/F-3).** State: "1,325 machine-checked `Qed.` theorems across the
-Trinity program; 84 of these constitute the CLARA math-core (φ identities, constants).
-ML+AR composition is verified by `.t27→Verilog` lowering and RTL simulation — **not** by a
-formal proof."
+**Fix (per ledger F-1/F-2/F-3).** State: "**2,027 machine-checked `Qed.` theorems, 0 real
+`Admitted.`, across 100 `.v` files** in the Trinity program (`trinity-s3ai`, reproducible via
+`scripts/count_admitted_honest.py`, 2026-05-29); the CLARA math-core is the `t27/proofs/trinity/`
+set (132 `Qed.`, 32 `Admitted.`). ML+AR composition is verified by `.t27→Verilog` lowering and
+RTL simulation — **not** by a formal proof."
+
+**Update 2026-05-29 (s3ai fact-sync).** The program-wide figure is now anchored to the
+`trinity-s3ai` honest counter output (2,027 `Qed.`), **not** the README headline. The
+`trinity-s3ai` README is itself internally inconsistent — it carries both "1,325" and "1,762"
+`Qed.`; both are stale snapshots superseded by the reproducible 2,027 machine count. Ledger F-1
+updated accordingly. (Historical "1,325"/"84" strings above are retained for the audit trail.)
 
 ---
 
