@@ -81,14 +81,22 @@ the codebase already enforces, and removes the single most attackable element of
 Rather than a publication list, the strongest credential for this proposal is the **reproducible
 artifact trail**, which a reviewer can independently verify:
 
-1. `git clone https://github.com/gHashTag/t27 && cd proofs && make` → 13/13 files compile, 84
-   math-core theorems `[PROVEN]`.
-2. [`trinity-s3ai`](https://github.com/gHashTag/trinity-s3ai) — 1,325 `Qed.` theorems, honest
-   claim ledger, documented boundary theorems (BT-1..BT-4) and refutations `[PROVEN]`.
+1. `git clone https://github.com/gHashTag/t27 && cd proofs && make` → the `t27/proofs/trinity/`
+   set (13 files) builds under Coq/Rocq; cite the build, not a headline count, and disclose
+   `Admitted` honestly (162 `Qed.` / 32 `Admitted` / 2 `Abort`, audit 2026-05-12 — see
+   [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md)). The bare
+   "84 theorems `[PROVEN]`" headline is retired (it matched no measured count).
+2. [`trinity-s3ai`](https://github.com/gHashTag/trinity-s3ai) — machine-counted `Qed.` theorems
+   (2,027 `Qed.` across 100 `.v` files, 0 real `Admitted.` in `proofs/trinity/`; `proofs/clifford_cl8/`
+   retains 4 cited load-bearing `Axiom`s — reproducible via `scripts/count_admitted_honest.py`,
+   2026-05-29; the older README "1,325"/"1,762" headlines are stale snapshots, see
+   [`../CLAIMS-LEDGER.md`](../CLAIMS-LEDGER.md) F-1), honest claim ledger, documented boundary
+   theorems (BT-1..BT-4) and refutations `[PROVEN]`.
 3. Euler RTL (TinyTapeout #558) — 10 CLARA gaps as Verilog modules, green `gds` CI
    `[SIMULATED]`, submitted to TTSKY26b shuttle.
-4. DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) — archived RTL
-   snapshots and gate-level netlists, Apache-2.0.
+4. DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) — Zenodo software/RTL
+   archive of RTL snapshots and gate-level netlists, Apache-2.0 (a citation & provenance handle,
+   not a peer-reviewed publication and not a proof source).
 
 > **Action before submission:** if a co-PI or named academic collaborator will be on the award,
 > add their verified CV here (degrees, affiliation, peer-reviewed publications with correct,

@@ -32,7 +32,7 @@ Our system provides three AR kinds, each with formal polynomial-time guarantees:
 | Answer Set Programs | `ar::asp_solver.t27` | O(n*m) with NAF | Negation as Failure, stable model computation |
 | Classical Logic | `base::ops.t27` | O(1) per operation | De Morgan, resolution principles |
 
-**Key Innovation:** All AR operations are bounded by TRINITY's fixed-size arrays (MAX_CLAUSES=256, MAX_STEPS=10), guaranteeing polynomial execution time regardless of input size.
+**Key Innovation:** All AR operations are bounded by TRINITY's fixed-size arrays (MAX_CLAUSES=256, MAX_STEPS=10), guaranteeing polynomial execution time regardless of input size. (Note: the `256` figure is the t27 software/spec bound; the silicon modules submitted to the TinyTapeout shuttle are the `_mini` variants bounded at 16 clauses/rules to fit the cell budget — see HARDWARE-REALIZATION-TRINET.md §3a.5.)
 
 ### ML Kinds
 
@@ -103,7 +103,7 @@ Realistic defense COA planning requires ~50-120 clauses for core tasks: fuel con
 
 ### Theorem 3: Proof Traces are Bounded by O(10)
 
-**Proof:** `MAX_STEPS=10` enforced at compile-time. `append_step()` triggers restraint when exceeded. Invariant `trace_bounded_by_clara` proves all traces ≤10 steps (CLARA FAQ 7 compliant).
+**Proof:** `MAX_STEPS=10` enforced at compile-time. `append_step()` triggers restraint when exceeded. Invariant `trace_bounded_by_clara` establishes all traces ≤10 steps (CLARA FAQ 7 compliant). [The silicon embodiment of this bound is the Gap-5 `explainability_unit` overflow flag at MAX_STEPS=10 and the Gap-4 `restraint_ctrl` step-count trigger.]
 
 ### Theorem 4: Bounded ASP Terminates in a Fixed Number of Steps
 
@@ -191,9 +191,9 @@ To the authors' knowledge, no prior open-silicon implementation of the full DARP
 | Gap 9 | `sat_solver_mini` | DPLL SAT solver |
 | Gap 10 | `audit_log_ring_buffer` | 64-entry tamper-evident event log |
 
-All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset — a value derivable from first principles via Theorem 36.1 (φ²+φ⁻²=3 → Lucas L₂=3 → dot4(1,2,3,4)=0x47C0). Each chip proves the identity independently on power-on, providing a mathematically verifiable binding across the three dies. This cross-die anchor is the concrete hardware realization of the formal verification chain described in Theorems 1–5 above.
+All three chips emit the same canonical anchor value `{uio_out, uo_out} = 0x47C0` on power-on reset — computed on-die from the φ-structured GF16 constant (Theorem 36.1, φ²+φ⁻²=3 → Lucas L₂=3). Each chip runs this computation as a deterministic power-on self-test (POST). [Open conjecture — the matching anchor across dies is a build-provenance fingerprint and an engineering integrity check (it indicates the dies were synthesized from the same verified RTL tree), **not** a mathematical proof that the three dies are functionally equivalent or that the φ/GF16 number system is physically privileged. Falsification path: any returned die emitting a value ≠ 0x47C0 after reset refutes the shared-provenance claim for that die. Until dies return and an external party measures the bus, the value is private, single-source provenance and is used nowhere as scientific evidence.] We deliberately avoid the stronger "mathematically verifiable cross-die binding" framing used in an earlier draft, to keep this consistent with the conservative claim-status discipline applied in the companion manuscript.
 
-**Significance for DARPA TA1/TA2:** The path from formal `.t27` specification to synthesized gate-level Verilog is complete, and the GDS-II has been submitted to fabrication on the TTSKY26b shuttle (status "Submitted"; dies not yet returned — est. delivery 2026-12-20). [SUBMITTED to fab — pre-silicon; not yet validated on returned dies.] DARPA reviewers can reproduce the full stack by cloning the Apache-2.0 RTL repositories and resubmitting to any OpenMPW-compatible shuttle. The DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) archives all RTL snapshots and gate-level netlists.
+**Significance for DARPA TA1/TA2:** The path from formal `.t27` specification to synthesized gate-level Verilog is complete, and the GDS-II has been submitted to fabrication on the TTSKY26b shuttle (status "Submitted"; dies not yet returned — est. delivery 2026-12-20). [SUBMITTED to fab — pre-silicon; not yet validated on returned dies.] DARPA reviewers can reproduce the full stack by cloning the Apache-2.0 RTL repositories and resubmitting to any OpenMPW-compatible shuttle. The DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) is a Zenodo software/RTL archive that snapshots all RTL and gate-level netlists for citation and provenance — it is not a peer-reviewed publication and is not cited here as a proof source.
 
 **Performance projection (Euler chip, ternary compute core):** ~1 GOPS @ ~50 MHz @ ~1 W ternary (projected).
 

@@ -36,10 +36,10 @@ As of May 2026, all 10 DARPA CLARA AI Safety Gaps are realized as **open-silicon
 | E Euler (`tt_um_ghtag_trinity_gf16`) | #558 | 8×2 | Reasoning / all 10 CLARA gaps |
 | Γ Gamma (`tt_um_trinity_max_true`) | #750 | 8×4 | Neuromorphic inference layer |
 
-All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset, derived from Theorem 36.1 (φ²+φ⁻²=3 → Lucas L₂=3 → dot4(1,2,3,4)=0x47C0). This mathematically binds the three chips into a single verifiable stack.
+All three chips emit the same canonical anchor value `{uio_out, uo_out} = 0x47C0` on power-on reset, computed on-die from the φ-structured GF16 constant (Theorem 36.1, φ²+φ⁻²=3 → Lucas L₂=3). [Open conjecture — the anchor is a deterministic on-die power-on self-test (POST) and a build-provenance fingerprint, not a mathematical proof that the three dies are equivalent; falsification path: any of the three dies returning a value ≠ 0x47C0 after reset refutes the shared-RTL provenance claim. The value is private, single-source provenance until dies return and an external party measures it; it is used for engineering integrity, not as scientific evidence.]
 
 - **RTL License:** Apache-2.0; reproducible from gate level
-- **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
+- **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) — Zenodo software/RTL archive (citation & provenance handle for the released RTL; not a peer-reviewed publication and not a proof source)
 - **Shuttle:** TinyTapeout TTSKY26b (submission closed 2026-05-18 UTC; [registry](https://tinytapeout.com/chips/ttsky26b/))
 - **Technical lead / Co-Investigator:** Dmitrii Vasilev <admin@t27.ai> (Trinity/t27 framework, GF16 formats, TRI-NET RTL — original work). Full team: Dr. Scott A. Olsen (PI), D. Vasilev (Co-I), Dr. Stergios Pellis (Co-I) — see §Key Personnel.
 
