@@ -32,15 +32,15 @@ jobs:
       image: coqorg/coq:8.20.1
       options: --user root
 
-    # The coqorg/coq image installs Coq through opam, so `coqc` is only on PATH
-    # once the opam environment is loaded. The image preloads that env for the
-    # default `coq` user via its profile, but `--user root` (needed so the
-    # checkout step can write the workspace) bypasses it, leaving `coqc` not
-    # found (exit 127). A login bash shell that runs `eval $(opam env --switch
-    # default --set-switch)` puts the opam switch bin on PATH for every step.
-    defaults:
-      run:
-        shell: bash --login -eo pipefail {0}
+    # The coqorg/coq image installs Coq through opam under the `coq` user's
+    # opam root (/home/coq/.opam). Running the container as root (needed so the
+    # checkout step can write the /__w workspace) means the default opam root
+    # (/root/.opam) is empty, so `coqc` is not found (exit 127). Point opam at
+    # the coq user's root via OPAMROOT and invoke tools through `opam exec --`,
+    # which prepends the switch bin to PATH for that command.
+    env:
+      OPAMROOT: /home/coq/.opam
+      OPAMYES: "true"
 
     steps:
       - name: Checkout
@@ -48,25 +48,23 @@ jobs:
 
       - name: Coq version
         run: |
-          eval $(opam env --switch default --set-switch 2>/dev/null) || eval $(opam env)
-          coqc --version
+          opam switch list
+          opam exec -- coqc --version
 
       # All INV files Require Import CorePhi and use the `-R . IGLA` load path
       # declared in proofs/igla/_CoqProject, so build CorePhi first and compile
       # every invariant with that load path. Compiling a single file in
       # isolation (no -R, no CorePhi.vo) fails to resolve the local modules.
-      # opam env is re-sourced per step because each step is a fresh shell.
       - name: Compile INV-0..5 (L-R14 invariants)
         working-directory: proofs/igla
         run: |
-          eval $(opam env --switch default --set-switch 2>/dev/null) || eval $(opam env)
           set -x
-          coqc -R . IGLA CorePhi.v             # INV-0 φ² + φ⁻² = 3 core
-          coqc -R . IGLA lr_convergence.v      # INV-1 BPB decreases w/ real gradient
-          coqc -R . IGLA igla_asha_bound.v     # INV-2 champion survives, threshold=3.5
-          coqc -R . IGLA gf16_precision.v      # INV-3 error < φ⁻⁶ for d_model≥256
-          coqc -R . IGLA nca_entropy_band.v    # INV-4 entropy ∈ [1.5, 2.8]
-          coqc -R . IGLA lucas_closure_gf16.v  # INV-5 GF16 algebraically consistent
+          opam exec -- coqc -R . IGLA CorePhi.v             # INV-0 φ² + φ⁻² = 3 core
+          opam exec -- coqc -R . IGLA lr_convergence.v      # INV-1 BPB decreases w/ real gradient
+          opam exec -- coqc -R . IGLA igla_asha_bound.v     # INV-2 champion survives, threshold=3.5
+          opam exec -- coqc -R . IGLA gf16_precision.v      # INV-3 error < φ⁻⁶ for d_model≥256
+          opam exec -- coqc -R . IGLA nca_entropy_band.v    # INV-4 entropy ∈ [1.5, 2.8]
+          opam exec -- coqc -R . IGLA lucas_closure_gf16.v  # INV-5 GF16 algebraically consistent
 
       - name: L-R14 Summary
         if: success()
