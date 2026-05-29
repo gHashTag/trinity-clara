@@ -22,16 +22,22 @@ jobs:
     name: "coqc INV-1..5 (L-R14 Gate)"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Use the upstream Coq image. The IGLA proofs import `Stdlib.Reals.*`
+    # and `Stdlib.micromega.*`, the standard-library logical prefix used by
+    # Coq 8.20 upstream. The Ubuntu `apt` coq package (8.20.1+dfsg) ships the
+    # stdlib under the legacy `Coq` prefix only, so `Stdlib.Reals` fails to
+    # resolve there — which is why this gate was red regardless of proof
+    # content. The pinned upstream image resolves `Stdlib.*` natively.
+    container:
+      image: coqorg/coq:8.20.0
+      options: --user root
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Coq
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y coq
-          coqc --version
+      - name: Coq version
+        run: coqc --version
 
       # All INV files Require Import CorePhi and use the `-R . IGLA` load path
       # declared in proofs/igla/_CoqProject, so build CorePhi first and compile
