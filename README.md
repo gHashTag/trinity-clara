@@ -293,19 +293,12 @@ trinity-clara/
 
 ## Scientific Strengthening (April 2026)
 
-### Scientifc Foundations
+### Scientific Foundations
 
-> *"В геометрии есть два великих сокровища — целочисленность и интуиция."*  
-> — **Карл Фридрих Гаус** (1777-1855), Disquisitiones Arithmeticae
+> *"Mathematics is the queen of the sciences, and number theory is the queen of mathematics."*  
+> — **Carl Friedrich Gauss** (1777–1855)
 
-**Relevance:** VSA operations rely on number theory (Gaussian distributions), polynomial arithmetic, and discrete probability. Gauss's foundational work directly underpins our mathematical proofs.
-
-```markdown
-## Scientifc Foundations
-
-> *"В геометрии есть два великих сокровища — целочисленность и интуиция."*  
-> — **Карл Фридрих Гаус** (1777-1855), гёттингенский математик
-```
+**Relevance:** VSA operations rely on number theory, polynomial arithmetic over finite fields, and discrete probability. Gauss's foundational work in number theory underpins the GF (Galois-Field) arithmetic used in our reasoning primitives.
 
 ### Formal Theoretical Proofs Added
 
@@ -315,9 +308,9 @@ Four formal proofs strengthen mathematical foundation:
 
 2. **Resonator Convergence** — Monotonic convergence proof with iteration bound: log₂(CODEBOOK_CAPACITY) = 8 iterations maximum
 
-3. **ASP Polynomial Bound** — Formal upper bound: max_iterations × max_clauses = 256,000 checks guarantees termination for bounded ASP
+3. **ASP Polynomial Bound** — Formal upper bound: max_iterations × max_clauses = 256,000 checks bounds termination for the bounded ASP fragment (`MAX_CLAUSES=256` is the t27 software/spec bound)
 
-4. **COA Completeness** — Proof that MAX_CLAUSES=256 provides 2.5-6× headroom for 40-100 COA planning rules
+4. **COA Completeness** — Argument that `MAX_CLAUSES=256` provides 2.5–6× headroom for 40–100 COA planning rules. Note: the silicon modules submitted to the TinyTapeout shuttle are the `_mini` variants bounded at 16 clauses/rules to fit the cell budget; the 256 figure is a software/Phase-2 target, not a claim about the returned die.
 
 ### Theoretical Proofs Added
 
@@ -327,9 +320,9 @@ Four formal proofs strengthen mathematical foundation:
 
 2. **Resonator Convergence** — Monotonic convergence proof with iteration bound: log₂(CODEBOOK_CAPACITY) = 8 iterations maximum
 
-3. **ASP Polynomial Bound** — Formal upper bound: max_iterations × max_clauses = 256,000 checks guarantees termination for bounded ASP
+3. **ASP Polynomial Bound** — Formal upper bound: max_iterations × max_clauses = 256,000 checks bounds termination for the bounded ASP fragment (`MAX_CLAUSES=256` is the t27 software/spec bound)
 
-4. **COA Completeness** — Proof that MAX_CLAUSES=256 provides 2.5-6× headroom for 40-100 COA planning rules
+4. **COA Completeness** — Argument that `MAX_CLAUSES=256` provides 2.5–6× headroom for 40–100 COA planning rules. Note: the silicon modules submitted to the TinyTapeout shuttle are the `_mini` variants bounded at 16 clauses/rules to fit the cell budget; the 256 figure is a software/Phase-2 target, not a claim about the returned die.
 
 ### Empirical Frameworks Established
 
@@ -419,11 +412,11 @@ Together, this team combines: (1) a deep, historically informed theory of golden
 ### Theoretical Contributions
 
 1. **Ternary Logic Isomorphism** — Formal proof that Trit{-1,0,+1} ≅ Kleene {False,Unknown,True}
-2. **SIMILARITY_THRESHOLD Theorem** — 99.9% specificity for 1024-dim ternary hypervectors
+2. **SIMILARITY_THRESHOLD Theorem** — 99.9% specificity for 1024-dim ternary hypervectors (statistical derivation: σ≈0.032, P(|sim|>0.15)<0.001)
 3. **Resonator Network Convergence** — O(log₂ n) monotonic convergence bound
-4. **ASP Solver Polynomial Bound** — O(clauses×rules×depth) termination guarantee
-5. **COA Planning Completeness** — Proof that MAX_CLAUSES=256 is sufficient
-6. **ML+AR Composition Proofs** — Bounded reasoning guarantees for 4 patterns
+4. **ASP Solver Polynomial Bound** — O(clauses×rules×depth) bounded-termination argument for the restricted ASP fragment `[PROVEN]` (software/spec `MAX_CLAUSES=256`; the silicon `_mini` variant is bounded at 16)
+5. **COA Planning Completeness** — Argument that the software/spec `MAX_CLAUSES=256` gives headroom for 40–100 COA rules `[PROVEN]` (target, not a claim about the returned die)
+6. **ML+AR Composition Proofs** — Bounded-reasoning argument for 4 patterns `[PROVEN]`
 
 ### Empirical Contributions
 
@@ -434,8 +427,8 @@ Together, this team combines: (1) a deep, historically informed theory of golden
 ### Architectural Contributions
 
 1. **VSA Bridge Layer** — Centralized VSA operations across all examples
-2. **Native FPGA Optimization** — AVX-512 SIMD implementation (49× energy gain)
-3. **GF16 Confidence Encoding** — φ-optimized 1.8× accuracy over float
+2. **Native FPGA Optimization** — AVX-512 SIMD implementation (49× energy gain `[PROJECTED]` — model estimate, not silicon-measured)
+3. **GF16 Confidence Encoding** — φ-optimized, reported 1.8× accuracy over float `[SIMULATED]` (benchmark, not hardware-measured)
 
 ---
 
