@@ -35,6 +35,7 @@
 Require Import Coq.Arith.Arith.
 Require Import Coq.Lists.List.
 Require Import Coq.Bool.Bool.
+Require Import Coq.micromega.Lia.
 Import ListNotations.
 
 Set Implicit Arguments.
@@ -109,16 +110,22 @@ Lemma push_step_length_le :
 Proof.
   intros s x Hle.
   unfold push_step, MAX_STEPS in *.
-  simpl.
+  (* No leading `simpl` here: it would reduce `firstn 10 (x :: _)` one step in
+     the overflow branch and break the `length_firstn` rewrite below. *)
   destruct (Nat.leb 10 (length (buffer s))) eqn:Heq.
-  - (* overflow branch: firstn 10 (x :: buffer s) *)
-    simpl.
-    rewrite firstn_length.
-    (* firstn_length: length (firstn 10 ...) = Nat.min 10 (length ...) *)
+  - (* overflow branch: buffer = firstn 10 (x :: buffer s) *)
+    (* Unfold only the record projection so the `firstn` term is preserved.
+       `length_firstn` is the 8.20 name for the lemma formerly called
+       `firstn_length` (deprecated since 8.20). *)
+    cbv [buffer].
+    rewrite length_firstn.
+    (* length_firstn: length (firstn 10 ...) = Nat.min 10 (length ...) *)
     (* Nat.min 10 n <= 10 always *)
     apply Nat.le_min_l.
-  - (* normal branch: x :: buffer s *)
-    simpl. lia.
+  - (* normal branch: x :: buffer s, with length (buffer s) < 10 from Heq *)
+    simpl.
+    apply Nat.leb_nle in Heq.
+    lia.
 Qed.
 
 Lemma simulate_length_le :
@@ -208,11 +215,11 @@ Proof.
       assert (Hpush : push_step (mk_state (rev acc) false) x
                       = mk_state (x :: rev acc) false).
       {
-        unfold push_step, MAX_STEPS. simpl.
-        assert (Hlt : Nat.leb 10 (length (rev acc)) = false).
+        unfold push_step. cbv [buffer overflow].
+        assert (Hlt : Nat.leb MAX_STEPS (length (rev acc)) = false).
         { apply Nat.leb_gt.
-          rewrite List.rev_length.
-          simpl in Hacc. lia. }
+          rewrite List.length_rev.
+          unfold MAX_STEPS in *. simpl in Hacc. lia. }
         rewrite Hlt. reflexivity.
       }
       rewrite Hpush.
@@ -223,13 +230,13 @@ Proof.
       rewrite Hrev_eq.
       (* Apply IH with acc' = acc ++ [x] *)
       assert (Hacc' : length (acc ++ [x]) + length tl <= MAX_STEPS).
-      { rewrite app_length. simpl in *. lia. }
+      { rewrite length_app. unfold MAX_STEPS in *. simpl in *. lia. }
       specialize (IH (acc ++ [x]) Hacc').
       (* IH: buffer (simulate_explainability (mk_state (rev (acc++[x])) false) tl)
                = rev ((acc++[x]) ++ tl)                                             *)
       rewrite IH.
       (* Goal: rev ((acc ++ [x]) ++ tl) = rev (acc ++ x :: tl) *)
-      rewrite app_assoc. simpl. reflexivity.
+      rewrite <- app_assoc. simpl. reflexivity.
   }
   specialize (Hgen steps [] Hle).
   simpl in Hgen.
@@ -255,11 +262,11 @@ Proof.
       assert (Hpush : push_step (mk_state (rev acc) false) x
                       = mk_state (x :: rev acc) false).
       {
-        unfold push_step, MAX_STEPS. simpl.
-        assert (Hlt : Nat.leb 10 (length (rev acc)) = false).
+        unfold push_step. cbv [buffer overflow].
+        assert (Hlt : Nat.leb MAX_STEPS (length (rev acc)) = false).
         { apply Nat.leb_gt.
-          rewrite List.rev_length.
-          simpl in Hacc. lia. }
+          rewrite List.length_rev.
+          unfold MAX_STEPS in *. simpl in Hacc. lia. }
         rewrite Hlt. reflexivity.
       }
       rewrite Hpush.
@@ -267,7 +274,7 @@ Proof.
       { rewrite rev_app_distr. simpl. reflexivity. }
       rewrite Hrev_eq2.
       apply IH.
-      rewrite app_length. simpl in *. lia.
+      rewrite length_app. unfold MAX_STEPS in *. simpl in *. lia.
   }
   intros steps Hle.
   specialize (Hgen steps [] Hle).
@@ -306,7 +313,7 @@ Proof.
   assert (Hsteps : steps = prefix ++ suffix).
   { subst. rewrite firstn_skipn. reflexivity. }
   assert (Hplen : length prefix = MAX_STEPS + 1).
-  { subst. rewrite List.firstn_length.
+  { subst. rewrite List.length_firstn.
     apply Nat.min_l. unfold MAX_STEPS in *. lia. }
   (* simulate_explainability empty_state steps
      = simulate_explainability
@@ -331,11 +338,11 @@ Proof.
   assert (Hprefix : prefix = inner ++ last_part).
   { subst. rewrite firstn_skipn. reflexivity. }
   assert (Hilen : length inner = MAX_STEPS).
-  { subst. rewrite List.firstn_length.
+  { subst. rewrite List.length_firstn.
     apply Nat.min_l. lia. }
   assert (Hllen : length last_part = 1).
   { assert (Happ_len : length inner + length last_part = length prefix).
-    { subst. rewrite <- app_length. rewrite firstn_skipn. reflexivity. }
+    { subst. rewrite <- length_app. rewrite firstn_skipn. reflexivity. }
     lia. }
   (* last_part = [x] for some x *)
   destruct last_part as [| x rest_lp].
@@ -354,7 +361,7 @@ Proof.
     { exact (simulate_under_cap_overflow inner Hilen_le). }
     assert (Hbuflen : length (buffer (simulate_explainability empty_state inner))
                       = MAX_STEPS).
-    { rewrite Hmid_buf. rewrite List.rev_length. exact Hilen. }
+    { rewrite Hmid_buf. rewrite List.length_rev. exact Hilen. }
     (* Unroll: simulate_explainability empty_state (inner ++ [x])
                 = simulate_explainability (simulate_explainability empty_state inner) [x]
                 = push_step (simulate_explainability empty_state inner) x *)
@@ -437,8 +444,11 @@ End ExplainabilityUnit.
     from the list literal. *)
 
 (** Compute the final state for concrete nat-step lists. *)
-Definition run_nat (steps : list nat) : expl_state :=
-  simulate_explainability empty_state steps.
+(* Outside the section, [expl_state] is parameterised by the step type and
+   [empty_state] takes that type as an (implicit) argument, so instantiate
+   both explicitly at [nat]. *)
+Definition run_nat (steps : list nat) : expl_state nat :=
+  simulate_explainability (@empty_state nat) steps.
 
 Example sound_5_steps :
   buffer (run_nat [1; 2; 3; 4; 5]) = rev [1; 2; 3; 4; 5] /\
