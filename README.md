@@ -47,9 +47,46 @@ This repository contains formal specifications, evidence packages, working examp
 
 > **Integrity:** see [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) (SSOT for all claims), [`DISCREPANCIES.md`](DISCREPANCIES.md) (cross-document audit), and [`PROJECT-AUDIT.md`](PROJECT-AUDIT.md) (anomaly audit).
 
+> **Honest scoping note.** This repository is a *submission slice*, not the full upstream proof base. The IGLA proof bundle shipped here is **not** fully proven — it is honestly partial (4 declared `Admitted` obligations with stated closure paths, 1 `Qed`-placeholder bound to a runtime guard, 1 axiom). The phrase "84 Coq theorems" that appears in some older v1.x narrative is a historical v1.1 snapshot and is superseded by the counts in [`docs/TRINITY_PHD_PROVENANCE.md`](docs/TRINITY_PHD_PROVENANCE.md).
+
 **Migration Notice:** This repository was extracted from [t27](https://github.com/gHashTag/t27) on 2026-04-15 to isolate the DARPA submission from the main Trinity codebase.
 
 **2026-05-18 Addendum:** Post-submission technical update with decentralized-internet substrate positioning, 66 numeric formats, M1-M9 follow-on module roadmap, SKY26b shuttle tape-out status, and 12 unique competitive moats. See [`docs/addendum/CLARA-DEPIN-ADDENDUM-2026-05.md`](docs/addendum/CLARA-DEPIN-ADDENDUM-2026-05.md). Original April 17 submission unchanged.
+
+---
+
+## Proof Artifacts, Provenance, and Upstream Repositories
+
+**Read first:** [`docs/TRINITY_PHD_PROVENANCE.md`](docs/TRINITY_PHD_PROVENANCE.md) — the canonical, auditable provenance appendix for this submission. Everything below is a pointer.
+
+### Coq proof artifacts (this repo)
+
+| Artifact | Path | Status |
+|---|---|---|
+| IGLA proof bundle (metadata) | [`proofs/igla/_metadata.json`](proofs/igla/_metadata.json) | 8 files, 47 Qed, 4 Admitted, 1 placeholder, 1 axiom, 10 falsification witnesses |
+| IGLA `.v` sources | [`proofs/igla/`](proofs/igla/) | `igla_asha_bound.v`, `gf16_precision.v`, `nca_entropy_band.v`, `lr_convergence.v`, `lucas_closure_gf16.v`, `igla_found_criterion.v`, `bpb_monotone_backward.v`, `hybrid_qk_gain.v`, `CorePhi.v` |
+| Runtime invariant contract | [`assertions/igla_assertions.json`](assertions/igla_assertions.json) | Machine-readable binding from `proofs/igla/*.v` to runtime checks (L-R14) |
+
+### Upstream Trinity repositories
+
+| Repository | Role |
+|---|---|
+| [`gHashTag/t27`](https://github.com/gHashTag/t27) | `.t27` compiler, Verilog backend, broader Coq proof base. Audit 2026-05-12: 28 `.v` files, 218 stated Theorem/Lemma, **162 Qed / 32 Admitted / 2 Abort**. |
+| [`gHashTag/trios`](https://github.com/gHashTag/trios) | PhD-thesis source (`docs/phd/`), Rust audit harness (`crates/trios-phd/`), runtime invariant contracts. Relevant issues: [trios#372](https://github.com/gHashTag/trios/issues/372), [trios#264](https://github.com/gHashTag/trios/issues/264). |
+
+### PhD provenance
+
+The Trinity S³AI architecture has a PhD-thesis backbone in `gHashTag/trios:docs/phd/`. CLARA-relevant chapters and appendices (by topic): **Ch. 22** (proof discipline / invariant contracts), **Ch. 24** (φ-structured arithmetic and GF16), **Ch. 28** (compositional reasoning, L1–L7), **Ch. 34** (IGLA / RACE), plus appendices **App. B / F / G / H / I / M / N**. The canonical paths are whatever is checked in to `trios:docs/phd/` at the audit cutoff; we do not duplicate the PhD source tree here. See [`docs/TRINITY_PHD_PROVENANCE.md`](docs/TRINITY_PHD_PROVENANCE.md) §4.
+
+### Software & provenance DOIs (Zenodo)
+
+Zenodo records are **provenance / citation handles for software releases**, not a proof source. The proof source is `proofs/igla/*.v` (this repo) and the upstream `t27` Coq base.
+
+| DOI | Subject |
+|---|---|
+| [10.5281/zenodo.19227879](https://doi.org/10.5281/zenodo.19227879) | TRINITY framework (umbrella) |
+| [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) | φ / VSA components |
+| [10.5281/zenodo.18947017](https://doi.org/10.5281/zenodo.18947017) | FPGA / hardware backend |
 
 ---
 
@@ -329,9 +366,13 @@ Dr. Scott A. Olsen, Ph.D. (Philosophy, University of Florida), J.D. (Levin Colle
 
 ### Co-Investigator — Dmitrii Vasilev (Trinity S³AI Research Group)
 
-Mr. Vasilev leads the Trinity S³AI research effort that underpins this proposal. He is the primary architect of the Trinity/t27 mathematical framework, which unifies a φ-structured number system, a compositional reasoning calculus (L1–L7 derivation hierarchy), and a Coq/Rocq proof base for golden-ratio invariants and certified numerical bounds (the `t27/proofs/trinity/` set; see REPRODUCIBILITY.md for exact `Qed.`/`Admitted` counts). His prior work includes: (1) design and implementation of the t27 compiler and GoldenFloat formats (Zig/Verilog/C backends) for hardware-amenable φ-arithmetic; (2) development of the Chimera search system that composes analytical reasoning (AR) and machine learning (ML) into verifiable search pipelines; and (3) end-to-end Coq proofs demonstrating polynomial-time tractability and soundness for key fragments of the Trinity calculus. Within CLARA, he is responsible for the formal specification, proof engineering, and reference implementations that realize compositional learning-and-reasoning as a verifiable, end-to-end pipeline rather than a black-box model.
+**ORCID:** [0009-0008-4294-6159](https://orcid.org/0009-0008-4294-6159) · **Upstream artifacts:** [`gHashTag/t27`](https://github.com/gHashTag/t27), [`gHashTag/trios`](https://github.com/gHashTag/trios), [`gHashTag/trinity-clara`](https://github.com/gHashTag/trinity-clara).
+
+Mr. Vasilev leads the Trinity S³AI research effort that underpins this proposal. He is the primary architect of the Trinity/t27 mathematical framework, which unifies a φ-structured number system, a compositional reasoning calculus (L1–L7 derivation hierarchy), and a Coq proof base (Rocq 9.1.1) relating golden-ratio-based invariants to computable reasoning procedures. As of the **2026-05-12 audit** of upstream `t27`, that proof base has 28 audited `.v` files with 218 stated Theorem/Lemma — **162 Qed / 32 Admitted / 2 Abort**; the CLARA-scoped IGLA subset shipped here is documented in [`docs/TRINITY_PHD_PROVENANCE.md`](docs/TRINITY_PHD_PROVENANCE.md) and [`proofs/igla/_metadata.json`](proofs/igla/_metadata.json). His prior work includes: (1) design and implementation of the t27 compiler and GoldenFloat formats (Zig/Verilog/C backends) for hardware-amenable φ-arithmetic; (2) development of the Chimera search system that composes analytical reasoning (AR) and machine learning (ML) into verifiable search pipelines; and (3) Coq proofs demonstrating polynomial-time tractability and soundness for key fragments of the Trinity calculus (with `Admitted` budgets and closure paths tracked explicitly per `L-R14`). Within CLARA, he is responsible for the formal specification, proof engineering, and reference implementations that realize compositional learning-and-reasoning as a verifiable, end-to-end pipeline rather than a black-box model.
 
 ### Co-Investigator — Dr. Stergios Pellis (Physics & Applied Mathematics)
+
+<!-- TODO (pre-submission): confirm institutional affiliation and ORCID for Dr. Pellis. Not yet recorded; do not invent. -->
 
 Dr. Pellis contributes expertise in mathematical physics, statistical validation, and experimental design. He has worked on formalizing and statistically validating Trinity S³AI's φ-structured constants and invariants, including large-scale significance studies (e.g., p-values on the order of 10⁻⁵³ across dozens of formulas) that distinguish genuine structure from numerology. In the present project, Dr. Pellis leads the design of benchmark suites and ablation studies that compare Trinity-style compositional reasoning against existing neuro-symbolic baselines, ensuring that claimed advantages are supported by rigorous experimental evidence, confidence intervals, and reproducible test harnesses rather than anecdotal examples.
 

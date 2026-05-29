@@ -162,7 +162,7 @@ The DARPA CLARA PA-25-07-02 proposal underwent a comprehensive 9-phase enhanceme
 
 1. **Adversarial Robustness** — the only system in our SOA comparison with formal adversarial-robustness guarantees (0 of 10 compared baselines)
 2. **Domain-General** — Not limited to math/geometry like AlphaProof/AlphaGeometry
-3. **Formal Verification** — 84 Coq theorems vs. most competitors (none)
+3. **Formal Verification** — Coq proof base vs. most competitors (none). Audited counts: IGLA bundle in this repo: 47 Qed / 4 Admitted / 1 honest placeholder / 1 axiom + 10 falsification witnesses (8 `.v` files). Upstream `t27` (audit 2026-05-12): 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files. See [`../docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md).
 4. **Energy Efficiency** — 42× improvement vs. GPU (with methodology)
 5. **Bounded Explanations** — ≤10 steps guaranteed (meets DARPA XAI sparsity)
 6. **Certification Path** — EAL7 roadmap via Coq verification
@@ -193,7 +193,7 @@ The DARPA CLARA PA-25-07-02 proposal underwent a comprehensive 9-phase enhanceme
 │   ├── CLARA-LITERATURE-REVIEW.md   ✅ 2020-2026
 │   └── [other evidence files]
 ├── specs/coa_planning.t27
-├── coq/ [7 Coq files, 84 theorems]
+├── proofs/igla/ [8 .v files; 47 Qed, 4 Admitted, 1 placeholder, 1 axiom, 10 witnesses]
 └── scripts/demo.sh
 ```
 

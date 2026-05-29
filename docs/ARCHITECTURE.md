@@ -342,11 +342,12 @@ Memory Resources:
 - Formal guardrails at all pipeline stages
 - <10ms recovery time guaranteed
 
-### 2. 84 Coq Theorems
-**Most Comprehensive:** Complete formal verification path
-- .t27 specifications → Verilog synthesis
-- Semantic preservation guaranteed
-- All operations verified mathematically
+### 2. Coq Proof Base
+**Honest, audited formal verification:**
+- IGLA bundle (`proofs/igla/`, this repo): 47 Qed, 4 Admitted (with stated closure paths), 1 honest `Qed`-placeholder, 1 axiom, 10 falsification witnesses across 8 `.v` files
+- Upstream `t27` Coq base (audit 2026-05-12): 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files
+- `.t27` specifications → Verilog synthesis with semantic preservation
+- See [`TRINITY_PHD_PROVENANCE.md`](TRINITY_PHD_PROVENANCE.md) for full provenance
 
 ### 3. GF16 Confidence Encoding
 **φ-Optimized:** 1.618... constant for optimal range

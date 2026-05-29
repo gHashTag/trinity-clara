@@ -14,12 +14,16 @@
 
 ## 1. Personnel
 
-### 1.1 Principal Investigator / Lead Researcher
-| Person | Effort | Annual Rate | Total |
-|--------|--------|-------------|-------|
-| PI #1 | 50% effort × 24 months | $180,000 | $180,000 |
-| PI #2 | 50% effort × 24 months | $180,000 | $180,000 |
-| **Subtotal** | | | **$360,000** |
+> **Note on naming.** This personnel table previously used the placeholders `PI #1` and `PI #2`. The submission package and executive summary identify a single PI plus two Co-Investigators. The table below has been re-keyed to match — totals and rates are unchanged.
+
+### 1.1 Principal Investigator and Co-Investigators
+
+| Role | Person | Effort | Annual Rate | Total |
+|------|--------|--------|-------------|-------|
+| PI | **Dr. Scott A. Olsen** (Wisdom Traditions Center, LLC / College of Central Florida) | 50% × 24 months | $180,000 | $180,000 |
+| Co-I | **Dmitrii Vasilev** (Trinity S³AI Research Group; ORCID [0009-0008-4294-6159](https://orcid.org/0009-0008-4294-6159)) | 50% × 24 months | $180,000 | $180,000 |
+| Co-I | **Dr. Stergios Pellis** (Physics & Applied Mathematics) <!-- TODO: affiliation/ORCID pre-submission --> | (allocation pending Co-I confirmation) | — | — |
+| **Subtotal** | | | | **$360,000** |
 
 **Responsibilities:**
 - Overall project direction and milestone oversight
