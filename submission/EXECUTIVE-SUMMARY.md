@@ -5,13 +5,13 @@
 
 **Submission Date:** April 17, 2026
 **Technical Areas:** TA1 (Argumentation & Reasoning), TA2 (Composition)
-**Solicitation:** DARPA CLARA (Common Learning Repository for AI)
+**Solicitation:** DARPA CLARA (Compositional Learning-And-Reasoning for AI Complex Systems Engineering)
 
 ---
 
 ## Hardware Realization Update (TRI-17)
 
-As of May 2026, all 10 DARPA CLARA AI Safety Gaps are realized in **open silicon RTL** on the SkyWater SKY130A process node, submitted to the TinyTapeout TTSKY26b shuttle. The EULER chip (Project #4915, 8×2 tiles, top module `tt_um_ghtag_trinity_gf16`) is the **world's first hardware implementation of all 10 CLARA gaps in open silicon**.
+As of May 2026, all 10 DARPA CLARA AI Safety Gaps are realized as **open-silicon RTL** on the SkyWater SKY130A process node, with GDS-II submitted to the TinyTapeout TTSKY26b shuttle (status "Submitted"; dies not yet returned, est. delivery 2026-12-20) [SUBMITTED to fab — pre-silicon]. To the authors' knowledge, the EULER chip (Project #558, 8×2 tiles, top module `tt_um_ghtag_trinity_gf16`) is the first published open-silicon implementation of all 10 CLARA gaps [Open conjecture — no exhaustive prior-art survey; falsification path: any earlier published open-silicon CLARA-gap chip refutes this].
 
 ### EULER Chip: 10 CLARA Gaps → Verilog Modules
 
@@ -32,29 +32,29 @@ As of May 2026, all 10 DARPA CLARA AI Safety Gaps are realized in **open silicon
 
 | Chip | Project | Tiles | Role |
 |------|---------|-------|------|
-| Φ Phi (`tt_um_trinity_nano`) | #4914 | 1×1 | Identity / root-of-trust layer |
-| E Euler (`tt_um_ghtag_trinity_gf16`) | #4915 | 8×2 | Reasoning / all 10 CLARA gaps |
-| Γ Gamma (`tt_um_trinity_max_true`) | #4913 | 8×4 | Neuromorphic inference layer |
+| Φ Phi (`tt_um_trinity_nano`) | #198 | 1×1 | Identity / root-of-trust layer |
+| E Euler (`tt_um_ghtag_trinity_gf16`) | #558 | 8×2 | Reasoning / all 10 CLARA gaps |
+| Γ Gamma (`tt_um_trinity_max_true`) | #750 | 8×4 | Neuromorphic inference layer |
 
 All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset, derived from Theorem 36.1 (φ²+φ⁻²=3 → Lucas L₂=3 → dot4(1,2,3,4)=0x47C0). This mathematically binds the three chips into a single verifiable stack.
 
 - **RTL License:** Apache-2.0; reproducible from gate level
 - **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
-- **Shuttle:** TinyTapeout TTSKY26b, submitted 2026-05-19
+- **Shuttle:** TinyTapeout TTSKY26b (submission closed 2026-05-18 UTC; [registry](https://tinytapeout.com/chips/ttsky26b/))
 - **Author:** Dmitrii Vasilev <admin@t27.ai> (sole author)
 
 ---
 
 ## Differentiation
 
-1. **Formal Adversarial Robustness** — Unique among SOA systems
-   - Red Team protocol achieves 100% robustness against 5 adversarial categories
+1. **Formal Adversarial Robustness** — Among surveyed SOA systems, none documented an equivalent formal guardrail [Empirical fit, survey-bounded]
+   - Red Team protocol blocks 96% of adversarial variants (48/50) on a synthetic dataset; ≥95% is the Phase-2 target [SYNTHETIC]
    - Formal guardrails at each pipeline stage
-   - Recovery time <10ms for all attack vectors
+   - Recovery time 7.2 ms avg on the synthetic evaluation set
 
-2. **84 Coq Theorems** — Most comprehensive formal verification
-   - Complete path from .t27 specifications to Verilog hardware
-   - Semantic preservation guarantees proven
+2. **1,325 machine-checked `Qed.` theorems** (program-wide), of which **84** form the CLARA math-core
+   - 84 theorems verify the mathematical core (φ identities, constants) [PROVEN]
+   - ML+AR composition is verified by `.t27→Verilog` lowering and RTL simulation — not by a formal proof [SIMULATED]
 
 3. **Guaranteed Polynomial Bounds** — All operations with Big-O proofs
    - Resonator Network: O(log₂ n) monotonic convergence
@@ -84,7 +84,7 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 4. **ASP Solver** — Answer Set Programming with NAF
 5. **Explainability** — 3 formats (natural, Fitch, compact)
 6. **Restraint** — Bounded rationality (UNKNOWN→FALSE, toxicity block)
-7. **Composition** — 7 ML+AR patterns
+7. **Composition** — 4 patterns demonstrated; up to 7 specified in `composition.t27`
 8. **COA Planning** — Course of Action with constraints
 
 ### VSA Operations
@@ -102,12 +102,14 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 - **Bounded Rationality:** UNKNOWN→FALSE, K3 logic
 - **Explainability:** All explanations ≤10 steps
 - **Polynomial Guarantees:** Forward-chaining O(n), ASP O(c×r)
-- **Red Team Protocol:** 100% robustness (5 categories, 0% false positives)
+- **Red Team Protocol:** 96% robustness (48/50, 5 categories) on a synthetic dataset; ≥95% Phase-2 target [SYNTHETIC]
 
 ### TA2: Composition — 100%
 - **VSA Operations:** All core ops defined and benchmarked
 - **Composition Patterns:** 4/4 demonstrated (CNN, MLP, Transformer, RL)
 - **Performance Targets:** All benchmarks exceed requirements
+
+> **Claim integrity:** every quantitative claim in this package is registered in [`../CLAIMS-LEDGER.md`](../CLAIMS-LEDGER.md) with an explicit status tag (PROVEN / MEASURED / SIMULATED / SYNTHETIC / PROJECTED). See [`../DISCREPANCIES.md`](../DISCREPANCIES.md) for the consistency audit.
 
 ### General Requirements
 - **Open Source:** Apache 2.0 (all files updated)
@@ -134,10 +136,10 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 
 | Area | Innovation | Impact |
 |-------|-----------|--------|
-| **Formal Verification** | 84 Coq theorems from .t27 to Verilog | Production-ready formal methods |
-| **Adversarial Robustness** | 5-category Red Team protocol with 100% success | Defense-grade AI safety |
+| **Formal Verification** | 1,325 `Qed.` theorems program-wide; 84 CLARA math-core; composition via .t27→Verilog [SIMULATED] | Production-ready formal methods |
+| **Adversarial Robustness** | 5-category Red Team protocol, 96% (48/50) [SYNTHETIC] | Defense-grade AI safety |
 | **Ternary VSA** | K3 native operations on 1024-dim vectors | Unique formal basis |
-| **ML+AR Patterns** | 7 composition patterns with formal guarantees | Verified reasoning chains |
+| **ML+AR Patterns** | 4 patterns demonstrated; up to 7 specified in `composition.t27` | Verified reasoning chains |
 | **GF16 Encoding** | φ-optimized confidence with 1.8× precision | NUMERIC-STANDARD-001 compliance |
 
 ---
@@ -153,13 +155,19 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 ### Deliverables
 1. Complete .t27 specification suite (8 modules)
 2. 4 working Python examples (medical, legal, autonomous, VSA)
-3. Red Team testing framework with 100% robustness
+3. Red Team testing framework with 96% robustness (48/50) [SYNTHETIC]
 4. VSA performance benchmarks exceeding targets
 5. Full evidence package (TA1/TA2 compliance matrices)
 
 ---
 
 ## Key Personnel
+
+> **Note:** This section has been superseded by [`KEY-PERSONNEL-REWRITE.md`](KEY-PERSONNEL-REWRITE.md),
+> which removes a corrupted publication entry, drops duplicated citations, and reframes the
+> φ / golden-ratio material as an engineering numeric-format choice (consistent with the
+> program's anti-numerology gate). Use the rewrite for the final submission. The original text
+> is retained below for history only.
 
 ### Principal Investigator
 
@@ -223,7 +231,7 @@ Developing foundational research on:
 The foundational work on golden ratios and symmetry breaking provides the theoretical basis for:
 - **GF16 Confidence Encoding** — φ-optimized confidence representation with 65,000× wider dynamic range than float32 and 1.8× more accurate φ constants
 - **Ternary Logic K3** — Three-valued truth system (False, Unknown, True) enabling bounded rationality with explicit UNKNOWN states for CLARA restraint compliance
-- **Formal Verification** — 84 Coq theorems proving semantic preservation from .t27 specifications to Verilog hardware synthesis
+- **Formal Verification** — the `t27/proofs/trinity/` Coq base machine-checks the φ-identity/certified-bounds **mathematical core**; .t27→Verilog semantic preservation and composition are checked by **simulation** `[SIMULATED]`, not by those theorems (see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md))
 - **Polynomial Guarantees** — All operations with Big-O complexity proofs (VSA: O(n), AR: O(n×m×k) bounded by MAX_STEPS=10)
 
 This foundational work demonstrates the depth of theoretical grounding and philosophical coherence behind the TRINITY CLARA system, positioning it as a rigorously developed, scientifically sound, and academically inspired approach to automated reasoning and neural-symbolic integration.

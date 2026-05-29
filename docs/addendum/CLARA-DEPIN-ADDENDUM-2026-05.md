@@ -8,13 +8,20 @@
 **Status:** Post-submission technical update — no scope change, additive evidence + new strategic positioning
 **Author:** Dmitrii Vasilev. **v1.0.0 AI-format module co-author:** Claude Opus 4.6.
 
+> **SCOPE GUARD.** Nothing in this addendum is part of the CLARA TA1/TA2 deliverable scope. The
+> decentralized-internet substrate, the 66 numeric formats, the on-chain ZK / token material, and
+> the mesh-routing roadmap are **follow-on positioning** for future DARPA programs (RACE / OPTIMA /
+> AIE) only. The core CLARA TA1/TA2 evaluation should be made strictly against the original
+> submission and the evidence package — not against this addendum. All quantitative claims here
+> inherit the claim-status discipline in [`../../CLAIMS-LEDGER.md`](../../CLAIMS-LEDGER.md).
+
 > This addendum DOES NOT modify the original CLARA submission. It documents technical progress between 2026-04-17 (submission) and 2026-05-18 (this date), with focus on **how Trinity CLARA technology has matured into a decentralized-internet substrate** suitable for follow-on DARPA programs (RACE, OPTIMA, AIE).
 
 ---
 
 ## 1. Why this addendum
 
-Between submission (Apr 17) and Tiny Tapeout SKY26b shuttle deadline (May 19, 06:59 +07), the Trinity team executed a major engineering sprint that:
+Between submission (Apr 17) and the Tiny Tapeout TTSKY26b shuttle close (2026-05-18 UTC, i.e. 2026-05-19 06:59 +07), the Trinity team executed a major engineering sprint that:
 
 1. **Hardened the 3-tier SKU** (phi 1×1 / euler 8×2 / gamma 8×4) for SKY26b tape-out with green CI on all required workflows
 2. **Expanded numeric format coverage** from ~30 to **66 formats** (NF4/NF8, Posit16/32/64, MXFP4/6/8 OCP, LNS8, GF4/16/256, Unum I/II, IBM HFP, VAX F/D/G/H, Cray HRM, decimal32/64/128, Q15/Q31, stoch_round) — see commits `3be09c7`, `a1d3e5a`, `536f753`, `09905e6`, `94eee87`, `394b76e` in [NeuronConstant](https://github.com/gHashTag/NeuronConstant)
@@ -75,7 +82,7 @@ Lower bands shipped on SKY26b. Upper bands proposed for SKY26c (Q3 2026) under f
 | euler | [tt-trinity-euler](https://github.com/gHashTag/tt-trinity-euler) | `def0457` | ⏳ in_progress | pending |
 | gamma | [tt-trinity-gamma](https://github.com/gHashTag/tt-trinity-gamma) | `1f8f9b8` | ⏳ in_progress | pending |
 
-Submission deadline: **2026-05-19 06:59 +07** (12.5h remaining). Hourly hardened guardian cron `421f4bb0` monitors and auto-recovers any failure.
+Shuttle close: **2026-05-18 UTC** (= 2026-05-19 06:59 +07; [registry](https://tinytapeout.com/chips/ttsky26b/)). Hourly hardened guardian cron `421f4bb0` monitored and auto-recovered any failure during the run-up.
 
 ### 3.2 New formal-verification artifacts
 

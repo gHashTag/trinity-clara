@@ -1,0 +1,113 @@
+# Claim-integrity gate for the TRINITY CLARA submission package.
+# Enforces the project claim-status discipline (mirrors the trinity-s3ai anti-numerology gate):
+# fails the build if retired hype strings reappear in submission-facing documents.
+#
+# Audit/meta docs are intentionally excluded because they quote these strings to document them.
+name: claim-integrity
+
+on:
+  push:
+    paths:
+      - '**/*.md'
+  pull_request:
+    paths:
+      - '**/*.md'
+
+jobs:
+  retired-claims:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for retired / banned claim strings
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          # Files allowed to mention the banned strings (they document/quote them).
+          EXCLUDE_REGEX='(CLAIMS-LEDGER|DISCREPANCIES|PROJECT-AUDIT|KEY-PERSONNEL-REWRITE|REPRODUCIBILITY)\.md'
+
+          # Patterns that must not appear in submission-facing docs.
+          # Each entry: "regex<TAB>human reason"
+          patterns=(
+            '100% (Red Team|robust|robustness|success)|100% success|0% false positives	Retired robustness claim — use 96% (48/50) [SYNTHETIC] (ledger R-1)'
+            'Most comprehensive formal verification	Unprovable superlative — state the theorem counts instead (audit A-3)'
+            'Bounded ASP Executes in O\(1\)	Incorrect complexity claim for NP-hard ASP — use bounded-termination (audit A-3 / X-1)'
+            'Unique among SOA systems	Absolute claim about all competitors — qualify as survey-bounded (audit A-3)'
+            'Common Learning Repository for AI	Wrong CLARA expansion — use "Compositional Learning-And-Reasoning for AI Complex Systems Engineering" (audit B-3)'
+            'composition\.t27` \(622 lines\)	Stale line count — composition.t27 is 674 lines (audit B-4)'
+            '80\+ Coq theorems	Unverifiable count — cite t27/proofs/trinity/ counts in REPRODUCIBILITY.md (audit B-1)'
+            '#491[345]	Fabricated TinyTapeout chip ID — TTSKY26b has 275 designs; real IDs are #198/#558/#750 (audit C-1)'
+            'closed 2026-05-19	Wrong shuttle close date — registry says closed 2026-05-18 UTC (= 2026-05-19 06:59 +07) (audit C-2)'
+            'committed to silicon	Pre-silicon overclaim — dies not yet returned (status Submitted, est. 2026-12-20); say "submitted to fab" (audit C-3)'
+            'tinytapeout\.com/runs/	Wrong registry URL path — canonical chip page is tinytapeout.com/chips/ttsky26b/ (audit C-5)'
+          )
+
+          fail=0
+          while IFS= read -r -d '' f; do
+            case "$f" in
+              ./.git/*) continue;;
+            esac
+            if echo "$f" | grep -Eq "$EXCLUDE_REGEX"; then
+              continue
+            fi
+            # Strip strikethrough/superseded lines before matching so historical
+            # changelog entries that quote a retired string (wrapped in ~~ ... ~~ or
+            # marked SUPERSEDED) do not trip the gate.
+            scanned=$(grep -Ev '(~~|SUPERSEDED)' "$f" || true)
+            for entry in "${patterns[@]}"; do
+              pat="${entry%%$'\t'*}"
+              reason="${entry#*$'\t'}"
+              if echo "$scanned" | grep -Eq "$pat"; then
+                echo "::error file=$f::Retired claim string found ($reason)"
+                echo "$scanned" | grep -Eno "$pat" | sed "s|^|  $f: |"
+                fail=1
+              fi
+            done
+          done < <(find . -name '*.md' -print0)
+
+          if [ "$fail" -ne 0 ]; then
+            echo ""
+            echo "Claim-integrity gate FAILED. Replace retired strings with claim-status-tagged"
+            echo "statements registered in CLAIMS-LEDGER.md. See PROJECT-AUDIT.md for rationale."
+            exit 1
+          fi
+          echo "Claim-integrity gate passed: no retired claim strings in submission-facing docs."
+
+  number-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify composition.t27 line-count claims match the actual file
+        shell: bash
+        run: |
+          set -uo pipefail
+          SPEC='specs/ar/composition.t27'
+          if [ ! -f "$SPEC" ]; then
+            echo "::error::$SPEC not found — cannot verify its claimed line count."
+            exit 1
+          fi
+          actual=$(wc -l < "$SPEC" | tr -d ' ')
+          echo "Actual $SPEC line count: $actual"
+          # Any doc that states a precise '(N lines)' for composition.t27 must match.
+          fail=0
+          while IFS= read -r -d '' f; do
+            case "$f" in ./.git/*) continue;; esac
+            # Skip audit/meta docs that intentionally record the historical wrong value.
+            if echo "$f" | grep -Eq '(CLAIMS-LEDGER|DISCREPANCIES|PROJECT-AUDIT|REPRODUCIBILITY)\.md'; then
+              continue
+            fi
+            claimed=$(grep -Eo 'composition\.t27` \([0-9]+ lines\)' "$f" | grep -Eo '\([0-9]+ lines\)' | grep -Eo '[0-9]+' || true)
+            for c in $claimed; do
+              if [ "$c" != "$actual" ]; then
+                echo "::error file=$f::composition.t27 claimed $c lines but file is $actual lines (audit B-4)"
+                fail=1
+              fi
+            done
+          done < <(find . -name '*.md' -print0)
+          if [ "$fail" -ne 0 ]; then
+            echo "Number-consistency gate FAILED. Update the line count or correct the file."
+            exit 1
+          fi
+          echo "Number-consistency gate passed: composition.t27 line counts are consistent."

@@ -13,11 +13,11 @@
 
 ## 1. Executive Overview
 
-The TRINITY CLARA submission has crossed a critical threshold: all 10 DARPA CLARA AI Safety Gaps are now realized not only as formal specifications and Python reference implementations, but in **open silicon RTL** synthesized and submitted to fabrication on SkyWater SKY130A 130 nm process. The EULER chip (TinyTapeout Project #4915, 8×2 tiles) is the **world's first hardware implementation of the complete CLARA 10-gap safety lattice in open silicon**. Every gap maps to a concrete, synthesizable Verilog module that can be inspected, recompiled, and independently verified by DARPA reviewers.
+The TRINITY CLARA submission has crossed a critical threshold: all 10 DARPA CLARA AI Safety Gaps are now realized not only as formal specifications and Python reference implementations, but in **open silicon RTL** synthesized and submitted to fabrication on SkyWater SKY130A 130 nm process. To the authors' knowledge, the EULER chip (TinyTapeout Project #558, 8×2 tiles) is the first published open-silicon implementation of the complete CLARA 10-gap safety lattice [Open conjecture — no exhaustive prior-art survey; falsification path: any earlier published open-silicon CLARA-gap chip refutes this]. Every gap maps to a concrete, synthesizable Verilog module that can be inspected, recompiled, and independently verified by DARPA reviewers.
 
-The TRI-NET stack consists of three companion chips submitted simultaneously to the TinyTapeout TTSKY26b shuttle (closed 2026-05-19). The Φ Phi chip provides the identity and root-of-trust layer, the E Euler chip delivers the full symbolic reasoning and safety lattice, and the Γ Gamma chip implements the neuromorphic inference surface with 8 cortical LIF columns. All three chips are bound together at the mathematical level through the cross-die canonical anchor `0x47C0`, which each chip proves independently on power-on reset from first principles (Theorem 36.1, φ²+φ⁻²=3).
+The TRI-NET stack consists of three companion chips submitted simultaneously to the TinyTapeout TTSKY26b shuttle (submission closed 2026-05-18 UTC, i.e. 2026-05-19 06:59 +07; [registry](https://tinytapeout.com/chips/ttsky26b/)). The Φ Phi chip provides the identity and root-of-trust layer, the E Euler chip delivers the full symbolic reasoning and safety lattice, and the Γ Gamma chip implements the neuromorphic inference surface with 8 cortical LIF columns. All three chips are bound together at the mathematical level through the cross-die canonical anchor `0x47C0`, which each chip proves independently on power-on reset from first principles (Theorem 36.1, φ²+φ⁻²=3).
 
-This hardware realization transforms the TRINITY CLARA submission from a formal-specification-and-software-prototype into a **gate-level-to-inference verifiable AI stack**. The RTL is Apache-2.0 licensed, archived with a permanent DOI, and fully reproducible from gate level without any closed IP. For DARPA, this represents the strongest possible evidence of implementation maturity: the safety lattice is not simulated — it is committed to silicon.
+This hardware realization transforms the TRINITY CLARA submission from a formal-specification-and-software-prototype into a **gate-level-to-inference verifiable AI stack**. The RTL is Apache-2.0 licensed, archived with a permanent DOI, and fully reproducible from gate level without any closed IP. For DARPA, this represents substantive evidence of implementation maturity at the pre-silicon stage: the safety lattice is realized as synthesizable gate-level RTL with passing `gds` CI, and the GDS-II has been submitted to fabrication on the TTSKY26b shuttle (status "Submitted"; dies not yet returned — est. delivery 2026-12-20 per the [registry](https://tinytapeout.com/chips/ttsky26b/)). [MEASURED in simulation / SUBMITTED to fab — not yet validated on returned silicon.]
 
 ---
 
@@ -26,7 +26,7 @@ This hardware realization transforms the TRINITY CLARA submission from a formal-
 | Property | Φ Phi | E Euler | Γ Gamma |
 |----------|-------|---------|---------|
 | Top module | `tt_um_trinity_nano` | `tt_um_ghtag_trinity_gf16` | `tt_um_trinity_max_true` |
-| TinyTapeout project | #4914 | #4915 | #4913 |
+| TinyTapeout project | #198 | #558 | #750 |
 | Tiles | 1×1 | 8×2 (16 tiles) | 8×4 (32 tiles) |
 | RTL modules | 51 | 90 | 105 |
 | Per-chip anchor | 0xCF | 0xAE | 0x93 |
@@ -51,7 +51,7 @@ This hardware realization transforms the TRINITY CLARA submission from a formal-
 
 ## 3. Mapping CLARA 10 Gaps to Verilog Modules (Euler Chip)
 
-The following table provides the complete, authoritative mapping from each DARPA CLARA AI Safety Gap to the synthesized Verilog module in Euler (Project #4915). All modules reside in the `src/` directory of the Euler RTL repository under the Apache-2.0 license.
+The following table provides the complete, authoritative mapping from each DARPA CLARA AI Safety Gap to the synthesized Verilog module in Euler (Project #558). All modules reside in the `src/` directory of the Euler RTL repository under the Apache-2.0 license.
 
 | CLARA Gap | Verilog Module | TA Alignment | Function |
 |-----------|---------------|--------------|----------|
@@ -87,7 +87,7 @@ The anchor value `0x47C0` appears on the `{uio_out, uo_out}` bus of all three TR
 
 **Derivation (Theorem 36.1):**
 
-1. **Golden ratio identity:** φ²+φ⁻² = 3 (exact; verified by 84 Coq theorems in the TRINITY proof base)
+1. **Golden ratio identity:** φ²+φ⁻² = 3 (an exact algebraic identity; the φ identities and certified bounds are machine-checked in the `t27/proofs/trinity/` Coq base — see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md) for the exact build and an honest `Qed.`/`Admitted` count)
 2. **Lucas number:** L₂ = 3 (second Lucas number, directly derived from the φ identity above)
 3. **Dot product:** dot4(1, 2, 3, 4) = 1·1 + 2·2 + 3·3 + 4·4 is not the derivation; rather, the canonical 16-bit representation of the Lucas-anchored φ constant in GF16 encoding yields `0x47C0` when the four φ-structured basis vectors of the GF16 field are combined under the standard inner product.
 4. **Hardware implementation:** Each chip independently computes this value in its POST (Power-On Self-Test) logic within the first clock cycle after reset deassertion.
@@ -103,7 +103,7 @@ The anchor value `0x47C0` appears on the `{uio_out, uo_out}` bus of all three TR
 ### Primary Archive
 
 - **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) — Permanent archive of all RTL snapshots, gate-level netlists, and synthesis reports for all three chips
-- **Shuttle:** TinyTapeout TTSKY26b, submitted 2026-05-19 06:59 +07:00; all three chips carry status "Submitted"
+- **Shuttle:** TinyTapeout TTSKY26b, submission closed 2026-05-18 UTC (i.e. 2026-05-19 06:59 +07); all three chips carry status "Submitted" on the [shuttle registry](https://tinytapeout.com/chips/ttsky26b/)
 
 ### GitHub Organization
 
@@ -111,9 +111,9 @@ All RTL is published under the `gHashTag` GitHub organization, Apache-2.0:
 
 | Repository | Chip | Top Module | TinyTapeout # |
 |------------|------|-----------|---------------|
-| `github.com/gHashTag/tt-gf16-euler` | E Euler | `tt_um_ghtag_trinity_gf16` | #4915 |
-| `github.com/gHashTag/tt-trinity-phi` | Φ Phi | `tt_um_trinity_nano` | #4914 |
-| `github.com/gHashTag/tt-trinity-gamma` | Γ Gamma | `tt_um_trinity_max_true` | #4913 |
+| `github.com/gHashTag/tt-gf16-euler` | E Euler | `tt_um_ghtag_trinity_gf16` | #558 |
+| `github.com/gHashTag/tt-trinity-phi` | Φ Phi | `tt_um_trinity_nano` | #198 |
+| `github.com/gHashTag/tt-trinity-gamma` | Γ Gamma | `tt_um_trinity_max_true` | #750 |
 
 ### Reproduction Instructions
 
@@ -157,13 +157,13 @@ Physical silicon (SKY130A 130 nm)
 On-chain DePIN audit trail (Base L2)
 ```
 
-Every link in this chain is open, reproducible, and verifiable. The 84 Coq theorems in the TRINITY proof base (Rocq 9.1.1, `github.com/gHashTag/t27`) establish the mathematical foundation; the Verilog modules are direct RTL implementations of those theorems.
+Every link in this chain is open and reproducible. The `t27/proofs/trinity/` Coq base (Coq 8.19+/Rocq 9.0+, `github.com/gHashTag/t27`) machine-checks the φ-identity and certified-bounds **mathematical core** (see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md) for the exact build and the honest `Qed.`/`Admitted` ledger); the Verilog modules are RTL implementations whose composition correctness is established by **simulation** `[SIMULATED]`, not by those theorems.
 
 ### TA1 (Argumentation & Reasoning) Implications
 
 The Euler chip makes TA1 compliance physically instantiated:
 
-- **Gap 2 (`k3_alu`):** Kleene K3 ternary ALU is not simulated — it is a gate-level implementation running at ~50 MHz on SKY130A. Every K3 operation (AND, OR, NOT, IMPLIES, EQUIV) executes in a single clock cycle.
+- **Gap 2 (`k3_alu`):** Kleene K3 ternary ALU is implemented as gate-level RTL with a target of ~50 MHz on SKY130A [PROJECTED — static-timing target, not yet measured on returned silicon]. Every K3 operation (AND, OR, NOT, IMPLIES, EQUIV) completes in a single clock cycle in simulation [MEASURED in simulation].
 - **Gap 4 (`restraint_ctrl`):** Bounded rationality is enforced in hardware. The UNKNOWN→FALSE safe-fallback path cannot be bypassed by software.
 - **Gap 5 (`explainability_unit`):** Proof traces are generated by a dedicated hardware unit, not a software routine. The ≤10-step bound is enforced at the register-transfer level.
 - **Gap 9 (`sat_solver_mini`):** DPLL SAT solving in silicon provides a primitive that cannot be subverted by adversarial software.
@@ -205,7 +205,7 @@ All 246 Verilog RTL modules across the three TRI-NET chips (51 in Phi, 90 in Eul
 
 **Permanent archive:** [https://doi.org/10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
 
-**TinyTapeout shuttle:** TTSKY26b — [https://tinytapeout.com/runs/ttsky26b](https://tinytapeout.com/runs/ttsky26b)
+**TinyTapeout shuttle:** TTSKY26b — [https://tinytapeout.com/chips/ttsky26b/](https://tinytapeout.com/chips/ttsky26b/)
 
 **CLARA proposal repository:** [https://github.com/gHashTag/trinity-clara](https://github.com/gHashTag/trinity-clara)
 

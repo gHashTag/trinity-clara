@@ -32,10 +32,10 @@ The DARPA CLARA PA-25-07-02 proposal underwent a comprehensive 9-phase enhanceme
 
 **Problem:** Proposal claimed "ASP with NAF is polynomial" — technically misleading since ASP is NP-hard in general.
 
-**Fix:**
-- Renamed Theorem 4 to "Bounded ASP Executes in O(1) Constant Time"
-- Added explanation: MAX_CLAUSES=256 makes it O(1) constant time
-- Framed as deliberate design choice for verifiability
+**Fix (SUPERSEDED 2026-05-29 — see PROJECT-AUDIT.md A-3 / CLAIMS-LEDGER.md X-1):**
+- ~~Renamed Theorem 4 to an O(1) constant-time claim~~ — this was incorrect: ASP is NP-hard and bounding the input size does not change its complexity class.
+- Theorem 4 is now stated as a **bounded-termination** guarantee (MAX_CLAUSES=256, MAX_ITERATIONS=1000), with **no** asymptotic-complexity-class claim.
+- Framed as a deliberate design choice for verifiability and predictable worst-case latency.
 
 **Impact:** Technical reviewers will see accurate complexity analysis.
 

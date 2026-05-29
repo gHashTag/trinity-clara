@@ -520,7 +520,7 @@ limitations under the License.
 **Document Version:** 1.0
 **Last Updated:** April 5, 2026
 **Related Specifications:**
-- `specs/ar/composition.t27` (622 lines)
+- `specs/ar/composition.t27` (674 lines)
 - `specs/ar/ternary_logic.t27` (717 lines)
 - `specs/ar/restraint.t27` (553 lines)
 - `specs/ar/proof_trace.t27` (186 lines)

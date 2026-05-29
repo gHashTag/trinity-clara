@@ -105,9 +105,15 @@ Realistic defense COA planning requires ~50-120 clauses for core tasks: fuel con
 
 **Proof:** `MAX_STEPS=10` enforced at compile-time. `append_step()` triggers restraint when exceeded. Invariant `trace_bounded_by_clara` proves all traces ≤10 steps (CLARA FAQ 7 compliant).
 
-### Theorem 4: Bounded ASP Executes in O(1) Constant Time
+### Theorem 4: Bounded ASP Terminates in a Fixed Number of Steps
 
-**Proof:** While ASP is NP-hard in general, TRINITY's bounded variant executes in O(1) constant time via MAX_CLAUSES=256. The `evaluate_naf()` operation is O(n) over the bounded domain, and fixed-point iteration is guaranteed by MAX_ITERATIONS=1000. This deliberate boundedness enables formal verification, predictable performance, and compliance with CLARA's restraint requirement.
+**Claim:** ASP is NP-hard in general, and we make **no** claim about its asymptotic complexity
+class. Instead, TRINITY restricts ASP to a fixed fragment bounded by `MAX_CLAUSES=256` and
+`MAX_ITERATIONS=1000`, which is **guaranteed to terminate in a bounded number of steps** for any
+admissible input. `evaluate_naf()` is linear over the bounded domain, and fixed-point iteration
+terminates by the iteration cap. This deliberate boundedness — not a complexity-class claim —
+is what enables formal verification, predictable worst-case latency, and compliance with CLARA's
+restraint requirement. (See `CLAIMS-LEDGER.md` row X-1.)
 
 ### Theorem 5: Trit-K3 Isomorphism Preserves Semantics
 
@@ -121,7 +127,7 @@ Realistic defense COA planning requires ~50-120 clauses for core tasks: fuel con
 
 The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Chimera v1.0, 2,400+ lines) generates φ-parametrized candidates, AR (Coq 9.1.1, 8,000+ lines) certifies numerical bounds via interval tactics.
 
-**Compilation Status:** 13/13 files compiled with zero errors, **84 Coq theorems** verify mathematical core (φ identities, physics constants). ML+AR composition verified via .t27→Verilog semantic preservation path with formal correctness guarantees—providing end-to-end verification where 84 theorems establish foundational mathematical correctness and compilation ensures compositional integrity.
+**Compilation Status:** 13/13 files compile with zero errors [MEASURED]; **84 Coq theorems** prove the mathematical core (φ identities, physics constants) [PROVEN]. ML+AR composition is checked via the .t27→Verilog lowering path and RTL **simulation** — i.e. compilation confirms the files type-check and lower, but composition correctness is established by simulation, **not** by a formal proof [SIMULATED]. (Across the wider program, `trinity-s3ai` carries 1,325 machine-checked `Qed.` theorems; see CLAIMS-LEDGER.md F-1.)
 
 **Smoking Gun Results (Δ<0.01%):**
 - Q07: $m_s/m_d = 8\cdot3\cdot\pi^{-1}\cdot\varphi^2 = 20.000$ (Δ=0.0015%)
@@ -130,7 +136,7 @@ The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Ch
 
 **Composition Flow:** ML generates candidates → AR certifies via Coq interval tactics → 9 theorems verified with 50-digit precision bounds. The L1-L7 hierarchical structure maps derivation complexity to proof complexity (exactly 7 levels, satisfying CLARA depth ≤10).
 
-**Reprocibility:** `git clone https://github.com/gHashTag/t27.git && cd proofs && make` → 13/13 files compile successfully.
+**Reproducibility:** see [`REPRODUCIBILITY.md`](../REPRODUCIBILITY.md) for the exact, verified build — `opam install coq coq-interval`, then `coq_makefile -f _CoqProject -o CoqMakefile && make` over the 13-file `t27/proofs/trinity/` set — with an honest `Qed.`/`Admitted` count.
 
 ### Section 4.6: Adversarial Robustness — Unique Differentiator
 
@@ -154,7 +160,7 @@ The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Ch
 - **Explanation Length:** 7.2 steps avg (all ≤10, CLARA compliant)
 - **Resource Usage:** 1.2W avg, 1.8W peak
 
-**Comparison:** TRINITY achieves comparable accuracy to DeepProbLog (95.1%) with polynomial-time guarantees vs. exponential worst-case, provides adversarial robustness where DeepProbLog has none, and deterministic latency vs. unbounded GPU systems.
+**Comparison:** On this synthetic benchmark TRINITY reaches 94.2% accuracy [SYNTHETIC] with bounded-step execution and deterministic latency. We do **not** assert a head-to-head number against DeepProbLog here: the prior "DeepProbLog 95.1%" figure was unsourced and has been removed pending a citable benchmark on a comparable task. *Falsification path:* this result would be disconfirmed if accuracy on a real (non-synthetic) COA dataset falls materially below the synthetic figure.
 
 ### Silicon Implementation: TRI-NET Three-Chip Stack
 
@@ -162,11 +168,11 @@ As of May 2026, the TRINITY CLARA architecture has been implemented in **open si
 
 | Chip | Top Module | TinyTapeout # | Tiles | Specialization |
 |------|-----------|---------------|-------|---------------|
-| Φ Phi | `tt_um_trinity_nano` | #4914 | 1×1 | Identity layer: root-of-trust, Lucas POST, HWRNG, CLARA Gap-4 restraint |
-| E Euler | `tt_um_ghtag_trinity_gf16` | #4915 | 8×2 | Verification layer: symbolic AI (SAT/ASP/Datalog/K3), **all 10 CLARA gaps** |
-| Γ Gamma | `tt_um_trinity_max_true` | #4913 | 8×4 | Inference layer: 8 cortical LIF columns, 20-PE GF16 mesh, FHRR VSA |
+| Φ Phi | `tt_um_trinity_nano` | #198 | 1×1 | Identity layer: root-of-trust, Lucas POST, HWRNG, CLARA Gap-4 restraint |
+| E Euler | `tt_um_ghtag_trinity_gf16` | #558 | 8×2 | Verification layer: symbolic AI (SAT/ASP/Datalog/K3), **all 10 CLARA gaps** |
+| Γ Gamma | `tt_um_trinity_max_true` | #750 | 8×4 | Inference layer: 8 cortical LIF columns, 20-PE GF16 mesh, FHRR VSA |
 
-This is the **first known hardware implementation of the full DARPA CLARA 10-gap safety lattice in open silicon**. Every gap maps to a synthesizable Verilog module in Euler (Project #4915):
+To the authors' knowledge, no prior open-silicon implementation of the full DARPA CLARA 10-gap safety lattice has been published [Open conjecture — no exhaustive survey performed; falsification path: a single counter-example of an earlier open-silicon CLARA-gap implementation refutes this]. Every gap maps to a synthesizable Verilog module in Euler (Project #558):
 
 | CLARA Gap | Verilog Module | DARPA TA Alignment |
 |-----------|---------------|--------------------|
@@ -183,7 +189,7 @@ This is the **first known hardware implementation of the full DARPA CLARA 10-gap
 
 All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset — a value derivable from first principles via Theorem 36.1 (φ²+φ⁻²=3 → Lucas L₂=3 → dot4(1,2,3,4)=0x47C0). Each chip proves the identity independently on power-on, providing a mathematically verifiable binding across the three dies. This cross-die anchor is the concrete hardware realization of the formal verification chain described in Theorems 1–5 above.
 
-**Significance for DARPA TA1/TA2:** The path from formal `.t27` specification to synthesized gate-level Verilog is now complete and committed to silicon. DARPA reviewers can reproduce the full stack by cloning the Apache-2.0 RTL repositories and resubmitting to any OpenMPW-compatible shuttle. The DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) archives all RTL snapshots and gate-level netlists.
+**Significance for DARPA TA1/TA2:** The path from formal `.t27` specification to synthesized gate-level Verilog is complete, and the GDS-II has been submitted to fabrication on the TTSKY26b shuttle (status "Submitted"; dies not yet returned — est. delivery 2026-12-20). [SUBMITTED to fab — pre-silicon; not yet validated on returned dies.] DARPA reviewers can reproduce the full stack by cloning the Apache-2.0 RTL repositories and resubmitting to any OpenMPW-compatible shuttle. The DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) archives all RTL snapshots and gate-level netlists.
 
 **Performance projection (Euler chip, ternary compute core):** ~1 GOPS @ ~50 MHz @ ~1 W ternary (projected).
 
@@ -219,7 +225,7 @@ TRINITY's energy claims use standardized measurement (XC7A100T @ 92 MHz, Vivado 
 | ≥2 AR Kinds (Phase 2) | 3 AR kinds | `specs/ar/` directory |
 | ≥1 ML Kind (Phase 1) | 3 ML kinds (Neural, Bayesian, RL) | `specs/nn/`, `specs/numeric/`, `specs/queen/` |
 | ≥2 ML Kinds (Phase 2) | 3 ML kinds | Above |
-| Compositional API | 4 patterns with `compose()` | `specs/ar/composition.t27` (622 lines) |
+| Compositional API | 4 patterns with `compose()` | `specs/ar/composition.t27` (674 lines) |
 | Polynomial guarantee | O(1) K3, O(n) forward chain, O(10) trace | Theorems 1-4 above |
 | Explainability | ≤10 step traces, 3 formats | `specs/ar/explainability.t27` (476 lines) |
 | Restraint | Quality-level bounded execution | `specs/ar/restraint.t27` (553 lines) |
@@ -274,7 +280,7 @@ TRINITY's energy claims use standardized measurement (XC7A100T @ 92 MHz, Vivado 
 
 ### Section 8.5: Hardware Verification Methodology
 
-TRINITY's energy efficiency claims (target: 42× vs. standard GPU) use standardized measurement: QMTech XC7A100T FPGA at 92 MHz, on-board power sensor (Vivado power analyzer), baseline comparison. Current measurement: 63 tok/s @ 1.2W (19 mJ/token) vs. NVIDIA Jetson Orin (50W baseline) showing 0.67 tok/s @ 33,333 mJ/token = **49× improvement** on legacy hardware. Compared to 2024-2025 state-of-art: BitNet b1.58 shows 10-100×, MatMul-free shows 10×; TRINITY's K3-native operations provide additional efficiency through hardware specialization. Context: measurements establish conservative estimate for Phase 1; contemporary accelerators (Versal, Agilex) projected to achieve even higher efficiency.
+TRINITY's energy-efficiency target is **42×** vs. a standard GPU baseline; the **measured** value on legacy hardware is **49×** [MEASURED, prototype]. Measurement setup: QMTech XC7A100T FPGA at 92 MHz, on-board power sensor (Vivado power analyzer). Current measurement: 63 tok/s @ 1.2W (19 mJ/token) vs. NVIDIA Jetson Orin (50W baseline) at 0.67 tok/s @ 33,333 mJ/token = 49× on legacy hardware. (The 42× figure is the conservative *target*; 49× is the observed prototype result — see CLAIMS-LEDGER.md H-1. Do not quote either number without this methodology.) Compared to 2024-2025 state-of-art: BitNet b1.58 shows 10-100×, MatMul-free shows 10×; TRINITY's K3-native operations provide additional efficiency through hardware specialization. Context: measurements establish conservative estimate for Phase 1; contemporary accelerators (Versal, Agilex) projected to achieve even higher efficiency.
 
 ---
 
@@ -283,9 +289,9 @@ TRINITY's energy efficiency claims (target: 42× vs. standard GPU) use standardi
 [1] Kleene, S.C. (1952). *Introduction to Metamathematics*. Amsterdam: North-Holland Publishing.
 [2] Grosof, B. et al. (2003). "A Roadmap for Rules and RuleML." *IEEE Intelligent Systems* 18(2): 113-126.
 [3] Domingos, P. et al. (2026). "Tensor Logic." *arXiv:2601.17188*.
-[4] Manhaeve, R. et al. (2018). "CTSketch: Deep Compositional Reasoning." *NeurIPS 2018*.
-[5] Liang, P. et al. (2018). "DeepProbLog: Simple Differentiable Logic." *NeurIPS 2018*.
-[6] REASON Team (2026). "Neuro-Symbolic Integration for Explainable AI." arXiv:2601.20784.
+[4] Choi, S., Solko-Breslin, A., Alur, R., Wong, E. (2025). "CTSketch: Compositional Tensor Sketching for Scalable Neurosymbolic Learning." *NeurIPS 2025*. arXiv:2503.24123.
+[5] Manhaeve, R., Dumančić, S., Kimmig, A., Demeester, T., De Raedt, L. (2018). "DeepProbLog: Neural Probabilistic Logic Programming." *NeurIPS 2018*: 3753–3763.
+[6] *[Citation removed pending verification — the previously listed "REASON Team (2026), arXiv:2601.20784" did not resolve to a real publication. Do not cite until a verified source is confirmed.]*
 [7] Agrawal et al. (2019). "DLFloat: A Deep Learning Framework for Neural Networks with Dynamic Homogeneous Stochastic Rounding." *ACL 2019*.
 [8] Ma, S. et al. (2024). "The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits." *arXiv:2402.17764*.
 [9] Zhu, Z. et al. (2024). "Scalable MatMul-free Language Modeling." *arXiv:2406.02528*.

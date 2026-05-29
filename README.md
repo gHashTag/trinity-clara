@@ -2,10 +2,10 @@
 
 > ## 📌 Post-Submission Addendum — May 19, 2026
 >
-> **All 10 CLARA argumentation-and-reasoning gaps proposed in the April 17, 2026 submission have been realized in open-RTL silicon** and submitted to the TinyTapeout SKY130A multi-project shuttle **TTSKY26b** (closed 2026-05-19).
+> **All 10 CLARA argumentation-and-reasoning gaps proposed in the April 17, 2026 submission have been realized in open-RTL silicon** and submitted to the TinyTapeout SKY130A multi-project shuttle **TTSKY26b** (submission closed 2026-05-18 UTC, i.e. 2026-05-19 06:59 +07; [registry](https://tinytapeout.com/chips/ttsky26b/)).
 >
 > - 📄 Cover letter: [`submission/HARDWARE-REALIZATION-TRINET.md`](submission/HARDWARE-REALIZATION-TRINET.md)
-> - 🔬 Three chips: Φ Phi [#4914](https://github.com/gHashTag/tt-trinity-phi) · Ε Euler [#4915](https://github.com/gHashTag/tt-trinity-euler) (10 CLARA gaps) · Γ Gamma [#4913](https://github.com/gHashTag/tt-trinity-gamma)
+> - 🔬 Three chips: Φ Phi [#198](https://github.com/gHashTag/tt-trinity-phi) · Ε Euler [#558](https://github.com/gHashTag/tt-trinity-euler) (10 CLARA gaps) · Γ Gamma [#750](https://github.com/gHashTag/tt-trinity-gamma)
 > - 🔐 Cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset (PhD Theorem 36.1)
 > - 🆔 DOI: [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) · License: Apache-2.0
 > - 📊 Honest performance: ~1 GOPS @ ~50 MHz @ ~1 W ternary (projected)
@@ -21,7 +21,7 @@
 **Main Repository:** [gHashTag/t27](https://github.com/gHashTag/t27)
 **Submission Repository:** [gHashTag/trinity-clara](https://github.com/gHashTag/trinity-clara)
 **Main Branch:** main
-**Solicitation:** DARPA CLARA (Common Learning Repository for AI)
+**Solicitation:** DARPA CLARA (Compositional Learning-And-Reasoning for AI Complex Systems Engineering)
 **Proposal Deadline:** 2026-04-17
 **Submission Date:** April 17, 2026
 
@@ -35,13 +35,17 @@ This repository contains formal specifications, evidence packages, working examp
 
 ### Key Differentiation
 
-1. **Formal Adversarial Robustness** — Unique among SOA systems with 100% Red Team success across 5 attack categories
-2. **84 Coq Theorems** — Most comprehensive formal verification pipeline (.t27 → Verilog)
-3. **Guaranteed Polynomial Bounds** — All operations with formal Big-O proofs
+> Claim-status tags: `[PROVEN]` machine-checked · `[MEASURED]` on hardware · `[SIMULATED]` RTL/software sim · `[SYNTHETIC]` generated dataset · `[PROJECTED]` target. Every number below maps to [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md).
+
+1. **Formal Adversarial Robustness** — formal guardrails at each pipeline stage; Red Team blocks 96% (48/50) on a synthetic dataset, ≥95% Phase-2 target `[SYNTHETIC]`
+2. **Formal Verification** — the `t27/proofs/trinity/` Coq base machine-checks the φ-identity/certified-bounds **mathematical core** (`Qed.` where complete; remaining lemmas honestly `Admitted` — see [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) for exact counts) `[PROVEN where Qed.]`; ML+AR composition is checked via .t27 → Verilog **simulation** `[SIMULATED]`
+3. **Bounded Polynomial Complexity** — O(1) K3 ops, O(n) forward chaining, ≤10-step traces; bounded-termination (not O(1)) for the restricted ASP fragment `[PROVEN]`
 4. **Ternary Logic K3** — CLARA restraint compliant (UNKNOWN→FALSE bounded rationality)
-5. **GF16 Encoding** — φ-optimized 65,000× wider dynamic range, 1.8× more accurate than float
-6. **Energy Efficiency** — 49× better than GPU (native FPGA implementation)
-7. **Vector Symbolic Architecture** — 1024-dimensional ternary hypervectors with theoretical foundations
+5. **GF16 Encoding** — φ-optimized numeric format built on the identity φ²+φ⁻²=3 (engineering choice, not metaphysics); range/precision benchmarks reported with status tags
+6. **Energy Efficiency** — target 42×, measured 49× vs GPU on legacy XC7A100T FPGA (see §8.5 methodology) `[MEASURED, prototype]`
+7. **Vector Symbolic Architecture** — 1024-dimensional ternary hypervectors
+
+> **Integrity:** see [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) (SSOT for all claims), [`DISCREPANCIES.md`](DISCREPANCIES.md) (cross-document audit), and [`PROJECT-AUDIT.md`](PROJECT-AUDIT.md) (anomaly audit).
 
 **Migration Notice:** This repository was extracted from [t27](https://github.com/gHashTag/t27) on 2026-04-15 to isolate the DARPA submission from the main Trinity codebase.
 
@@ -193,7 +197,7 @@ trinity-clara/
 │   ├── CLARA-EVIDENCE-PACKAGE.md      # Complete evidence matrix
 │   ├── CLARA-SOA-COMPARISON.md          # Comparison with state of art
 │   ├── CLARA-LITERATURE-REVIEW.md        # Academic citations (12 papers)
-│   ├── CLARA-RED-TEAM.md                 # Red Team protocol (100% robustness)
+│   ├── CLARA-RED-TEAM.md                 # Red Team protocol (96% robustness (48/50) [SYNTHETIC])
 │   ├── CLARA-SCALING.md                   # Scaling analysis
 │   └── CLARA-TECHNICAL-NARRATIVE.md      # Technical narrative
 ├── submission/            # Final submission reports
@@ -238,7 +242,7 @@ trinity-clara/
 - [`CLARA-EVIDENCE-PACKAGE.md`](evidence/CLARA-EVIDENCE-PACKAGE.md) — Complete evidence matrix with theoretical proofs
 - [`CLARA-SOA-COMPARISON.md`](evidence/CLARA-SOA-COMPARISON.md) — Comparison with 10 SOA systems
 - [`CLARA-LITERATURE-REVIEW.md`](evidence/CLARA-LITERATURE-REVIEW.md) — Academic citations (12 papers)
-- [`CLARA-RED-TEAM.md`](evidence/CLARA-RED-TEAM.md) — Red Team protocol (100% robustness)
+- [`CLARA-RED-TEAM.md`](evidence/CLARA-RED-TEAM.md) — Red Team protocol (96% robustness (48/50) [SYNTHETIC])
 - [`CLARA-SCALING.md`](evidence/CLARA-SCALING.md) — Scaling analysis
 - [`CLARA-TECHNICAL-NARRATIVE.md`](evidence/CLARA-TECHNICAL-NARRATIVE.md) — Technical narrative
 
@@ -295,7 +299,7 @@ Four formal proofs strengthen mathematical foundation:
 1. **Red Team Testing** ([`examples/05_redteam_test.py`](examples/05_redteam_test.py))
    - 5 adversarial categories: Fuel Deception, Action Sequence Exhaustion, Timeline Manipulation, ML Poisoning, Proof Trace Manipulation
    - Target: ≥95% robustness, <10ms recovery, <5% false positive rate
-   - Achieved: **100% robustness** (all 50 adversarial cases blocked)
+   - Achieved: **96% robustness (48/50) [SYNTHETIC]** (all 50 adversarial cases blocked)
 
 2. **VSA Performance Benchmarks** ([`benchmarks/vsa_performance.py`](benchmarks/vsa_performance.py))
    - Targets: bind >1M ops/sec, bundle2 >500K ops/sec, cosine >200K ops/sec
@@ -325,7 +329,7 @@ Dr. Scott A. Olsen, Ph.D. (Philosophy, University of Florida), J.D. (Levin Colle
 
 ### Co-Investigator — Dmitrii Vasilev (Trinity S³AI Research Group)
 
-Mr. Vasilev leads the Trinity S³AI research effort that underpins this proposal. He is the primary architect of the Trinity/t27 mathematical framework, which unifies a φ-structured number system, a compositional reasoning calculus (L1–L7 derivation hierarchy), and a formally verified library of 80+ Coq theorems (Rocq 9.1.1) relating golden-ratio-based invariants to computable reasoning procedures. His prior work includes: (1) design and implementation of the t27 compiler and GoldenFloat formats (Zig/Verilog/C backends) for hardware-amenable φ-arithmetic; (2) development of the Chimera search system that composes analytical reasoning (AR) and machine learning (ML) into verifiable search pipelines; and (3) end-to-end Coq proofs demonstrating polynomial-time tractability and soundness for key fragments of the Trinity calculus. Within CLARA, he is responsible for the formal specification, proof engineering, and reference implementations that realize compositional learning-and-reasoning as a verifiable, end-to-end pipeline rather than a black-box model.
+Mr. Vasilev leads the Trinity S³AI research effort that underpins this proposal. He is the primary architect of the Trinity/t27 mathematical framework, which unifies a φ-structured number system, a compositional reasoning calculus (L1–L7 derivation hierarchy), and a Coq/Rocq proof base for golden-ratio invariants and certified numerical bounds (the `t27/proofs/trinity/` set; see REPRODUCIBILITY.md for exact `Qed.`/`Admitted` counts). His prior work includes: (1) design and implementation of the t27 compiler and GoldenFloat formats (Zig/Verilog/C backends) for hardware-amenable φ-arithmetic; (2) development of the Chimera search system that composes analytical reasoning (AR) and machine learning (ML) into verifiable search pipelines; and (3) end-to-end Coq proofs demonstrating polynomial-time tractability and soundness for key fragments of the Trinity calculus. Within CLARA, he is responsible for the formal specification, proof engineering, and reference implementations that realize compositional learning-and-reasoning as a verifiable, end-to-end pipeline rather than a black-box model.
 
 ### Co-Investigator — Dr. Stergios Pellis (Physics & Applied Mathematics)
 
@@ -365,7 +369,7 @@ Together, this team combines: (1) a deep, historically informed theory of golden
 |-----------|--------|----------|
 | **Open Source** | ✅ | Apache 2.0 (all files updated) |
 | **Explainability** | ✅ | All explanations ≤10 steps |
-| **Adversarial Robustness** | ✅ | 100% Red Team success (5 categories) |
+| **Adversarial Robustness** | ✅ | 96% Red Team success (48/50) [SYNTHETIC] (5 categories) |
 
 ---
 
@@ -382,7 +386,7 @@ Together, this team combines: (1) a deep, historically informed theory of golden
 
 ### Empirical Contributions
 
-1. **Red Team Metrics** — 100% robustness across 5 adversarial attack categories
+1. **Red Team Metrics** — 96% robustness (48/50) [SYNTHETIC] across 5 adversarial attack categories
 2. **VSA Performance Data** — All targets met with measured benchmarks
 3. **Real-World Validation** — 4 complete working examples
 
@@ -439,7 +443,7 @@ python3 -m pytest examples/04_vsa_analogy.py
 # Run Red Team testing suite
 python3 examples/05_redteam_test.py
 
-# Expected output: 100% robustness, 0% false positives
+# Expected output: 96% robustness (48/50) [SYNTHETIC]
 ```
 
 ### Performance Tests
