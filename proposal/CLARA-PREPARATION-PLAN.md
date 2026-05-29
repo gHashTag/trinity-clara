@@ -8,7 +8,7 @@
 
 ## Overview
 
-This document maps T27 Trinity S³AI specifications to DARPA CLARA (Common Learning Repository for AI) TA1 and TA2 deliverables. It serves as the submission checklist for the April 17, 2026 deadline.
+This document maps T27 Trinity S³AI specifications to DARPA CLARA (Compositional Learning-And-Reasoning for AI Complex Systems Engineering) TA1 and TA2 deliverables. It serves as the submission checklist for the April 17, 2026 deadline.
 
 **CLARA Focus:**
 - **TA1 (Technical Area 1):** Argumentation & Reasoning (AR) formal specifications with bounded proof traces

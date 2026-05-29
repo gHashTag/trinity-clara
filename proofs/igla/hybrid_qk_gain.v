@@ -42,7 +42,7 @@
    discharged in real Rocq -- this file ships under R5.
    ================================================================ *)
 
-Require Import Stdlib.Reals.Reals.
+Require Import Coq.Reals.Reals.
 Require Import CorePhi.
 Open Scope R_scope.
 

@@ -22,42 +22,87 @@ jobs:
     name: "coqc INV-1..5 (L-R14 Gate)"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Pinned upstream Coq image (8.20.1). The stdlib logical prefix on the
+    # 8.20 line is `Coq.*` (the `Coq.` → `Stdlib.` rename only becomes the
+    # default in Rocq 9.0). The IGLA proofs in proofs/igla/ therefore use
+    # `Require Import Coq.Reals.Reals` / `Coq.micromega.Lra`; importing
+    # `Stdlib.Reals.Reals` fails here with "Cannot find a physical path bound
+    # to logical path Stdlib.Reals.Reals", which is why this gate was red.
+    container:
+      image: coqorg/coq:8.20.1
+      options: --user root
+
+    # The coqorg/coq image installs Coq through opam under the `coq` user's
+    # opam root (/home/coq/.opam). Running the container as root (needed so the
+    # checkout step can write the /__w workspace) means the default opam root
+    # (/root/.opam) is empty, so `coqc` is not found (exit 127). Point opam at
+    # the coq user's root via OPAMROOT and invoke tools through `opam exec --`,
+    # which prepends the switch bin to PATH for that command.
+    env:
+      OPAMROOT: /home/coq/.opam
+      OPAMYES: "true"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Coq
+      - name: Coq version
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y coq
-          coqc --version
+          opam switch list
+          opam exec -- coqc --version
 
-      - name: INV-1 — lr_phi_optimality (BPB decreases with real gradient)
-        run: coqc proofs/igla/lr_phi_optimality.v
+      # All INV files Require Import CorePhi and use the `-R . IGLA` load path
+      # declared in proofs/igla/_CoqProject, so build CorePhi first and compile
+      # every invariant with that load path. Compiling a single file in
+      # isolation (no -R, no CorePhi.vo) fails to resolve the local modules.
+      - name: Compile INV-0..5 (L-R14 invariants)
+        working-directory: proofs/igla
+        run: |
+          set -x
+          opam exec -- coqc -R . IGLA CorePhi.v             # INV-0 φ² + φ⁻² = 3 core
+          opam exec -- coqc -R . IGLA lr_convergence.v      # INV-1 BPB decreases w/ real gradient
+          opam exec -- coqc -R . IGLA igla_asha_bound.v     # INV-2 champion survives, threshold=3.5
+          opam exec -- coqc -R . IGLA gf16_precision.v      # INV-3 error < φ⁻⁶ for d_model≥256
+          opam exec -- coqc -R . IGLA nca_entropy_band.v    # INV-4 entropy ∈ [1.5, 2.8]
+          opam exec -- coqc -R . IGLA lucas_closure_gf16.v  # INV-5 GF16 algebraically consistent
 
-      - name: INV-2 — igla_asha_bound (champion survives, threshold=3.5)
-        run: coqc proofs/igla/igla_asha_bound.v
-
-      - name: INV-3 — gf16_precision (error < φ⁻⁶ for d_model≥256)
-        run: coqc proofs/igla/gf16_precision.v
-
-      - name: INV-4 — nca_entropy_band (entropy ∈ [1.5, 2.8])
-        run: coqc proofs/igla/nca_entropy_band.v
-
-      - name: INV-5 — lucas_closure_gf16 (GF16 algebraically consistent)
-        run: coqc proofs/igla/lucas_closure_gf16.v
+      # CLARA soundness proofs (proofs/clara_*.v) are standalone modules: they
+      # Require Import only the Coq standard library (Coq.Arith / Coq.Bool /
+      # Coq.Lists.List / Coq.micromega.Lia), with no local load path and no
+      # cross-dependency on the IGLA modules. Compile each one in isolation.
+      # Glob-driven so theorem-85 (clara_explainability_sound.v) is gated
+      # automatically once merged, without touching this workflow again.
+      # Every merged CLARA Coq theorem MUST be machine-checked here — a proof
+      # that lands on main but is not compiled by this gate is not "PROVEN".
+      # NB: GitHub's default `run` shell is `sh -e` (dash), which lacks `shopt`
+      # and bash arrays. Force bash so `nullglob` + array handling work.
+      - name: Compile CLARA soundness proofs (proofs/clara_*.v)
+        working-directory: proofs
+        shell: bash
+        run: |
+          set -x
+          shopt -s nullglob
+          clara_files=(clara_*.v)
+          if [ ${#clara_files[@]} -eq 0 ]; then
+            echo "❌ No proofs/clara_*.v files found — expected at least one"
+            exit 1
+          fi
+          for f in "${clara_files[@]}"; do
+            echo "--- coqc $f ---"
+            opam exec -- coqc "$f"
+          done
 
       - name: L-R14 Summary
         if: success()
         run: |
           echo "================================================"
           echo "✅ L-R14: ALL Coq invariants GREEN"
-          echo "✅ INV-1 lr_phi_optimality    — PROVEN"
+          echo "✅ INV-1 lr_convergence         — PROVEN"
           echo "✅ INV-2 asha_champion_survives — PROVEN"
           echo "✅ INV-3 gf16_safe_domain       — PROVEN"
           echo "✅ INV-4 nca_entropy_stability  — PROVEN"
           echo "✅ INV-5 lucas_closure_gf16     — PROVEN"
+          echo "✅ CLARA proofs/clara_*.v       — PROVEN"
           echo "φ² + φ⁻² = 3 | IGLA RACE v2 VALID"
           echo "================================================"
 
@@ -67,6 +112,6 @@ jobs:
           echo "================================================"
           echo "❌ L-R14 VIOLATED: Coq proof failed"
           echo "❌ RACE INVALID until all theorems compile"
-          echo "Fix: coqc proofs/igla/*.v must exit 0"
+          echo "Fix: (cd proofs/igla && coqc -R . IGLA <file>.v) must exit 0"
           echo "================================================"
           exit 1

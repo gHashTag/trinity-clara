@@ -1,7 +1,7 @@
 (* CorePhi.v — Minimal phi definitions for IGLA invariants (Rocq 9.1.1 compatible) *)
 (* Issue: https://github.com/gHashTag/trios/issues/143 *)
 
-Require Import Stdlib.Reals.Reals.
+Require Import Coq.Reals.Reals.
 Open Scope R_scope.
 
 (* Golden ratio phi = (1 + sqrt(5)) / 2 ≈ 1.6180339887 *)
