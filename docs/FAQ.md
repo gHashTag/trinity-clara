@@ -174,7 +174,7 @@ Actual throughput depends on specific FPGA device and implementation details.
 4. **Resource Poisoning** — Invalid resource states introduced
 5. **Proof Trace Manipulation** — Attempting to exceed step limit or manipulate trace
 
-Each category is tested with 50 test cases, achieving 100% robustness in current implementation.
+Each category is tested with 50 test cases, achieving 96% robustness (48/50) [SYNTHETIC] in current implementation.
 
 ### Q20: What is the recovery time after detecting an adversarial input?
 

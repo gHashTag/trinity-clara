@@ -2,7 +2,7 @@
 (* Closes L-CLARA-L1 of trios#562 — Strategy A (trivial proof). *)
 (* Anchor: phi^2 + phi^-2 = 3 · DOI 10.5281/zenodo.19227877 *)
 
-Require Import Stdlib.Reals.Reals.
+Require Import Coq.Reals.Reals.
 Require Import CorePhi.
 Open Scope R_scope.
 

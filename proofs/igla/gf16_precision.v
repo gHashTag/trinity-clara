@@ -1,7 +1,7 @@
 (* IGLA_GF16_Precision.v — Formal GF16 precision bounds for IGLA RACE *)
 (* Issue: https://github.com/gHashTag/trios/issues/143 *)
 
-Require Import Stdlib.Reals.Reals.
+Require Import Coq.Reals.Reals.
 Require Import CorePhi.
 Open Scope R_scope.
 

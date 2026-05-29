@@ -228,7 +228,7 @@ Performance Metrics:
 CLARA Differentiator: Formal adversarial robustness guarantees (unique among SOA)
 ```
 
-**Description:** Complete Red Team protection framework with 100% robustness
+**Description:** Complete Red Team protection framework with 96% robustness (48/50) [SYNTHETIC]
 
 ---
 

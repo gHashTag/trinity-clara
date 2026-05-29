@@ -2,7 +2,7 @@
 
 # CLARA TA1/TA2 Technical Narrative
 
-**Submission:** DARPA CLARA (Common Learning Repository for AI)
+**Submission:** DARPA CLARA (Compositional Learning-And-Reasoning for AI Complex Systems Engineering)
 **Submitter:** Trinity S³AI Project
 **Repository:** https://github.com/gHashTag/t27
 **Date:** April 8, 2026

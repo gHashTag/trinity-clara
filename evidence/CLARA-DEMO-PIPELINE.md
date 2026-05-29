@@ -506,7 +506,7 @@ limitations under the License.
 **Document Version:** 1.0
 **Last Updated:** April 5, 2026
 **Related Specifications:**
-- `specs/ar/composition.t27` (622 lines)
+- `specs/ar/composition.t27` (674 lines)
 - `specs/ar/proof_trace.t27` (186 lines)
 - `specs/ar/explainability.t27` (476 lines)
 - `specs/ar/datalog_engine.t27` (598 lines)
