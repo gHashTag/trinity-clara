@@ -32,40 +32,41 @@ jobs:
       image: coqorg/coq:8.20.1
       options: --user root
 
+    # The coqorg/coq image installs Coq through opam, so `coqc` is only on PATH
+    # once the opam environment is loaded. The image preloads that env for the
+    # default `coq` user via its profile, but `--user root` (needed so the
+    # checkout step can write the workspace) bypasses it, leaving `coqc` not
+    # found (exit 127). A login bash shell that runs `eval $(opam env --switch
+    # default --set-switch)` puts the opam switch bin on PATH for every step.
+    defaults:
+      run:
+        shell: bash --login -eo pipefail {0}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Coq version
-        run: coqc --version
+        run: |
+          eval $(opam env --switch default --set-switch 2>/dev/null) || eval $(opam env)
+          coqc --version
 
       # All INV files Require Import CorePhi and use the `-R . IGLA` load path
       # declared in proofs/igla/_CoqProject, so build CorePhi first and compile
       # every invariant with that load path. Compiling a single file in
       # isolation (no -R, no CorePhi.vo) fails to resolve the local modules.
-      - name: INV-0 — CorePhi (φ² + φ⁻² = 3 core, shared dependency)
+      # opam env is re-sourced per step because each step is a fresh shell.
+      - name: Compile INV-0..5 (L-R14 invariants)
         working-directory: proofs/igla
-        run: coqc -R . IGLA CorePhi.v
-
-      - name: INV-1 — lr_convergence (BPB decreases with real gradient)
-        working-directory: proofs/igla
-        run: coqc -R . IGLA lr_convergence.v
-
-      - name: INV-2 — igla_asha_bound (champion survives, threshold=3.5)
-        working-directory: proofs/igla
-        run: coqc -R . IGLA igla_asha_bound.v
-
-      - name: INV-3 — gf16_precision (error < φ⁻⁶ for d_model≥256)
-        working-directory: proofs/igla
-        run: coqc -R . IGLA gf16_precision.v
-
-      - name: INV-4 — nca_entropy_band (entropy ∈ [1.5, 2.8])
-        working-directory: proofs/igla
-        run: coqc -R . IGLA nca_entropy_band.v
-
-      - name: INV-5 — lucas_closure_gf16 (GF16 algebraically consistent)
-        working-directory: proofs/igla
-        run: coqc -R . IGLA lucas_closure_gf16.v
+        run: |
+          eval $(opam env --switch default --set-switch 2>/dev/null) || eval $(opam env)
+          set -x
+          coqc -R . IGLA CorePhi.v             # INV-0 φ² + φ⁻² = 3 core
+          coqc -R . IGLA lr_convergence.v      # INV-1 BPB decreases w/ real gradient
+          coqc -R . IGLA igla_asha_bound.v     # INV-2 champion survives, threshold=3.5
+          coqc -R . IGLA gf16_precision.v      # INV-3 error < φ⁻⁶ for d_model≥256
+          coqc -R . IGLA nca_entropy_band.v    # INV-4 entropy ∈ [1.5, 2.8]
+          coqc -R . IGLA lucas_closure_gf16.v  # INV-5 GF16 algebraically consistent
 
       - name: L-R14 Summary
         if: success()
