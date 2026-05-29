@@ -5,7 +5,7 @@
 
 **Solicitation:** DARPA CLARA PA-25-07-02 · TA1 (Argumentation & Reasoning) + TA2 (Composition)
 **Document Date:** May 2026
-**Author:** Dmitrii Vasilev <admin@t27.ai> (sole author)
+**Author of the RTL/proof artifacts:** Dmitrii Vasilev <admin@t27.ai> (Co-Investigator; PI of record: Dr. Scott A. Olsen — see [`CLARA-SUBMISSION-PACKAGE.md`](CLARA-SUBMISSION-PACKAGE.md) §Key Personnel).
 **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
 **License:** Apache-2.0
 
@@ -197,11 +197,11 @@ This projection is based on:
 
 **License:** Apache License 2.0 — [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-**Sole Author:** Dmitrii Vasilev <admin@t27.ai>
+**RTL/proof artifacts authored by:** Dmitrii Vasilev <admin@t27.ai> (Co-Investigator)
 
 **Copyright:** Copyright 2026 Dmitrii Vasilev
 
-All 246 Verilog RTL modules across the three TRI-NET chips (51 in Phi, 90 in Euler, 105 in Gamma) are the original work of a single author. There is no closed IP, no third-party proprietary cores, and no non-reproducible black-box components. The design is verifiable from the Coq proof base through to the physical gate-level netlist.
+All 246 Verilog RTL modules across the three TRI-NET chips (51 in Phi, 90 in Euler, 105 in Gamma) are the original work of D. Vasilev. There is no closed IP, no third-party proprietary cores, and no non-reproducible black-box components. The design is verifiable from the Coq proof base through to the physical gate-level netlist.
 
 **Permanent archive:** [https://doi.org/10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
 

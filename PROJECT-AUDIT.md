@@ -42,6 +42,23 @@ proposal (which budgets 2 PIs + 4 researchers), the personnel section, and basic
 PI with a clearly-labelled, *staffed-at-award* team (the cost proposal already implies this).
 Pick **one** canonical contact email. See `submission/KEY-PERSONNEL-REWRITE.md`.
 
+**RESOLVED 2026-05-29 (maintainer decision).** The submission uses a **contribution-based
+three-person model**, consistent with `README.md`, `submission/CLARA-SUBMISSION-PACKAGE.md`
+§Key Personnel, and `proposal/CLARA-COST-PROPOSAL.md` §1.1:
+
+| Person | Role | Contribution |
+|--------|------|--------------|
+| **Dr. Scott A. Olsen** | Principal Investigator | Golden-mean number-system theory / philosophical-mathematical grounding (per his published book work). |
+| **Dmitrii Vasilev** | Co-Investigator / technical lead | His own φ-arithmetic formulas, the Trinity/t27 framework, GF16 formats, and the TRI-NET RTL/silicon. |
+| **Dr. Stergios Pellis** | Co-Investigator | Phenomenological physics formulas. |
+
+All "sole author" / "single author" strings across the package have been **retired** (they
+contradicted the three-person team and the budgeted cost proposal). "Original work of
+D. Vasilev" is retained **only** for the RTL/proof artifacts he authored — a narrower, accurate
+statement, not a project-wide authorship claim. Canonical contact email for D. Vasilev is
+**`admin@t27.ai`** everywhere (the `bayotkwolpep9c@hotmail.com` address in the DePIN addendum was
+a one-off and has been replaced). Recorded as ledger entry **A-1** in `CLAIMS-LEDGER.md`.
+
 ---
 
 ## 🔴 A-2 — Fabricated / swapped bibliography citations
@@ -195,7 +212,7 @@ strings and unsourced superlatives.
 | 4 | A-3/A-10 | Retire "100%/most comprehensive/unique" in README | ✅ applied |
 | 5 | A-12 | Add claim-integrity CI gate | ✅ applied |
 | 6 | D-7 | Scope-guard banner on DePIN addendum | ✅ applied |
-| 7 | A-1 | Authorship reconciliation | ⏳ needs human decision (one PI + email) — flagged, not silently chosen |
+| 7 | A-1 | Authorship reconciliation | ✅ applied 2026-05-29 — three-person contribution model (Olsen PI / Vasilev Co-I / Pellis Co-I); all "sole author" strings retired; single email admin@t27.ai. Ledger A-1. |
 | 8 | A-6/A-9 | φ-as-engineering + falsification paths | ✅ doc-level (KEY-PERSONNEL-REWRITE + ledger); full propagation = follow-up |
 | 9 | A-8/A-11 | Source GF16 superlatives; badge cleanup | ⏳ follow-up (needs benchmark data) |
 
