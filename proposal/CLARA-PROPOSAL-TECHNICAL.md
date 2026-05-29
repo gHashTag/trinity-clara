@@ -105,9 +105,15 @@ Realistic defense COA planning requires ~50-120 clauses for core tasks: fuel con
 
 **Proof:** `MAX_STEPS=10` enforced at compile-time. `append_step()` triggers restraint when exceeded. Invariant `trace_bounded_by_clara` proves all traces ≤10 steps (CLARA FAQ 7 compliant).
 
-### Theorem 4: Bounded ASP Executes in O(1) Constant Time
+### Theorem 4: Bounded ASP Terminates in a Fixed Number of Steps
 
-**Proof:** While ASP is NP-hard in general, TRINITY's bounded variant executes in O(1) constant time via MAX_CLAUSES=256. The `evaluate_naf()` operation is O(n) over the bounded domain, and fixed-point iteration is guaranteed by MAX_ITERATIONS=1000. This deliberate boundedness enables formal verification, predictable performance, and compliance with CLARA's restraint requirement.
+**Claim:** ASP is NP-hard in general, and we make **no** claim about its asymptotic complexity
+class. Instead, TRINITY restricts ASP to a fixed fragment bounded by `MAX_CLAUSES=256` and
+`MAX_ITERATIONS=1000`, which is **guaranteed to terminate in a bounded number of steps** for any
+admissible input. `evaluate_naf()` is linear over the bounded domain, and fixed-point iteration
+terminates by the iteration cap. This deliberate boundedness — not a complexity-class claim —
+is what enables formal verification, predictable worst-case latency, and compliance with CLARA's
+restraint requirement. (See `CLAIMS-LEDGER.md` row X-1.)
 
 ### Theorem 5: Trit-K3 Isomorphism Preserves Semantics
 

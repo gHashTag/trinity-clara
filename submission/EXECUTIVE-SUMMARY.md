@@ -48,13 +48,13 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 ## Differentiation
 
 1. **Formal Adversarial Robustness** — Unique among SOA systems
-   - Red Team protocol achieves 100% robustness against 5 adversarial categories
+   - Red Team protocol blocks 96% of adversarial variants (48/50) on a synthetic dataset; ≥95% is the Phase-2 target [SYNTHETIC]
    - Formal guardrails at each pipeline stage
-   - Recovery time <10ms for all attack vectors
+   - Recovery time 7.2 ms avg on the synthetic evaluation set
 
-2. **84 Coq Theorems** — Most comprehensive formal verification
-   - Complete path from .t27 specifications to Verilog hardware
-   - Semantic preservation guarantees proven
+2. **1,325 machine-checked `Qed.` theorems** (program-wide), of which **84** form the CLARA math-core
+   - 84 theorems verify the mathematical core (φ identities, constants) [PROVEN]
+   - ML+AR composition is verified by `.t27→Verilog` lowering and RTL simulation — not by a formal proof [SIMULATED]
 
 3. **Guaranteed Polynomial Bounds** — All operations with Big-O proofs
    - Resonator Network: O(log₂ n) monotonic convergence
@@ -84,7 +84,7 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 4. **ASP Solver** — Answer Set Programming with NAF
 5. **Explainability** — 3 formats (natural, Fitch, compact)
 6. **Restraint** — Bounded rationality (UNKNOWN→FALSE, toxicity block)
-7. **Composition** — 7 ML+AR patterns
+7. **Composition** — 4 patterns demonstrated; up to 7 specified in `composition.t27`
 8. **COA Planning** — Course of Action with constraints
 
 ### VSA Operations
@@ -102,12 +102,14 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 - **Bounded Rationality:** UNKNOWN→FALSE, K3 logic
 - **Explainability:** All explanations ≤10 steps
 - **Polynomial Guarantees:** Forward-chaining O(n), ASP O(c×r)
-- **Red Team Protocol:** 100% robustness (5 categories, 0% false positives)
+- **Red Team Protocol:** 96% robustness (48/50, 5 categories) on a synthetic dataset; ≥95% Phase-2 target [SYNTHETIC]
 
 ### TA2: Composition — 100%
 - **VSA Operations:** All core ops defined and benchmarked
 - **Composition Patterns:** 4/4 demonstrated (CNN, MLP, Transformer, RL)
 - **Performance Targets:** All benchmarks exceed requirements
+
+> **Claim integrity:** every quantitative claim in this package is registered in [`../CLAIMS-LEDGER.md`](../CLAIMS-LEDGER.md) with an explicit status tag (PROVEN / MEASURED / SIMULATED / SYNTHETIC / PROJECTED). See [`../DISCREPANCIES.md`](../DISCREPANCIES.md) for the consistency audit.
 
 ### General Requirements
 - **Open Source:** Apache 2.0 (all files updated)
@@ -134,10 +136,10 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 
 | Area | Innovation | Impact |
 |-------|-----------|--------|
-| **Formal Verification** | 84 Coq theorems from .t27 to Verilog | Production-ready formal methods |
-| **Adversarial Robustness** | 5-category Red Team protocol with 100% success | Defense-grade AI safety |
+| **Formal Verification** | 1,325 `Qed.` theorems program-wide; 84 CLARA math-core; composition via .t27→Verilog [SIMULATED] | Production-ready formal methods |
+| **Adversarial Robustness** | 5-category Red Team protocol, 96% (48/50) [SYNTHETIC] | Defense-grade AI safety |
 | **Ternary VSA** | K3 native operations on 1024-dim vectors | Unique formal basis |
-| **ML+AR Patterns** | 7 composition patterns with formal guarantees | Verified reasoning chains |
+| **ML+AR Patterns** | 4 patterns demonstrated; up to 7 specified in `composition.t27` | Verified reasoning chains |
 | **GF16 Encoding** | φ-optimized confidence with 1.8× precision | NUMERIC-STANDARD-001 compliance |
 
 ---
@@ -160,6 +162,12 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 ---
 
 ## Key Personnel
+
+> **Note:** This section has been superseded by [`KEY-PERSONNEL-REWRITE.md`](KEY-PERSONNEL-REWRITE.md),
+> which removes a corrupted publication entry, drops duplicated citations, and reframes the
+> φ / golden-ratio material as an engineering numeric-format choice (consistent with the
+> program's anti-numerology gate). Use the rewrite for the final submission. The original text
+> is retained below for history only.
 
 ### Principal Investigator
 
