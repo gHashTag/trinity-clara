@@ -2,10 +2,10 @@
 
 > ## 📌 Post-Submission Addendum — May 19, 2026
 >
-> **All 10 CLARA argumentation-and-reasoning gaps proposed in the April 17, 2026 submission have been realized in open-RTL silicon** and submitted to the TinyTapeout SKY130A multi-project shuttle **TTSKY26b** (closed 2026-05-19).
+> **All 10 CLARA argumentation-and-reasoning gaps proposed in the April 17, 2026 submission have been realized in open-RTL silicon** and submitted to the TinyTapeout SKY130A multi-project shuttle **TTSKY26b** (submission closed 2026-05-18 UTC, i.e. 2026-05-19 06:59 +07; [registry](https://tinytapeout.com/chips/ttsky26b/)).
 >
 > - 📄 Cover letter: [`submission/HARDWARE-REALIZATION-TRINET.md`](submission/HARDWARE-REALIZATION-TRINET.md)
-> - 🔬 Three chips: Φ Phi [#4914](https://github.com/gHashTag/tt-trinity-phi) · Ε Euler [#4915](https://github.com/gHashTag/tt-trinity-euler) (10 CLARA gaps) · Γ Gamma [#4913](https://github.com/gHashTag/tt-trinity-gamma)
+> - 🔬 Three chips: Φ Phi [#198](https://github.com/gHashTag/tt-trinity-phi) · Ε Euler [#558](https://github.com/gHashTag/tt-trinity-euler) (10 CLARA gaps) · Γ Gamma [#750](https://github.com/gHashTag/tt-trinity-gamma)
 > - 🔐 Cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset (PhD Theorem 36.1)
 > - 🆔 DOI: [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) · License: Apache-2.0
 > - 📊 Honest performance: ~1 GOPS @ ~50 MHz @ ~1 W ternary (projected)

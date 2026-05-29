@@ -168,11 +168,11 @@ As of May 2026, the TRINITY CLARA architecture has been implemented in **open si
 
 | Chip | Top Module | TinyTapeout # | Tiles | Specialization |
 |------|-----------|---------------|-------|---------------|
-| Φ Phi | `tt_um_trinity_nano` | #4914 | 1×1 | Identity layer: root-of-trust, Lucas POST, HWRNG, CLARA Gap-4 restraint |
-| E Euler | `tt_um_ghtag_trinity_gf16` | #4915 | 8×2 | Verification layer: symbolic AI (SAT/ASP/Datalog/K3), **all 10 CLARA gaps** |
-| Γ Gamma | `tt_um_trinity_max_true` | #4913 | 8×4 | Inference layer: 8 cortical LIF columns, 20-PE GF16 mesh, FHRR VSA |
+| Φ Phi | `tt_um_trinity_nano` | #198 | 1×1 | Identity layer: root-of-trust, Lucas POST, HWRNG, CLARA Gap-4 restraint |
+| E Euler | `tt_um_ghtag_trinity_gf16` | #558 | 8×2 | Verification layer: symbolic AI (SAT/ASP/Datalog/K3), **all 10 CLARA gaps** |
+| Γ Gamma | `tt_um_trinity_max_true` | #750 | 8×4 | Inference layer: 8 cortical LIF columns, 20-PE GF16 mesh, FHRR VSA |
 
-This is the **first known hardware implementation of the full DARPA CLARA 10-gap safety lattice in open silicon**. Every gap maps to a synthesizable Verilog module in Euler (Project #4915):
+To the authors' knowledge, no prior open-silicon implementation of the full DARPA CLARA 10-gap safety lattice has been published [Open conjecture — no exhaustive survey performed; falsification path: a single counter-example of an earlier open-silicon CLARA-gap implementation refutes this]. Every gap maps to a synthesizable Verilog module in Euler (Project #558):
 
 | CLARA Gap | Verilog Module | DARPA TA Alignment |
 |-----------|---------------|--------------------|
@@ -189,7 +189,7 @@ This is the **first known hardware implementation of the full DARPA CLARA 10-gap
 
 All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset — a value derivable from first principles via Theorem 36.1 (φ²+φ⁻²=3 → Lucas L₂=3 → dot4(1,2,3,4)=0x47C0). Each chip proves the identity independently on power-on, providing a mathematically verifiable binding across the three dies. This cross-die anchor is the concrete hardware realization of the formal verification chain described in Theorems 1–5 above.
 
-**Significance for DARPA TA1/TA2:** The path from formal `.t27` specification to synthesized gate-level Verilog is now complete and committed to silicon. DARPA reviewers can reproduce the full stack by cloning the Apache-2.0 RTL repositories and resubmitting to any OpenMPW-compatible shuttle. The DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) archives all RTL snapshots and gate-level netlists.
+**Significance for DARPA TA1/TA2:** The path from formal `.t27` specification to synthesized gate-level Verilog is complete, and the GDS-II has been submitted to fabrication on the TTSKY26b shuttle (status "Submitted"; dies not yet returned — est. delivery 2026-12-20). [SUBMITTED to fab — pre-silicon; not yet validated on returned dies.] DARPA reviewers can reproduce the full stack by cloning the Apache-2.0 RTL repositories and resubmitting to any OpenMPW-compatible shuttle. The DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) archives all RTL snapshots and gate-level netlists.
 
 **Performance projection (Euler chip, ternary compute core):** ~1 GOPS @ ~50 MHz @ ~1 W ternary (projected).
 

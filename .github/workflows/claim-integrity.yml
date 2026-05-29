@@ -37,6 +37,10 @@ jobs:
             'Common Learning Repository for AI	Wrong CLARA expansion — use "Compositional Learning-And-Reasoning for AI Complex Systems Engineering" (audit B-3)'
             'composition\.t27` \(622 lines\)	Stale line count — composition.t27 is 674 lines (audit B-4)'
             '80\+ Coq theorems	Unverifiable count — cite t27/proofs/trinity/ counts in REPRODUCIBILITY.md (audit B-1)'
+            '#491[345]	Fabricated TinyTapeout chip ID — TTSKY26b has 275 designs; real IDs are #198/#558/#750 (audit C-1)'
+            'closed 2026-05-19	Wrong shuttle close date — registry says closed 2026-05-18 UTC (= 2026-05-19 06:59 +07) (audit C-2)'
+            'committed to silicon	Pre-silicon overclaim — dies not yet returned (status Submitted, est. 2026-12-20); say "submitted to fab" (audit C-3)'
+            'tinytapeout\.com/runs/	Wrong registry URL path — canonical chip page is tinytapeout.com/chips/ttsky26b/ (audit C-5)'
           )
 
           fail=0

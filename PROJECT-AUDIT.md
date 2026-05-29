@@ -247,5 +247,50 @@ Verified external facts (so the package can lean on them):
 | 6 | B-7 | Reconcile CLAIMS-LEDGER F-2 with Zenodo/t27 facts | ✅ applied |
 | 7 | B-1/B-3/B-4 | Extend CI gate with number/acronym consistency checks | ✅ applied |
 
+---
+
+# Wave 4 — External-Record Verification Audit (C-series)
+
+**Date:** 2026-05-29
+**Method:** Direct verification of every reviewer-checkable external fact in the
+submission against the **live** TinyTapeout TTSKY26b registry
+([tinytapeout.com/chips/ttsky26b/](https://tinytapeout.com/chips/ttsky26b/)),
+cross-checked by submitter name "Dmitrii Vasilev" and against the companion
+GitHub repos (`tt-trinity-phi`, `tt-gf16-euler`, `tt-trinity-gamma`). This pass
+moves from *claim-vs-artefact* (B-series) to **claim-vs-external-record**: do the
+facts a DARPA reviewer could independently confirm in a public registry actually
+match what the submission asserts? This is the most dangerous anomaly class
+because a single registry lookup by a reviewer falsifies a fabricated fact
+instantly.
+
+Verified external facts (authoritative — the package must match these exactly):
+
+- **TTSKY26b is real:** launched 2026-04-25, **closed 2026-05-18 UTC**, ChipFoundry
+  CI2605 on SkyWater 130 nm, **275 designs total**, est. delivery **2026-12-20**
+  ([registry](https://tinytapeout.com/chips/ttsky26b/)).
+- **Verified Trinity project IDs:** Φ Phi **#198** (`tt_um_trinity_nano`), Ε Euler
+  **#558** (`tt_um_ghtag_trinity_gf16`), Γ Gamma **#750** (`tt_um_trinity_max_true`).
+- 275 total designs ⇒ **no 4-digit project ID can exist** on this shuttle.
+
+| ID | Severity | Anomaly | Evidence | Remediation |
+|----|----------|---------|----------|-------------|
+| **C-1** | 🔴 | **Chip project IDs #4913 / #4914 / #4915 are FABRICATED.** The submission tagged Phi/Gamma/Euler with 4-digit TinyTapeout IDs. The TTSKY26b shuttle holds only **275 designs**, so a 4-digit ID is structurally impossible. The real, registry-confirmed addresses are **#198 (Phi), #558 (Euler), #750 (Gamma)**. A reviewer who opens the registry sees the contradiction in one click. | Live [TTSKY26b registry](https://tinytapeout.com/chips/ttsky26b/) (275 designs; names "Dmitrii Vasilev") | Replace all #4913→#198(Phi)/#4915→#558(Euler)/#4914→#750(Gamma). Add CHIP-PROVENANCE block to CLAIMS-LEDGER. Ban the fabricated strings in CI. |
+| **C-2** | 🔴 | **Shuttle close date stated as "closed 2026-05-19" is wrong.** The registry records the close as **2026-05-18 UTC**. The repo's local-time intuition (Asia/Bangkok +07) explains the off-by-one: 2026-05-18 23:59 UTC = 2026-05-19 06:59 +07. Stated bare as a UTC date, "2026-05-19" contradicts the registry. | [registry](https://tinytapeout.com/chips/ttsky26b/) | Standardize to **"closed 2026-05-18 UTC (= 2026-05-19 06:59 +07)"** with the registry link. Ban the bare "closed 2026-05-19" in CI. |
+| **C-3** | 🔴 | **"Committed to silicon" / "not simulated" overclaims contradict the pre-silicon reality.** Three statements (`HARDWARE-REALIZATION-TRINET.md` §1 "the safety lattice is not simulated — it is committed to silicon" and §Gap-2 "k3_alu is not simulated"; `CLARA-PROPOSAL-TECHNICAL.md` "complete and committed to silicon") assert a present-tense silicon fact. Per H-4, all three chips carry registry status **"Submitted"**; dies are **not yet returned** (est. delivery 2026-12-20). Calling a pre-silicon GDS submission "committed to silicon / not simulated" is a High-risk overclaim. | H-4 ledger; [registry](https://tinytapeout.com/chips/ttsky26b/) status "Submitted" | Reword to "synthesizable gate-level RTL with passing `gds` CI; GDS-II **submitted to fab** (status Submitted; dies not yet returned)" + `[MEASURED in simulation / SUBMITTED to fab]` tag. Done across both files. |
+| **C-4** | 🟠 | **Three "world's first / first known" superlatives are unverifiable.** No exhaustive prior-art survey exists, so "world's first hardware implementation of all 10 CLARA gaps" cannot be asserted as fact. Also "strongest possible evidence." | EXECUTIVE-SUMMARY:14; HARDWARE-REALIZATION:16; CLARA-PROPOSAL:175 | Soften to "to the authors' knowledge, the first **published** open-silicon implementation" + `[Open conjecture]` with a written `falsification_path` (any earlier published open-silicon CLARA-gap chip refutes it). Done. |
+| **C-5** | 🟡 | **Wrong registry URL path `tinytapeout.com/runs/ttsky26b`.** The canonical chip page is `tinytapeout.com/chips/ttsky26b/`. A dead/incorrect link in the submission's external-evidence section reads as carelessness. | HARDWARE-REALIZATION-TRINET:208 | Corrected to `https://tinytapeout.com/chips/ttsky26b/`. Done. |
+
+## Wave 4 remediation plan
+
+| Step | Anomaly | Action | Status in this PR |
+|------|---------|--------|-------------------|
+| 1 | C-1 | Replace fabricated #4913/#4914/#4915 with verified #198/#558/#750 across all non-meta docs | ✅ applied |
+| 2 | C-2 | Standardize close date to 2026-05-18 UTC (+07 reconciliation) with registry link | ✅ applied |
+| 3 | C-3 | Reword "committed to silicon"/"not simulated" to pre-silicon SUBMITTED framing + claim-status tags | ✅ applied |
+| 4 | C-4 | Soften "world's first" superlatives to Open conjecture + falsification path | ✅ applied |
+| 5 | C-5 | Fix registry URL `/runs/` → `/chips/` | ✅ applied |
+| 6 | C-1/C-2 | Add CHIP-PROVENANCE block + H-5…H-8 rows to CLAIMS-LEDGER; reconcile H-4/F-4 | ✅ applied |
+| 7 | C-1/C-2 | Extend CI gate to ban fabricated IDs + bare wrong close date | ✅ applied |
+
 *Audit maintained alongside [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) (SSOT),
 [`DISCREPANCIES.md`](DISCREPANCIES.md), and [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).*

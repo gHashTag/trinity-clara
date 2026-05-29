@@ -11,7 +11,7 @@
 
 ## Hardware Realization Update (TRI-17)
 
-As of May 2026, all 10 DARPA CLARA AI Safety Gaps are realized in **open silicon RTL** on the SkyWater SKY130A process node, submitted to the TinyTapeout TTSKY26b shuttle. The EULER chip (Project #4915, 8×2 tiles, top module `tt_um_ghtag_trinity_gf16`) is the **world's first hardware implementation of all 10 CLARA gaps in open silicon**.
+As of May 2026, all 10 DARPA CLARA AI Safety Gaps are realized as **open-silicon RTL** on the SkyWater SKY130A process node, with GDS-II submitted to the TinyTapeout TTSKY26b shuttle (status "Submitted"; dies not yet returned, est. delivery 2026-12-20) [SUBMITTED to fab — pre-silicon]. To the authors' knowledge, the EULER chip (Project #558, 8×2 tiles, top module `tt_um_ghtag_trinity_gf16`) is the first published open-silicon implementation of all 10 CLARA gaps [Open conjecture — no exhaustive prior-art survey; falsification path: any earlier published open-silicon CLARA-gap chip refutes this].
 
 ### EULER Chip: 10 CLARA Gaps → Verilog Modules
 
@@ -32,15 +32,15 @@ As of May 2026, all 10 DARPA CLARA AI Safety Gaps are realized in **open silicon
 
 | Chip | Project | Tiles | Role |
 |------|---------|-------|------|
-| Φ Phi (`tt_um_trinity_nano`) | #4914 | 1×1 | Identity / root-of-trust layer |
-| E Euler (`tt_um_ghtag_trinity_gf16`) | #4915 | 8×2 | Reasoning / all 10 CLARA gaps |
-| Γ Gamma (`tt_um_trinity_max_true`) | #4913 | 8×4 | Neuromorphic inference layer |
+| Φ Phi (`tt_um_trinity_nano`) | #198 | 1×1 | Identity / root-of-trust layer |
+| E Euler (`tt_um_ghtag_trinity_gf16`) | #558 | 8×2 | Reasoning / all 10 CLARA gaps |
+| Γ Gamma (`tt_um_trinity_max_true`) | #750 | 8×4 | Neuromorphic inference layer |
 
 All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0` on reset, derived from Theorem 36.1 (φ²+φ⁻²=3 → Lucas L₂=3 → dot4(1,2,3,4)=0x47C0). This mathematically binds the three chips into a single verifiable stack.
 
 - **RTL License:** Apache-2.0; reproducible from gate level
 - **DOI:** [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877)
-- **Shuttle:** TinyTapeout TTSKY26b, submitted 2026-05-19
+- **Shuttle:** TinyTapeout TTSKY26b (submission closed 2026-05-18 UTC; [registry](https://tinytapeout.com/chips/ttsky26b/))
 - **Author:** Dmitrii Vasilev <admin@t27.ai> (sole author)
 
 ---

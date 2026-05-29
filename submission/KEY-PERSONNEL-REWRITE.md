@@ -75,7 +75,7 @@ artifact trail**, which a reviewer can independently verify:
    math-core theorems `[PROVEN]`.
 2. [`trinity-s3ai`](https://github.com/gHashTag/trinity-s3ai) — 1,325 `Qed.` theorems, honest
    claim ledger, documented boundary theorems (BT-1..BT-4) and refutations `[PROVEN]`.
-3. Euler RTL (TinyTapeout #4915) — 10 CLARA gaps as Verilog modules, green `gds` CI
+3. Euler RTL (TinyTapeout #558) — 10 CLARA gaps as Verilog modules, green `gds` CI
    `[SIMULATED]`, submitted to TTSKY26b shuttle.
 4. DOI [10.5281/zenodo.19227877](https://doi.org/10.5281/zenodo.19227877) — archived RTL
    snapshots and gate-level netlists, Apache-2.0.
