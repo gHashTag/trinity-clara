@@ -127,7 +127,7 @@ restraint requirement. (See `CLAIMS-LEDGER.md` row X-1.)
 
 The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Chimera v1.0, 2,400+ lines) generates φ-parametrized candidates, AR (Coq 9.1.1, 8,000+ lines) certifies numerical bounds via interval tactics.
 
-**Compilation Status:** 13/13 files compiled with zero errors, **84 Coq theorems** verify mathematical core (φ identities, physics constants). ML+AR composition verified via .t27→Verilog semantic preservation path with formal correctness guarantees—providing end-to-end verification where 84 theorems establish foundational mathematical correctness and compilation ensures compositional integrity.
+**Compilation Status:** 13/13 files compile with zero errors [MEASURED]; **84 Coq theorems** prove the mathematical core (φ identities, physics constants) [PROVEN]. ML+AR composition is checked via the .t27→Verilog lowering path and RTL **simulation** — i.e. compilation confirms the files type-check and lower, but composition correctness is established by simulation, **not** by a formal proof [SIMULATED]. (Across the wider program, `trinity-s3ai` carries 1,325 machine-checked `Qed.` theorems; see CLAIMS-LEDGER.md F-1.)
 
 **Smoking Gun Results (Δ<0.01%):**
 - Q07: $m_s/m_d = 8\cdot3\cdot\pi^{-1}\cdot\varphi^2 = 20.000$ (Δ=0.0015%)
@@ -160,7 +160,7 @@ The Trinity proof base demonstrates a working AR+ML composition pipeline: ML (Ch
 - **Explanation Length:** 7.2 steps avg (all ≤10, CLARA compliant)
 - **Resource Usage:** 1.2W avg, 1.8W peak
 
-**Comparison:** TRINITY achieves comparable accuracy to DeepProbLog (95.1%) with polynomial-time guarantees vs. exponential worst-case, provides adversarial robustness where DeepProbLog has none, and deterministic latency vs. unbounded GPU systems.
+**Comparison:** On this synthetic benchmark TRINITY reaches 94.2% accuracy [SYNTHETIC] with bounded-step execution and deterministic latency. We do **not** assert a head-to-head number against DeepProbLog here: the prior "DeepProbLog 95.1%" figure was unsourced and has been removed pending a citable benchmark on a comparable task. *Falsification path:* this result would be disconfirmed if accuracy on a real (non-synthetic) COA dataset falls materially below the synthetic figure.
 
 ### Silicon Implementation: TRI-NET Three-Chip Stack
 
@@ -280,7 +280,7 @@ TRINITY's energy claims use standardized measurement (XC7A100T @ 92 MHz, Vivado 
 
 ### Section 8.5: Hardware Verification Methodology
 
-TRINITY's energy efficiency claims (target: 42× vs. standard GPU) use standardized measurement: QMTech XC7A100T FPGA at 92 MHz, on-board power sensor (Vivado power analyzer), baseline comparison. Current measurement: 63 tok/s @ 1.2W (19 mJ/token) vs. NVIDIA Jetson Orin (50W baseline) showing 0.67 tok/s @ 33,333 mJ/token = **49× improvement** on legacy hardware. Compared to 2024-2025 state-of-art: BitNet b1.58 shows 10-100×, MatMul-free shows 10×; TRINITY's K3-native operations provide additional efficiency through hardware specialization. Context: measurements establish conservative estimate for Phase 1; contemporary accelerators (Versal, Agilex) projected to achieve even higher efficiency.
+TRINITY's energy-efficiency target is **42×** vs. a standard GPU baseline; the **measured** value on legacy hardware is **49×** [MEASURED, prototype]. Measurement setup: QMTech XC7A100T FPGA at 92 MHz, on-board power sensor (Vivado power analyzer). Current measurement: 63 tok/s @ 1.2W (19 mJ/token) vs. NVIDIA Jetson Orin (50W baseline) at 0.67 tok/s @ 33,333 mJ/token = 49× on legacy hardware. (The 42× figure is the conservative *target*; 49× is the observed prototype result — see CLAIMS-LEDGER.md H-1. Do not quote either number without this methodology.) Compared to 2024-2025 state-of-art: BitNet b1.58 shows 10-100×, MatMul-free shows 10×; TRINITY's K3-native operations provide additional efficiency through hardware specialization. Context: measurements establish conservative estimate for Phase 1; contemporary accelerators (Versal, Agilex) projected to achieve even higher efficiency.
 
 ---
 
@@ -289,9 +289,9 @@ TRINITY's energy efficiency claims (target: 42× vs. standard GPU) use standardi
 [1] Kleene, S.C. (1952). *Introduction to Metamathematics*. Amsterdam: North-Holland Publishing.
 [2] Grosof, B. et al. (2003). "A Roadmap for Rules and RuleML." *IEEE Intelligent Systems* 18(2): 113-126.
 [3] Domingos, P. et al. (2026). "Tensor Logic." *arXiv:2601.17188*.
-[4] Manhaeve, R. et al. (2018). "CTSketch: Deep Compositional Reasoning." *NeurIPS 2018*.
-[5] Liang, P. et al. (2018). "DeepProbLog: Simple Differentiable Logic." *NeurIPS 2018*.
-[6] REASON Team (2026). "Neuro-Symbolic Integration for Explainable AI." arXiv:2601.20784.
+[4] Choi, S., Solko-Breslin, A., Alur, R., Wong, E. (2025). "CTSketch: Compositional Tensor Sketching for Scalable Neurosymbolic Learning." *NeurIPS 2025*. arXiv:2503.24123.
+[5] Manhaeve, R., Dumančić, S., Kimmig, A., Demeester, T., De Raedt, L. (2018). "DeepProbLog: Neural Probabilistic Logic Programming." *NeurIPS 2018*: 3753–3763.
+[6] *[Citation removed pending verification — the previously listed "REASON Team (2026), arXiv:2601.20784" did not resolve to a real publication. Do not cite until a verified source is confirmed.]*
 [7] Agrawal et al. (2019). "DLFloat: A Deep Learning Framework for Neural Networks with Dynamic Homogeneous Stochastic Rounding." *ACL 2019*.
 [8] Ma, S. et al. (2024). "The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits." *arXiv:2402.17764*.
 [9] Zhu, Z. et al. (2024). "Scalable MatMul-free Language Modeling." *arXiv:2406.02528*.

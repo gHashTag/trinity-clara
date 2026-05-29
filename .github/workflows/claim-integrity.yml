@@ -1,0 +1,68 @@
+# Claim-integrity gate for the TRINITY CLARA submission package.
+# Enforces the project claim-status discipline (mirrors the trinity-s3ai anti-numerology gate):
+# fails the build if retired hype strings reappear in submission-facing documents.
+#
+# Audit/meta docs are intentionally excluded because they quote these strings to document them.
+name: claim-integrity
+
+on:
+  push:
+    paths:
+      - '**/*.md'
+  pull_request:
+    paths:
+      - '**/*.md'
+
+jobs:
+  retired-claims:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for retired / banned claim strings
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          # Files allowed to mention the banned strings (they document/quote them).
+          EXCLUDE_REGEX='(CLAIMS-LEDGER|DISCREPANCIES|PROJECT-AUDIT|KEY-PERSONNEL-REWRITE)\.md'
+
+          # Patterns that must not appear in submission-facing docs.
+          # Each entry: "regex<TAB>human reason"
+          patterns=(
+            '100% (Red Team|robust|robustness|success)|100% success|0% false positives	Retired robustness claim — use 96% (48/50) [SYNTHETIC] (ledger R-1)'
+            'Most comprehensive formal verification	Unprovable superlative — state the theorem counts instead (audit A-3)'
+            'Bounded ASP Executes in O\(1\)	Incorrect complexity claim for NP-hard ASP — use bounded-termination (audit A-3 / X-1)'
+            'Unique among SOA systems	Absolute claim about all competitors — qualify as survey-bounded (audit A-3)'
+          )
+
+          fail=0
+          while IFS= read -r -d '' f; do
+            case "$f" in
+              ./.git/*) continue;;
+            esac
+            if echo "$f" | grep -Eq "$EXCLUDE_REGEX"; then
+              continue
+            fi
+            # Strip strikethrough/superseded lines before matching so historical
+            # changelog entries that quote a retired string (wrapped in ~~ ... ~~ or
+            # marked SUPERSEDED) do not trip the gate.
+            scanned=$(grep -Ev '(~~|SUPERSEDED)' "$f" || true)
+            for entry in "${patterns[@]}"; do
+              pat="${entry%%$'\t'*}"
+              reason="${entry#*$'\t'}"
+              if echo "$scanned" | grep -Eq "$pat"; then
+                echo "::error file=$f::Retired claim string found ($reason)"
+                echo "$scanned" | grep -Eno "$pat" | sed "s|^|  $f: |"
+                fail=1
+              fi
+            done
+          done < <(find . -name '*.md' -print0)
+
+          if [ "$fail" -ne 0 ]; then
+            echo ""
+            echo "Claim-integrity gate FAILED. Replace retired strings with claim-status-tagged"
+            echo "statements registered in CLAIMS-LEDGER.md. See PROJECT-AUDIT.md for rationale."
+            exit 1
+          fi
+          echo "Claim-integrity gate passed: no retired claim strings in submission-facing docs."

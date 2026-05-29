@@ -338,7 +338,7 @@ Memory Resources:
 
 ### 1. Formally Verified Adversarial Robustness
 **Unique Among SOA:** First CLARA submission with complete Red Team framework
-- 100% robustness across 5 adversarial categories
+- 96% robustness (48/50) [SYNTHETIC] across 5 adversarial categories
 - Formal guardrails at all pipeline stages
 - <10ms recovery time guaranteed
 

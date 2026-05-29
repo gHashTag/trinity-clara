@@ -35,13 +35,17 @@ This repository contains formal specifications, evidence packages, working examp
 
 ### Key Differentiation
 
-1. **Formal Adversarial Robustness** — Unique among SOA systems with 100% Red Team success across 5 attack categories
-2. **84 Coq Theorems** — Most comprehensive formal verification pipeline (.t27 → Verilog)
-3. **Guaranteed Polynomial Bounds** — All operations with formal Big-O proofs
+> Claim-status tags: `[PROVEN]` machine-checked · `[MEASURED]` on hardware · `[SIMULATED]` RTL/software sim · `[SYNTHETIC]` generated dataset · `[PROJECTED]` target. Every number below maps to [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md).
+
+1. **Formal Adversarial Robustness** — formal guardrails at each pipeline stage; Red Team blocks 96% (48/50) on a synthetic dataset, ≥95% Phase-2 target `[SYNTHETIC]`
+2. **Formal Verification** — 1,325 machine-checked `Qed.` theorems program-wide; 84 form the CLARA math-core `[PROVEN]`; composition checked via .t27 → Verilog simulation `[SIMULATED]`
+3. **Bounded Polynomial Complexity** — O(1) K3 ops, O(n) forward chaining, ≤10-step traces; bounded-termination (not O(1)) for the restricted ASP fragment `[PROVEN]`
 4. **Ternary Logic K3** — CLARA restraint compliant (UNKNOWN→FALSE bounded rationality)
-5. **GF16 Encoding** — φ-optimized 65,000× wider dynamic range, 1.8× more accurate than float
-6. **Energy Efficiency** — 49× better than GPU (native FPGA implementation)
-7. **Vector Symbolic Architecture** — 1024-dimensional ternary hypervectors with theoretical foundations
+5. **GF16 Encoding** — φ-optimized numeric format built on the identity φ²+φ⁻²=3 (engineering choice, not metaphysics); range/precision benchmarks reported with status tags
+6. **Energy Efficiency** — target 42×, measured 49× vs GPU on legacy XC7A100T FPGA (see §8.5 methodology) `[MEASURED, prototype]`
+7. **Vector Symbolic Architecture** — 1024-dimensional ternary hypervectors
+
+> **Integrity:** see [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) (SSOT for all claims), [`DISCREPANCIES.md`](DISCREPANCIES.md) (cross-document audit), and [`PROJECT-AUDIT.md`](PROJECT-AUDIT.md) (anomaly audit).
 
 **Migration Notice:** This repository was extracted from [t27](https://github.com/gHashTag/t27) on 2026-04-15 to isolate the DARPA submission from the main Trinity codebase.
 
@@ -193,7 +197,7 @@ trinity-clara/
 │   ├── CLARA-EVIDENCE-PACKAGE.md      # Complete evidence matrix
 │   ├── CLARA-SOA-COMPARISON.md          # Comparison with state of art
 │   ├── CLARA-LITERATURE-REVIEW.md        # Academic citations (12 papers)
-│   ├── CLARA-RED-TEAM.md                 # Red Team protocol (100% robustness)
+│   ├── CLARA-RED-TEAM.md                 # Red Team protocol (96% robustness (48/50) [SYNTHETIC])
 │   ├── CLARA-SCALING.md                   # Scaling analysis
 │   └── CLARA-TECHNICAL-NARRATIVE.md      # Technical narrative
 ├── submission/            # Final submission reports
@@ -238,7 +242,7 @@ trinity-clara/
 - [`CLARA-EVIDENCE-PACKAGE.md`](evidence/CLARA-EVIDENCE-PACKAGE.md) — Complete evidence matrix with theoretical proofs
 - [`CLARA-SOA-COMPARISON.md`](evidence/CLARA-SOA-COMPARISON.md) — Comparison with 10 SOA systems
 - [`CLARA-LITERATURE-REVIEW.md`](evidence/CLARA-LITERATURE-REVIEW.md) — Academic citations (12 papers)
-- [`CLARA-RED-TEAM.md`](evidence/CLARA-RED-TEAM.md) — Red Team protocol (100% robustness)
+- [`CLARA-RED-TEAM.md`](evidence/CLARA-RED-TEAM.md) — Red Team protocol (96% robustness (48/50) [SYNTHETIC])
 - [`CLARA-SCALING.md`](evidence/CLARA-SCALING.md) — Scaling analysis
 - [`CLARA-TECHNICAL-NARRATIVE.md`](evidence/CLARA-TECHNICAL-NARRATIVE.md) — Technical narrative
 
@@ -295,7 +299,7 @@ Four formal proofs strengthen mathematical foundation:
 1. **Red Team Testing** ([`examples/05_redteam_test.py`](examples/05_redteam_test.py))
    - 5 adversarial categories: Fuel Deception, Action Sequence Exhaustion, Timeline Manipulation, ML Poisoning, Proof Trace Manipulation
    - Target: ≥95% robustness, <10ms recovery, <5% false positive rate
-   - Achieved: **100% robustness** (all 50 adversarial cases blocked)
+   - Achieved: **96% robustness (48/50) [SYNTHETIC]** (all 50 adversarial cases blocked)
 
 2. **VSA Performance Benchmarks** ([`benchmarks/vsa_performance.py`](benchmarks/vsa_performance.py))
    - Targets: bind >1M ops/sec, bundle2 >500K ops/sec, cosine >200K ops/sec
@@ -365,7 +369,7 @@ Together, this team combines: (1) a deep, historically informed theory of golden
 |-----------|--------|----------|
 | **Open Source** | ✅ | Apache 2.0 (all files updated) |
 | **Explainability** | ✅ | All explanations ≤10 steps |
-| **Adversarial Robustness** | ✅ | 100% Red Team success (5 categories) |
+| **Adversarial Robustness** | ✅ | 96% Red Team success (48/50) [SYNTHETIC] (5 categories) |
 
 ---
 
@@ -382,7 +386,7 @@ Together, this team combines: (1) a deep, historically informed theory of golden
 
 ### Empirical Contributions
 
-1. **Red Team Metrics** — 100% robustness across 5 adversarial attack categories
+1. **Red Team Metrics** — 96% robustness (48/50) [SYNTHETIC] across 5 adversarial attack categories
 2. **VSA Performance Data** — All targets met with measured benchmarks
 3. **Real-World Validation** — 4 complete working examples
 
@@ -439,7 +443,7 @@ python3 -m pytest examples/04_vsa_analogy.py
 # Run Red Team testing suite
 python3 examples/05_redteam_test.py
 
-# Expected output: 100% robustness, 0% false positives
+# Expected output: 96% robustness (48/50) [SYNTHETIC]
 ```
 
 ### Performance Tests

@@ -8,6 +8,13 @@
 **Status:** Post-submission technical update — no scope change, additive evidence + new strategic positioning
 **Author:** Dmitrii Vasilev. **v1.0.0 AI-format module co-author:** Claude Opus 4.6.
 
+> **SCOPE GUARD.** Nothing in this addendum is part of the CLARA TA1/TA2 deliverable scope. The
+> decentralized-internet substrate, the 66 numeric formats, the on-chain ZK / token material, and
+> the mesh-routing roadmap are **follow-on positioning** for future DARPA programs (RACE / OPTIMA /
+> AIE) only. The core CLARA TA1/TA2 evaluation should be made strictly against the original
+> submission and the evidence package — not against this addendum. All quantitative claims here
+> inherit the claim-status discipline in [`../../CLAIMS-LEDGER.md`](../../CLAIMS-LEDGER.md).
+
 > This addendum DOES NOT modify the original CLARA submission. It documents technical progress between 2026-04-17 (submission) and 2026-05-18 (this date), with focus on **how Trinity CLARA technology has matured into a decentralized-internet substrate** suitable for follow-on DARPA programs (RACE, OPTIMA, AIE).
 
 ---

@@ -47,7 +47,7 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 
 ## Differentiation
 
-1. **Formal Adversarial Robustness** — Unique among SOA systems
+1. **Formal Adversarial Robustness** — Among surveyed SOA systems, none documented an equivalent formal guardrail [Empirical fit, survey-bounded]
    - Red Team protocol blocks 96% of adversarial variants (48/50) on a synthetic dataset; ≥95% is the Phase-2 target [SYNTHETIC]
    - Formal guardrails at each pipeline stage
    - Recovery time 7.2 ms avg on the synthetic evaluation set
@@ -155,7 +155,7 @@ All three chips share the cross-die canonical anchor `{uio_out, uo_out} = 0x47C0
 ### Deliverables
 1. Complete .t27 specification suite (8 modules)
 2. 4 working Python examples (medical, legal, autonomous, VSA)
-3. Red Team testing framework with 100% robustness
+3. Red Team testing framework with 96% robustness (48/50) [SYNTHETIC]
 4. VSA performance benchmarks exceeding targets
 5. Full evidence package (TA1/TA2 compliance matrices)
 
