@@ -256,7 +256,7 @@ Verified external facts (so the package can lean on them):
 submission against the **live** TinyTapeout TTSKY26b registry
 ([tinytapeout.com/chips/ttsky26b/](https://tinytapeout.com/chips/ttsky26b/)),
 cross-checked by submitter name "Dmitrii Vasilev" and against the companion
-GitHub repos (`tt-trinity-phi`, `tt-gf16-euler`, `tt-trinity-gamma`). This pass
+GitHub repos (`tt-trinity-phi`, `tt-trinity-euler`, `tt-trinity-gamma`). This pass
 moves from *claim-vs-artefact* (B-series) to **claim-vs-external-record**: do the
 facts a DARPA reviewer could independently confirm in a public registry actually
 match what the submission asserts? This is the most dangerous anomaly class

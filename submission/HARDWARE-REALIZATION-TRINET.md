@@ -111,7 +111,7 @@ All RTL is published under the `gHashTag` GitHub organization, Apache-2.0:
 
 | Repository | Chip | Top Module | TinyTapeout # |
 |------------|------|-----------|---------------|
-| `github.com/gHashTag/tt-gf16-euler` | E Euler | `tt_um_ghtag_trinity_gf16` | #558 |
+| `github.com/gHashTag/tt-trinity-euler` | E Euler | `tt_um_ghtag_trinity_gf16` | #558 |
 | `github.com/gHashTag/tt-trinity-phi` | Φ Phi | `tt_um_trinity_nano` | #198 |
 | `github.com/gHashTag/tt-trinity-gamma` | Γ Gamma | `tt_um_trinity_max_true` | #750 |
 
@@ -119,8 +119,8 @@ All RTL is published under the `gHashTag` GitHub organization, Apache-2.0:
 
 ```bash
 # Clone Euler (all 10 CLARA gaps)
-git clone https://github.com/gHashTag/tt-gf16-euler
-cd tt-gf16-euler
+git clone https://github.com/gHashTag/tt-trinity-euler
+cd tt-trinity-euler
 
 # Synthesize with OpenLane / sky130A PDK
 ./flow.tcl

@@ -770,7 +770,7 @@ The system provides formal guarantees on robustness, correctness, and explainabi
 
 **Unique Competitive Advantages:**
 1. Formal adversarial robustness (unique among SOA systems)
-2. Formal verification pipeline (84 CLARA math-core theorems [PROVEN]; 1,325 program-wide)
+2. Formal verification pipeline — CLARA math-core in `t27/proofs/trinity/` (132 `Qed.`, 32 `Admitted`, ledger F-2 [PROVEN where Qed.]); program-wide `trinity-s3ai` corpus 2,027 `Qed.` / 0 real `Admitted.` across 100 `.v` files (ledger F-1, machine-counted by `count_admitted_honest.py`)
 3. Guaranteed polynomial-time guarantees
 4. Energy efficiency (49× vs GPU)
 5. Ternary logic K3 with bounded rationality
