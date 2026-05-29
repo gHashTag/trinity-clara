@@ -29,7 +29,7 @@ jobs:
     # resolve there — which is why this gate was red regardless of proof
     # content. The pinned upstream image resolves `Stdlib.*` natively.
     container:
-      image: coqorg/coq:8.20.0
+      image: coqorg/coq:8.20.1
       options: --user root
 
     steps:
