@@ -198,6 +198,21 @@ claims are retired. See ledger **V-1**.
 
 ---
 
+## 🟠 D-12 — FPGA throughput is `SIMULATED`, not `MEASURED`
+
+| Where | What it says |
+|-------|--------------|
+| Upstream `t27/bench/results_v02_real.json` (pinned commit `e7a07f1`) | `tokens_per_sec_sim: 1193`, `tokens_per_sec_real: null`, `bitstream_sha256: "TBD"`, `timestamp: "TBD"` |
+| Several narrative documents in `proposal/` and `submission/` | Quote throughput numbers without an explicit `[SIMULATED]` tag, which a reviewer can reasonably read as on-board measurement. |
+
+**Problem.** Until the real-board UART throughput on the QMTECH Wukong V1 (XC7A100T-1FGG676C, DLC-10 programmer) is captured into `bench/results_v02_real.json`, every hardware-throughput sentence in this package must carry `[SIMULATED]` and cite the 1,193 tokens/s figure, not a real-board number. There is currently no `MEASURED` throughput.
+
+**Fix.** Add explicit `[SIMULATED]` tags everywhere the 1,193 tokens/s figure (or any derived energy-efficiency ratio) appears in `proposal/` and `submission/`. Do not promote any hardware-throughput claim to `MEASURED` until `tokens_per_sec_real` and `bitstream_sha256` are non-null in the pinned commit and [`T27-PIN.md`](T27-PIN.md) is re-pinned in the same PR.
+
+**Cross-references.** [`T27-PIN.md`](T27-PIN.md) §3 ("Honest open gap in the pinned tree"); [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) hardware rows.
+
+---
+
 ## Summary table
 
 | ID | Severity | Issue | Resolution owner |
@@ -213,5 +228,6 @@ claims are retired. See ledger **V-1**.
 | D-9 | 🟡 | Corrupted / off-target Key Personnel | Rewrite |
 | D-10 | 🔴 | "Sole author" vs three-person PI/Co-I team | Ledger A-1 (RESOLVED) |
 | D-11 | 🟠 | Coq version stated 4 ways vs CI 8.20.1 | Ledger V-1 (RESOLVED) |
+| D-12 | 🟠 | FPGA throughput `SIMULATED` not `MEASURED` | [`T27-PIN.md`](T27-PIN.md) §3 |
 
 *Audit maintained alongside [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md), the package SSOT.*
