@@ -293,19 +293,12 @@ trinity-clara/
 
 ## Scientific Strengthening (April 2026)
 
-### Scientifc Foundations
+### Scientific Foundations
 
-> *"В геометрии есть два великих сокровища — целочисленность и интуиция."*  
-> — **Карл Фридрих Гаус** (1777-1855), Disquisitiones Arithmeticae
+> *"There are two great treasures in geometry — integrality and intuition."*  
+> — **Carl Friedrich Gauss** (1777–1855), *Disquisitiones Arithmeticae*
 
 **Relevance:** VSA operations rely on number theory (Gaussian distributions), polynomial arithmetic, and discrete probability. Gauss's foundational work directly underpins our mathematical proofs.
-
-```markdown
-## Scientifc Foundations
-
-> *"В геометрии есть два великих сокровища — целочисленность и интуиция."*  
-> — **Карл Фридрих Гаус** (1777-1855), гёттингенский математик
-```
 
 ### Formal Theoretical Proofs Added
 
