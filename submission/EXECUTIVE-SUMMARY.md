@@ -62,7 +62,7 @@ All three chips emit the same canonical anchor value `{uio_out, uo_out} = 0x47C0
    - ASP Solver: O(clauses × rules) bounded termination
    - VSA Operations: All >1M ops/sec targets met
 
-4. **Energy Efficiency** — 49× vs GPU, suitable for edge deployment
+4. **Energy Efficiency** — 49× vs GPU `[MEASURED — evidence pending; see DISCREPANCIES.md D-12]`, suitable for edge deployment
    - Ternary logic native to FPGA implementation
    - GF16 encoding optimizes confidence storage
 

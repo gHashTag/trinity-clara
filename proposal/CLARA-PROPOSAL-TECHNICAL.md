@@ -217,7 +217,7 @@ TRINITY provides a **Common Criteria EAL7** certification path: the IGLA Coq bun
 
 ### Section 8.5: Hardware Verification Methodology
 
-TRINITY's energy claims use standardized measurement (XC7A100T @ 92 MHz, Vivado analyzer) vs. NVIDIA Jetson Orin (50W baseline). Current: 63 tok/s @ 1.2W (19 mJ/token) = **49×** on legacy hardware. Compared to 2024-2025 SOA: BitNet b1.58 (10-100×), MatMul-free (10×); TRINITY's K3-native operations provide additional efficiency. Context: conservative estimate for Phase 1; contemporary accelerators (Versal, Agilex) projected to achieve higher efficiency.
+TRINITY's energy claims use standardized measurement (XC7A100T @ 92 MHz, Vivado analyzer) vs. NVIDIA Jetson Orin (50W baseline). Current: 63 tok/s @ 1.2W (19 mJ/token) = **49×** on legacy hardware `[MEASURED — evidence pending: the UART throughput log and Vivado power-report screenshot have not yet been committed to t27/bench/results_v02_real.json, which still records tokens_per_sec_real: null at the pinned commit; see DISCREPANCIES.md D-12 and T27-PIN.md §3]`. Compared to 2024-2025 SOA: BitNet b1.58 (10-100×), MatMul-free (10×); TRINITY's K3-native operations provide additional efficiency. Context: conservative estimate for Phase 1; contemporary accelerators (Versal, Agilex) projected to achieve higher efficiency.
 
 ---
 
@@ -284,7 +284,7 @@ TRINITY's energy claims use standardized measurement (XC7A100T @ 92 MHz, Vivado 
 
 ### Section 8.5: Hardware Verification Methodology
 
-TRINITY's energy-efficiency target is **42×** vs. a standard GPU baseline; the **measured** value on legacy hardware is **49×** [MEASURED, prototype]. Measurement setup: QMTech XC7A100T FPGA at 92 MHz, on-board power sensor (Vivado power analyzer). Current measurement: 63 tok/s @ 1.2W (19 mJ/token) vs. NVIDIA Jetson Orin (50W baseline) at 0.67 tok/s @ 33,333 mJ/token = 49× on legacy hardware. (The 42× figure is the conservative *target*; 49× is the observed prototype result — see CLAIMS-LEDGER.md H-1. Do not quote either number without this methodology.) Compared to 2024-2025 state-of-art: BitNet b1.58 shows 10-100×, MatMul-free shows 10×; TRINITY's K3-native operations provide additional efficiency through hardware specialization. Context: measurements establish conservative estimate for Phase 1; contemporary accelerators (Versal, Agilex) projected to achieve even higher efficiency.
+TRINITY's energy-efficiency target is **42×** vs. a standard GPU baseline; the **measured** value on legacy hardware is **49×** `[MEASURED — evidence pending; see DISCREPANCIES.md D-12 and T27-PIN.md §3]`. Measurement setup: QMTech XC7A100T FPGA at 92 MHz, on-board power sensor (Vivado power analyzer). Current measurement: 63 tok/s @ 1.2W (19 mJ/token) vs. NVIDIA Jetson Orin (50W baseline) at 0.67 tok/s @ 33,333 mJ/token = 49× on legacy hardware. (The 42× figure is the conservative *target*; 49× is the observed prototype result — see CLAIMS-LEDGER.md H-1. Do not quote either number without this methodology.) Compared to 2024-2025 state-of-art: BitNet b1.58 shows 10-100×, MatMul-free shows 10×; TRINITY's K3-native operations provide additional efficiency through hardware specialization. Context: measurements establish conservative estimate for Phase 1; contemporary accelerators (Versal, Agilex) projected to achieve even higher efficiency.
 
 ---
 

@@ -107,7 +107,7 @@
 
 ### 2. Edge/Embedded AI with Power Constraints
 - **Current State:** Hardware accelerators (Neuro-Photonix: 30 GOPS/W, H3DFact: 5.5× density, FM-NGRC: 5 GS/s) provide efficiency gains but lack formal reasoning capabilities.
-- **Opportunity:** Trinity's 1.2W power consumption with formal verification provides unique value for edge applications requiring both efficiency and formal correctness.
+- **Opportunity:** Trinity's 1.2W power consumption `[MEASURED — evidence pending; D-12]` with formal verification provides unique value for edge applications requiring both efficiency and formal correctness.
 - **Energy Efficiency:** Trinity's 49× improvement vs. GPU baselines provides significant advantage for power-constrained deployments.
 
 ### 3. Domain-General Reasoning Systems
@@ -148,7 +148,7 @@
 ### 3. Energy Efficiency Benchmark Suite
 - **Current:** Neuro-Photonix claims 30 GOPS/W, 20.8× power reduction; H3DFact claims 5.5× compute density, 1.2× energy efficiency.
 - **Opportunity:** Include Trinity's 49× improvement in comparative analysis.
-- **Differentiation:** Empirical validation of Trinity's 1.2W vs. competitors' claims (Neuro-Photonix's 30 GOPS/W, etc.)
+- **Differentiation:** Empirical validation of Trinity's 1.2W `[MEASURED — evidence pending; D-12]` vs. competitors' claims (Neuro-Photonix's 30 GOPS/W, etc.)
 
 ### 4. Multi-Domain Benchmarking
 - **Need:** Compare Trinity against domain-specific systems (ARLC: Raven's matrices, Learn-VRF: I-RAVEN, VSA-OGM: occupancy, CML-HDC: modular, VSA4VQA: VQA, ARLC: RPM).
@@ -178,7 +178,7 @@ Trinity is the **only** system combining:
 
 **Defense/DoD Real-Time Planning:** Trinity's bounded reasoning (MAX_STEPS=10) with built-in guardrails is ideal for COA planning requiring safety, explainability, and formal correctness. .t27 -> Verilog path enables EAL7 certification.
 
-**Edge/Embedded AI with Power Constraints:** Trinity's 1.2W power consumption with formal verification provides unique value for edge applications requiring both efficiency and formal correctness. 49× energy efficiency vs. GPU baselines.
+**Edge/Embedded AI with Power Constraints:** Trinity's 1.2W power consumption with formal verification provides unique value for edge applications requiring both efficiency and formal correctness. 49× energy efficiency vs. GPU baselines `[MEASURED — evidence pending; see DISCREPANCIES.md D-12 and T27-PIN.md §3]`.
 
 **Domain-General Reasoning Systems:** Trinity's unified AR+ML framework applicable across planning, reasoning, and analysis domains, not limited to single specialized tasks like ARLC (Raven's matrices).
 
