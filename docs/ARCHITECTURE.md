@@ -257,10 +257,16 @@ State Input → [RL Policy Network] → [VSA Encoding] → [Safety Rule Check] �
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 
-Performance Metrics:
-  • Overall Robustness: 100% (50/50 adversarial blocked)
-  • False Positive Rate: 0% (0/50 normal inputs blocked)
-  • Recovery Time: <10ms (avg 4.8ms, max 11.8ms)
+Performance Metrics (v1.0 synthetic Red Team testset, 50 balanced cases,
+5 attack categories; see `test_vectors/ta2/redteam_tests.json`)
+[SYNTHETIC, v1.0 testset]:
+  • Overall Robustness: 100% (50/50) — 25 adversarial blocked + 25 normal passed
+  • False Positive Rate: 0%
+  • False Negative Rate: 0%
+  • Recovery Time: 0.048 ms avg, 0.118 ms max
+  • ≥95% remains the Phase-2 target on the broader fielded
+    threat model (see CLAIMS-LEDGER.md R-2). The score is SYNTHETIC
+    and does not generalise to unseen adversaries.
 ```
 
 ### Attack Categories
@@ -338,9 +344,9 @@ Memory Resources:
 
 ### 1. Formally Verified Adversarial Robustness
 **Unique Among SOA:** First CLARA submission with complete Red Team framework
-- 96% robustness (48/50) [SYNTHETIC] across 5 adversarial categories
+- 100% (50/50) on the v1.0 synthetic Red Team testset across 5 adversarial categories (50 balanced cases; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model
 - Formal guardrails at all pipeline stages
-- <10ms recovery time guaranteed
+- 0.118 ms maximum recovery time on the v1.0 synthetic testset
 
 ### 2. Coq Proof Base
 **Honest, audited formal verification:**

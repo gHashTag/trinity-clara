@@ -174,11 +174,11 @@ Actual throughput depends on specific FPGA device and implementation details.
 4. **Resource Poisoning** — Invalid resource states introduced
 5. **Proof Trace Manipulation** — Attempting to exceed step limit or manipulate trace
 
-Each category is tested with 50 test cases, achieving 96% robustness (48/50) [SYNTHETIC] in current implementation.
+The canonical v1.0 testset uses 5 test cases per attack category plus 25 normal cases (50 balanced cases total; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)). On that testset the harness achieves 100% (50/50) `[SYNTHETIC, v1.0 testset]` — 25 adversarial blocked + 25 normal passed, FPR 0%, FNR 0%, 0.048 ms avg / 0.118 ms max recovery. ≥95% remains the target on the broader fielded threat model (see [`CLAIMS-LEDGER.md`](../CLAIMS-LEDGER.md) R-2).
 
 ### Q20: What is the recovery time after detecting an adversarial input?
 
-**A:** When an adversarial input is detected, the system returns a safe default in <10ms (average 4.8ms, maximum 11.8ms measured in tests). The recovery path involves:
+**A:** When an adversarial input is detected, the system returns a safe default in well under 10 ms (on the v1.0 synthetic Red Team testset: 0.048 ms avg, 0.118 ms max `[SYNTHETIC, v1.0 testset]`; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)). The recovery path involves:
 1. Detection at input validation stage
 2. Guardrail check at AR stage
 3. Return to safe default decision
