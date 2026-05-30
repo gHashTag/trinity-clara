@@ -48,9 +48,9 @@ All three chips emit the same canonical anchor value `{uio_out, uo_out} = 0x47C0
 ## Differentiation
 
 1. **Formal Adversarial Robustness** — Among surveyed SOA systems, none documented an equivalent formal guardrail [Empirical fit, survey-bounded]
-   - Red Team protocol blocks 96% of adversarial variants (48/50) on a synthetic dataset; ≥95% is the Phase-2 target [SYNTHETIC]
+   - Red Team protocol blocks 100% (50/50) of adversarial variants on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)); ≥95% remains the Phase-2 target on the broader fielded threat model `[SYNTHETIC, v1.0 testset]`
    - Formal guardrails at each pipeline stage
-   - Recovery time 7.2 ms avg on the synthetic evaluation set
+   - Recovery time 0.048 ms avg (max 0.118 ms) on the v1.0 synthetic Red Team testset
 
 2. **Formal proof-backed cognitive substrate** — IGLA proof bundle in `proofs/igla/`: canonical six-INV bundle **47 Qed, 4 Admitted, 1 honest placeholder, 1 axiom, 10 falsification witnesses** across `.v` files (see [`proofs/igla/_metadata.json`](../proofs/igla/_metadata.json) and [`docs/TRINITY_PHD_PROVENANCE.md`](../docs/TRINITY_PHD_PROVENANCE.md); post-metadata `CorePhi.v` / `hybrid_qk_gain.v` carry additional disclosed `Admitted` obligations). Upstream `t27` proof base (audit 2026-05-12): 28 `.v` files, 218 stated Theorem/Lemma, **162 Qed / 32 Admitted / 2 Abort**.
    - Complete path from .t27 specifications to Verilog hardware; composition checked by **simulation** `[SIMULATED]`, not by those theorems
@@ -103,7 +103,7 @@ All three chips emit the same canonical anchor value `{uio_out, uo_out} = 0x47C0
 - **Bounded Rationality:** UNKNOWN→FALSE, K3 logic
 - **Explainability:** All explanations ≤10 steps
 - **Polynomial Guarantees:** Forward-chaining O(n), ASP O(c×r)
-- **Red Team Protocol:** 96% robustness (48/50, 5 categories) on a synthetic dataset; ≥95% Phase-2 target [SYNTHETIC]
+- **Red Team Protocol:** 100% (50/50) robustness on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)); ≥95% Phase-2 target on the broader fielded threat model `[SYNTHETIC, v1.0 testset]`
 
 ### TA2: Composition — 100%
 - **VSA Operations:** All core ops defined and benchmarked
@@ -138,7 +138,7 @@ All three chips emit the same canonical anchor value `{uio_out, uo_out} = 0x47C0
 | Area | Innovation | Impact |
 |-------|-----------|--------|
 | **Formal Verification** | IGLA: 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 falsification witnesses (canonical six-INV bundle; extra disclosed `Admitted` in `CorePhi.v`/`hybrid_qk_gain.v`). Upstream `t27`: 162 Qed / 32 Admitted / 2 Abort across 28 `.v` files (audit 2026-05-12). | Honest, machine-checkable formal methods with declared open obligations |
-| **Adversarial Robustness** | 5-category Red Team protocol, 96% (48/50) `[SYNTHETIC]` | Defense-grade AI safety |
+| **Adversarial Robustness** | 5-category Red Team protocol, 100% (50/50) on the v1.0 synthetic Red Team testset (50 balanced cases; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)); ≥95% target on broader fielded threat model `[SYNTHETIC, v1.0 testset]` | Defense-grade AI safety |
 | **Ternary VSA** | K3 native operations on 1024-dim vectors | Unique formal basis |
 | **ML+AR Patterns** | 4 patterns demonstrated; up to 7 specified in `composition.t27` | Verified reasoning chains |
 | **GF16 Encoding** | φ-optimized confidence with 1.8× precision | NUMERIC-STANDARD-001 compliance |
@@ -156,7 +156,7 @@ All three chips emit the same canonical anchor value `{uio_out, uo_out} = 0x47C0
 ### Deliverables
 1. Complete .t27 specification suite (8 modules)
 2. 4 working Python examples (medical, legal, autonomous, VSA)
-3. Red Team testing framework with 96% robustness (48/50) [SYNTHETIC]
+3. Red Team testing framework with 100% (50/50) on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`
 4. VSA performance benchmarks exceeding targets
 5. Full evidence package (TA1/TA2 compliance matrices)
 

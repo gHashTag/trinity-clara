@@ -37,7 +37,7 @@ This repository contains formal specifications, evidence packages, working examp
 
 > Claim-status tags: `[PROVEN]` machine-checked · `[MEASURED]` on hardware · `[SIMULATED]` RTL/software sim · `[SYNTHETIC]` generated dataset · `[PROJECTED]` target. Every number below maps to [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md).
 
-1. **Formal Adversarial Robustness** — formal guardrails at each pipeline stage; Red Team blocks 96% (48/50) on a synthetic dataset, ≥95% Phase-2 target `[SYNTHETIC]`
+1. **Formal Adversarial Robustness** — formal guardrails at each pipeline stage; Red Team blocks 100% (50/50) on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; see [`test_vectors/ta2/redteam_tests.json`](test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% remains the Phase-2 target on the broader fielded threat model
 2. **Formal Verification** — the `t27/proofs/trinity/` Coq base machine-checks the φ-identity/certified-bounds **mathematical core** (`Qed.` where complete; remaining lemmas honestly `Admitted` — see [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) for exact counts) `[PROVEN where Qed.]`; ML+AR composition is checked via .t27 → Verilog **simulation** `[SIMULATED]`
 3. **Bounded Polynomial Complexity** — O(1) K3 ops, O(n) forward chaining, ≤10-step traces; bounded-termination (not O(1)) for the restricted ASP fragment `[PROVEN]`
 4. **Ternary Logic K3** — CLARA restraint compliant (UNKNOWN→FALSE bounded rationality)
@@ -236,7 +236,7 @@ trinity-clara/
 │   ├── CLARA-EVIDENCE-PACKAGE.md      # Complete evidence matrix
 │   ├── CLARA-SOA-COMPARISON.md          # Comparison with state of art
 │   ├── CLARA-LITERATURE-REVIEW.md        # Academic citations (12 papers)
-│   ├── CLARA-RED-TEAM.md                 # Red Team protocol (96% robustness (48/50) [SYNTHETIC])
+│   ├── CLARA-RED-TEAM.md                 # Red Team protocol (100% (50/50) on v1.0 synthetic testset [SYNTHETIC, v1.0 testset]; ≥95% target on broader threat model)
 │   ├── CLARA-SCALING.md                   # Scaling analysis
 │   └── CLARA-TECHNICAL-NARRATIVE.md      # Technical narrative
 ├── submission/            # Final submission reports
@@ -281,7 +281,7 @@ trinity-clara/
 - [`CLARA-EVIDENCE-PACKAGE.md`](evidence/CLARA-EVIDENCE-PACKAGE.md) — Complete evidence matrix with theoretical proofs
 - [`CLARA-SOA-COMPARISON.md`](evidence/CLARA-SOA-COMPARISON.md) — Comparison with 10 SOA systems
 - [`CLARA-LITERATURE-REVIEW.md`](evidence/CLARA-LITERATURE-REVIEW.md) — Academic citations (12 papers)
-- [`CLARA-RED-TEAM.md`](evidence/CLARA-RED-TEAM.md) — Red Team protocol (96% robustness (48/50) [SYNTHETIC])
+- [`CLARA-RED-TEAM.md`](evidence/CLARA-RED-TEAM.md) — Red Team protocol (100% (50/50) on v1.0 synthetic Red Team testset — see [`test_vectors/ta2/redteam_tests.json`](test_vectors/ta2/redteam_tests.json); `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model)
 - [`CLARA-SCALING.md`](evidence/CLARA-SCALING.md) — Scaling analysis
 - [`CLARA-TECHNICAL-NARRATIVE.md`](evidence/CLARA-TECHNICAL-NARRATIVE.md) — Technical narrative
 
@@ -330,8 +330,8 @@ Four formal proofs strengthen mathematical foundation:
 
 1. **Red Team Testing** ([`examples/05_redteam_test.py`](examples/05_redteam_test.py))
    - 5 adversarial categories: Fuel Deception, Action Sequence Exhaustion, Timeline Manipulation, ML Poisoning, Proof Trace Manipulation
-   - Target: ≥95% robustness, <10ms recovery, <5% false positive rate
-   - Achieved: **96% robustness (48/50) [SYNTHETIC]** (all 50 adversarial cases blocked)
+   - Target on broader fielded threat model: ≥95% robustness, <10 ms recovery, <5% false positive rate
+   - Achieved on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; see [`test_vectors/ta2/redteam_tests.json`](test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`: **100% (50/50)** — 25 adversarial blocked + 25 normal passed, FPR 0%, FNR 0%, 0.048 ms avg / 0.118 ms max recovery
 
 2. **VSA Performance Benchmarks** ([`benchmarks/vsa_performance.py`](benchmarks/vsa_performance.py))
    - Targets: bind >1M ops/sec, bundle2 >500K ops/sec, cosine >200K ops/sec
@@ -405,7 +405,7 @@ Together, this team combines: (1) a deep, historically informed theory of golden
 |-----------|--------|----------|
 | **Open Source** | ✅ | Apache 2.0 (all files updated) |
 | **Explainability** | ✅ | All explanations ≤10 steps |
-| **Adversarial Robustness** | ✅ | 96% Red Team success (48/50) [SYNTHETIC] (5 categories) |
+| **Adversarial Robustness** | ✅ | 100% (50/50) Red Team success on the v1.0 synthetic testset (5 categories; see [`test_vectors/ta2/redteam_tests.json`](test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model |
 
 ---
 
@@ -422,7 +422,7 @@ Together, this team combines: (1) a deep, historically informed theory of golden
 
 ### Empirical Contributions
 
-1. **Red Team Metrics** — 96% robustness (48/50) [SYNTHETIC] across 5 adversarial attack categories
+1. **Red Team Metrics** — 100% (50/50) robustness on the v1.0 synthetic Red Team testset across 5 adversarial attack categories (see [`test_vectors/ta2/redteam_tests.json`](test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model
 2. **VSA Performance Data** — All targets met with measured benchmarks
 3. **Real-World Validation** — 4 complete working examples
 
@@ -479,7 +479,9 @@ python3 -m pytest examples/04_vsa_analogy.py
 # Run Red Team testing suite
 python3 examples/05_redteam_test.py
 
-# Expected output: 96% robustness (48/50) [SYNTHETIC]
+# Expected output (on v1.0 synthetic Red Team testset, [SYNTHETIC, v1.0 testset]):
+#   robustness 100% (50/50), FPR 0%, FNR 0%, recovery 0.048 ms avg / 0.118 ms max
+# (≥95% target applies to the broader fielded threat model; see CLAIMS-LEDGER.md R-2)
 ```
 
 ### Performance Tests

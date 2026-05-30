@@ -15,7 +15,7 @@ Legend: 🔴 blocker (likely triggers rejection / loss of trust) · 🟠 major �
 
 ---
 
-## 🔴 D-1 — Red Team success rate contradicts itself
+## 🟡 D-1 (RESOLVED 2026-05-30) — Red Team success rate: canonical 100% on v1.0 testset; ≥95% target on broader threat model
 
 | Where | What it says |
 |-------|--------------|
@@ -23,15 +23,32 @@ Legend: 🔴 blocker (likely triggers rejection / loss of trust) · 🟠 major �
 | `submission/EXECUTIVE-SUMMARY.md` (Compliance, TA1) | "Red Team Protocol: **100% robustness** (5 categories, **0% false positives**)" |
 | `submission/EXECUTIVE-SUMMARY.md` (Innovation table) | "5-category Red Team protocol with **100% success**" |
 | `proposal/CLARA-PROPOSAL-TECHNICAL.md` §4.6 | "Red Team Evaluation Protocol targeting **≥95% robustness** (planned for Phase 2)" |
-| `proposal/CLARA-PROPOSAL-TECHNICAL.md` §4.7 | "Adversarial Robustness: **96%** adversarial variants blocked (**48/50**)" |
+| `proposal/CLARA-PROPOSAL-TECHNICAL.md` §4.7 (historic) | "Adversarial Robustness: **96%** adversarial variants blocked (**48/50**)" |
 
-**Problem.** The same capability is reported as 100%, ≥95% (target), and 96% (48/50 measured) in
-one package. 100% and 48/50 are mutually exclusive. This is the single highest-risk integrity
-issue: a reviewer who notices it will distrust every other number.
+**Earlier framing of the problem.** This row originally read that 100% and 48/50 are mutually exclusive and called for a global downgrade to 96%.
 
-**Fix (per ledger R-1/R-2).** Use **"96% (48/50) on a synthetic dataset; ≥95% is the Phase-2
-target"** everywhere. Delete all "100% robustness" and "0% false positives" wording from the
-Executive Summary and Innovation table.
+**What the canonical evidence actually says.** The machine-readable canonical results file [`test_vectors/ta2/redteam_tests.json`](test_vectors/ta2/redteam_tests.json) (metadata `test_framework: 'CLARA Red Team', version: '1.0', date: '2026-04-15'`) records, for the 50-case balanced v1.0 testset:
+
+```
+total_tests:           50
+normal_passed:         25
+adversarial_blocked:   25
+robustness_score:      1.0     (= 100%)
+false_positive_rate:   0.0
+false_negative_rate:   0.0
+avg_recovery_time_ms:  0.048
+max_recovery_time_ms:  0.118
+targets.robustness:    0.95
+```
+
+The earlier "96% (48/50), 7.2 ms avg" figure pointed at a 100-scenario draft set whose JSON is **not present** in the repository at the pinned commit. There is no contradiction with the v1.0 testset — the two sets are different artifacts, and only the v1.0 testset is reproducible from the package.
+
+**Resolution (2026-05-30).**
+
+1. **R-1 is updated** to the canonical 100% (50/50) on the v1.0 testset (5×5 adversarial + 25 normal), tagged `SYNTHETIC, v1.0 testset` and linked to `test_vectors/ta2/redteam_tests.json`.
+2. **R-2 is kept as `PROJECTED ≥1%` on the broader fielded threat model**, *distinct* from R-1, so a reviewer cannot conflate the observed v1.0-testset score with the fielded target.
+3. **Quote rule (binding across the package):** never quote "100%" bare. Always pair with the qualifier *"on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories), see `test_vectors/ta2/redteam_tests.json`"*. The score is `SYNTHETIC` — it does not generalise to unseen adversaries.
+4. **`proposal/CLARA-PROPOSAL-TECHNICAL.md` §4.7 historic "96% (48/50)" reference** is left in place because the surrounding paragraph (L163) already explains the retraction and points at the canonical 50/50 source. Future edits to that paragraph should follow the quote rule above.
 
 ---
 
@@ -217,7 +234,7 @@ claims are retired. See ledger **V-1**.
 
 | ID | Severity | Issue | Resolution owner |
 |----|----------|-------|------------------|
-| D-1 | 🔴 | Red Team 100% vs 96% vs ≥95% | Ledger R-1/R-2 |
+| D-1 | 🟡 RESOLVED | Red Team: canonical 100% (50/50) on v1.0 synthetic testset; ≥95% target on broader threat model; historic 96% (48/50) figure retired | Ledger R-1/R-2/R-3, DISCREPANCIES §D-1 |
 | D-2 | 🔴 | "84 Coq" oversold vs 1,325; conflated with composition | Ledger F-1/F-2/F-3 |
 | D-3 | 🟠 | Composition patterns 4 vs 7 | Ledger C-1 |
 | D-4 | 🟠 | "Realized in silicon" vs submitted RTL | Ledger H-4 |

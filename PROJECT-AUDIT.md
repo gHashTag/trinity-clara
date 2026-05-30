@@ -164,13 +164,9 @@ more accurate" on *what* task?
 
 ## 🟠 A-9 — Empirical results are synthetic but read as fielded (also D-6)
 
-94.2% accuracy, 96% robustness, 2.3 ms latency all come from a **100-scenario synthetic
-generator**. They are presented in compliance tables ("TA1 — 100%") as if validated. Per Track-3
-(FActScore/HaluEval framing), synthetic results must be labelled and must carry a
-**falsification path**.
+The 94.2% accuracy and 2.3 ms latency figures originate from a **100-scenario synthetic generator**; the Red Team 100% (50/50) score originates from a different 50-case balanced v1.0 testset (see [`test_vectors/ta2/redteam_tests.json`](test_vectors/ta2/redteam_tests.json)). Both are synthetic. Earlier drafts of this audit cited "96% robustness" from the 100-scenario generator; that figure is retired (the canonical v1.0 testset score is 100% (50/50), and the JSON for the older 100-scenario generator is not present at the pinned commit — see DISCREPANCIES.md D-1 RESOLVED). Per Track-3 (FActScore/HaluEval framing), synthetic results must be labelled and must carry a **falsification path**.
 
-**Fix.** Tag every such number `[SYNTHETIC]`; add a one-line falsification path ("would be
-disconfirmed if accuracy on a *real* COA dataset falls below X").
+**Fix.** Tag every such number `[SYNTHETIC]` (or `[SYNTHETIC, v1.0 testset]` for the Red Team score); add a one-line falsification path ("would be disconfirmed if accuracy on a *real* COA dataset falls below X").
 
 ---
 

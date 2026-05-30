@@ -177,7 +177,10 @@ Performance on Hardware (estimated):
 ## Figure 5: Adversarial Robustness Framework
 
 ```
-TRINITY CLARA Red Team Protection Framework (100% Robustness Achieved)
+TRINITY CLARA Red Team Protection Framework
+(100% (50/50) on v1.0 synthetic Red Team testset — see
+test_vectors/ta2/redteam_tests.json; [SYNTHETIC, v1.0 testset];
+≥95% target on broader fielded threat model)
 
 ┌─────────────────────────────────────────────────────────────────────────────────────┐
 │                   Adversarial Attack Vectors                      │
@@ -219,16 +222,22 @@ TRINITY CLARA Red Team Protection Framework (100% Robustness Achieved)
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────┘
 
-Performance Metrics:
-  • Overall Robustness: 100% (50/50 adversarial blocked)
-  • False Positive Rate: 0% (0/50 normal inputs blocked)
-  • Recovery Time: <10ms (avg 4.8ms, max 11.8ms)
-  • Attack Categories Blocked: 5/5 (100%)
+Performance Metrics (v1.0 synthetic Red Team testset, 50 balanced cases,
+5 attack categories; see `test_vectors/ta2/redteam_tests.json`)
+[SYNTHETIC, v1.0 testset]:
+  • Overall Robustness: 100% (50/50) — 25 adversarial blocked + 25 normal passed
+  • False Positive Rate: 0%
+  • False Negative Rate: 0%
+  • Recovery Time: 0.048 ms avg, 0.118 ms max
+  • Attack Categories Blocked: 5/5
+  • ≥95% remains the Phase-2 target on the broader fielded
+    threat model (see CLAIMS-LEDGER.md R-2). The score is SYNTHETIC
+    and does not generalise to unseen adversaries.
 
 CLARA Differentiator: Formal adversarial robustness guarantees (unique among SOA)
 ```
 
-**Description:** Complete Red Team protection framework with 96% robustness (48/50) [SYNTHETIC]
+**Description:** Complete Red Team protection framework with 100% (50/50) on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model
 
 ---
 

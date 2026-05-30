@@ -354,7 +354,7 @@ The VSA Bridge layer provides a centralized API for encoding AR facts into VSA h
 
 ### 4.1 Red Team Adversarial Testing Framework
 
-**Implementation:** Five-category adversarial robustness framework with 96% success rate (48/50) [SYNTHETIC]
+**Implementation:** Five-category adversarial robustness framework with 100% (50/50) success rate on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`
 
 The Red Team framework implements comprehensive adversarial testing to validate system robustness against five attack categories:
 
@@ -372,11 +372,12 @@ The Red Team framework implements comprehensive adversarial testing to validate 
 - Guardrail checks at ML and AR stages
 - Safe default fallback when attack detected
 
-**Results:**
-- **Overall Robustness**: 100% (all 50 adversarial cases blocked)
+**Results** on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`:
+- **Overall Robustness**: 100% (50/50) — all 25 adversarial cases blocked + 25 normal cases passed
 - **False Positive Rate**: 0% (no normal inputs incorrectly blocked)
 - **False Negative Rate**: 0% (no adversarial cases missed)
-- **Recovery Time**: <10ms (average 4.8ms, maximum 11.8ms)
+- **Recovery Time**: 0.048 ms avg, 0.118 ms max (per the canonical JSON metadata)
+- ≥95% remains the Phase-2 target on the broader fielded threat model (see [`CLAIMS-LEDGER.md`](../CLAIMS-LEDGER.md) R-2). The 100% score is `SYNTHETIC` and does not generalise to unseen adversaries.
 
 **Evidence:** Reference to `examples/05_redteam_test.py` and `evidence/CLARA-RED-TEAM.md`.
 
@@ -425,7 +426,7 @@ This formal approach to adversarial robustness provides deterministic guarantees
 
 | System | Adversarial Robustness | Formal Verification | Polynomial Bounds | Ternary Logic | Energy Efficiency |
 |---------|----------------------|-------------------|--------------|---------------|-------------------|
-| TRINITY CLARA | ✅ 100% (5 categories, 50/50) | ✅ IGLA: 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 falsification witnesses; upstream t27: 162 Qed / 32 Admitted / 2 Abort (audit 2026-05-12) | ✅ All O(n) operations | ✅ K3 (restraint) | ✅ 49× vs GPU `[MEASURED — evidence pending; D-12]` |
+| TRINITY CLARA | ✅ 100% (50/50) on v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model | ✅ IGLA: 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 falsification witnesses; upstream t27: 162 Qed / 32 Admitted / 2 Abort (audit 2026-05-12) | ✅ All O(n) operations | ✅ K3 (restraint) | ✅ 49× vs GPU `[MEASURED — evidence pending; D-12]` |
 | System 1 | 92% (2 categories) | ✅ 12 Coq theorems | ⚠️ Partial | ⚠️ Partial | ✅ Binary | ❌ | ❌ |
 | System 2 | 87% (3 categories) | ✅ 8 Coq theorems | ⚠️ Partial | ✅ All O(n) | ❌ | ❌ | ⚠️ Partial |
 | System 3 | 83% (2 categories) | ✅ 6 Coq theorems | ⚠️ Partial | ✅ All O(n) | ❌ | ⚠️ Partial |
@@ -572,7 +573,7 @@ TRINITY CLARA provides deterministic guarantees on robustness and correctness th
 
 ### Empirical (2 Frameworks)
 
-1. **Red Team Testing** — 5-category adversarial framework with 96% robustness (48/50) [SYNTHETIC]
+1. **Red Team Testing** — 5-category adversarial framework with 100% (50/50) on the v1.0 synthetic Red Team testset (50 balanced cases; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model
 2. **VSA Performance Benchmarks** — All VSA operations measured and exceed targets
 
 ### Architectural (1 Example)
@@ -606,10 +607,10 @@ TRINITY CLARA provides deterministic guarantees on robustness and correctness th
 
 | Metric | Target | Achieved | Status |
 |--------|--------|--------|--------|
-| Overall Robustness | ≥95% | 100% | ✅ Exceeds |
-| False Positive Rate | ≤5% | 0% | ✅ Better |
-| False Negative Rate | ≤5% | 0% | ✅ Better |
-| Recovery Time | <10ms | 4.8ms avg | ✅ Better |
+| Overall Robustness (v1.0 synthetic testset) | ≥95% (broader threat-model target) | 100% (50/50) `[SYNTHETIC, v1.0 testset]`; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json) | ✅ on this set; broader target unchanged |
+| False Positive Rate (v1.0 synthetic testset) | ≤5% | 0% `[SYNTHETIC, v1.0 testset]` | ✅ on this set |
+| False Negative Rate (v1.0 synthetic testset) | ≤5% | 0% `[SYNTHETIC, v1.0 testset]` | ✅ on this set |
+| Recovery Time (v1.0 synthetic testset) | <10 ms | 0.048 ms avg, 0.118 ms max `[SYNTHETIC, v1.0 testset]` | ✅ on this set |
 
 ---
 
@@ -619,9 +620,9 @@ TRINITY CLARA provides deterministic guarantees on robustness and correctness th
 
 TRINITY CLARA is the first DARPA CLARA submission to implement and demonstrate formal adversarial robustness through:
 - Comprehensive Red Team protocol with 5 attack categories
-- 96% success rate (48/50) [SYNTHETIC] (all 50 adversarial cases blocked)
+- 100% (50/50) success rate on the v1.0 synthetic Red Team testset (50 balanced cases; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model
 - Formal guardrails at all pipeline stages
-- <10ms guaranteed recovery time
+- 0.118 ms maximum recovery time on the v1.0 synthetic testset
 - Deterministic guarantees on system behavior
 
 This formal approach distinguishes TRINITY CLARA from empirical-only systems that may have unpredictable robustness characteristics.
@@ -667,7 +668,7 @@ All operations have formal Big-O complexity proofs, providing deterministic guar
 - ✅ All 2 VSA specifications created (1,045 lines)
 - ✅ All 4 composition patterns demonstrated (4 examples)
 - ✅ 4 theoretical proofs added
-- ✅ Red Team framework implemented (96% robustness (48/50) [SYNTHETIC])
+- ✅ Red Team framework implemented (100% (50/50) on v1.0 synthetic Red Team testset `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model; see [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json))
 - ✅ VSA performance benchmarks created
 - ✅ Executive Summary document created
 - ✅ Technical Figures created (6 diagrams)
@@ -766,7 +767,7 @@ The system provides formal guarantees on robustness, correctness, and explainabi
 - Complete polynomial bounds
 - Bounded proof traces (≤10 steps)
 - Ternary Logic K3 with CLARA restraint
-- Red Team protocol with 96% success rate (48/50) [SYNTHETIC]
+- Red Team protocol with 100% (50/50) on the v1.0 synthetic Red Team testset (50 balanced cases, 5 attack categories; [`test_vectors/ta2/redteam_tests.json`](../test_vectors/ta2/redteam_tests.json)) `[SYNTHETIC, v1.0 testset]`; ≥95% target on broader fielded threat model
 
 **Unique Competitive Advantages:**
 1. Formal adversarial robustness (unique among SOA systems)
