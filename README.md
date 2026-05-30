@@ -71,8 +71,10 @@ This repository contains formal specifications, evidence packages, working examp
 
 | Repository | Role |
 |---|---|
-| [`gHashTag/t27`](https://github.com/gHashTag/t27) | `.t27` compiler, Verilog backend, broader Coq proof base. Audit 2026-05-12: 28 `.v` files, 218 stated Theorem/Lemma, **162 Qed / 32 Admitted / 2 Abort**. |
+| [`gHashTag/t27`](https://github.com/gHashTag/t27) | `.t27` compiler, Verilog backend, broader Coq proof base, **DARPA-facing working code in `clara-bridge/`** (runnable examples, scenario runner, evidence pack). Pinned commit `e7a07f1` (2026-05-30) — see [`T27-PIN.md`](T27-PIN.md) for the directories that back specific ledger rows and the honest open gap on real-board throughput. Audit 2026-05-12: 28 `.v` files, 218 stated Theorem/Lemma, **162 Qed / 32 Admitted / 2 Abort**; the math-core breakdown is in [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) F-2 (2026-05-29 count). |
 | [`gHashTag/trios`](https://github.com/gHashTag/trios) | PhD-thesis source (`docs/phd/`), Rust audit harness (`crates/trios-phd/`), runtime invariant contracts. Relevant issues: [trios#372](https://github.com/gHashTag/trios/issues/372), [trios#264](https://github.com/gHashTag/trios/issues/264). |
+
+**Reference implementation:** the runnable working code that accompanies this proposal lives in [`t27/clara-bridge/`](https://github.com/gHashTag/t27/tree/e7a07f15ac0833a0c52f46ed8a646214fbd41357/clara-bridge) at the pinned commit. It includes [`run_scenario.py`](https://github.com/gHashTag/t27/blob/e7a07f15ac0833a0c52f46ed8a646214fbd41357/clara-bridge/run_scenario.py) (executes spec→gen→test→verdict→experience pipelines), runnable examples (`01_medical_diagnosis.py`, `coa_planning.py`, `04_vsa_analogy.py`), and the [`CLARA-EVIDENCE-PACKAGE.md`](https://github.com/gHashTag/t27/blob/e7a07f15ac0833a0c52f46ed8a646214fbd41357/clara-bridge/evidence/CLARA-EVIDENCE-PACKAGE.md) bundle that maps every quoted accuracy / latency / robustness number back to a scenario file or testbench. Use [`T27-PIN.md`](T27-PIN.md) as the index into the pinned tree.
 
 ### PhD provenance
 
