@@ -116,7 +116,7 @@ The TRINITY S³AI proposal for DARPA PA-25-07-02 (CLARA) is complete and ready f
 | Formal Verification | ❌ | ❌ | ❌ | **IGLA: 47 Qed + 4 Admitted + 1 placeholder + 1 axiom + 10 witnesses (8 `.v`); upstream `t27` audit 2026-05-12: 162 Qed / 32 Admitted / 2 Abort (28 `.v`)** |
 | Hardware Support | GPU only | GPU only | GPU only | **CPU + FPGA** |
 | Bounded Explanations | ❌ | Partial | ❌ | **≤10 steps guaranteed** |
-| Power Consumption | ~50W | ~30W | ~50W | **~1.2W (FPGA)** |
+| Power Consumption | ~50W | ~30W | ~50W | **~1.2W (FPGA)** `[MEASURED — evidence pending; D-12]` |
 
 ---
 

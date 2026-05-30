@@ -42,7 +42,7 @@ This repository contains formal specifications, evidence packages, working examp
 3. **Bounded Polynomial Complexity** — O(1) K3 ops, O(n) forward chaining, ≤10-step traces; bounded-termination (not O(1)) for the restricted ASP fragment `[PROVEN]`
 4. **Ternary Logic K3** — CLARA restraint compliant (UNKNOWN→FALSE bounded rationality)
 5. **GF16 Encoding** — φ-optimized numeric format built on the identity φ²+φ⁻²=3 (engineering choice, not metaphysics); range/precision benchmarks reported with status tags
-6. **Energy Efficiency** — target 42×, measured 49× vs GPU on legacy XC7A100T FPGA (see §8.5 methodology) `[MEASURED, prototype]`
+6. **Energy Efficiency** — target 42×, measured 49× vs GPU on legacy XC7A100T FPGA (see §8.5 methodology) `[MEASURED — evidence pending; see DISCREPANCIES.md D-12 and T27-PIN.md §3]`
 7. **Vector Symbolic Architecture** — 1024-dimensional ternary hypervectors
 
 > **Integrity:** see [`CLAIMS-LEDGER.md`](CLAIMS-LEDGER.md) (SSOT for all claims), [`DISCREPANCIES.md`](DISCREPANCIES.md) (cross-document audit), and [`PROJECT-AUDIT.md`](PROJECT-AUDIT.md) (anomaly audit).

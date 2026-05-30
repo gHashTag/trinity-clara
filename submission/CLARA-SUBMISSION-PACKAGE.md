@@ -425,7 +425,7 @@ This formal approach to adversarial robustness provides deterministic guarantees
 
 | System | Adversarial Robustness | Formal Verification | Polynomial Bounds | Ternary Logic | Energy Efficiency |
 |---------|----------------------|-------------------|--------------|---------------|-------------------|
-| TRINITY CLARA | ✅ 100% (5 categories, 50/50) | ✅ IGLA: 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 falsification witnesses; upstream t27: 162 Qed / 32 Admitted / 2 Abort (audit 2026-05-12) | ✅ All O(n) operations | ✅ K3 (restraint) | ✅ 49× vs GPU |
+| TRINITY CLARA | ✅ 100% (5 categories, 50/50) | ✅ IGLA: 47 Qed / 4 Admitted / 1 placeholder / 1 axiom + 10 falsification witnesses; upstream t27: 162 Qed / 32 Admitted / 2 Abort (audit 2026-05-12) | ✅ All O(n) operations | ✅ K3 (restraint) | ✅ 49× vs GPU `[MEASURED — evidence pending; D-12]` |
 | System 1 | 92% (2 categories) | ✅ 12 Coq theorems | ⚠️ Partial | ⚠️ Partial | ✅ Binary | ❌ | ❌ |
 | System 2 | 87% (3 categories) | ✅ 8 Coq theorems | ⚠️ Partial | ✅ All O(n) | ❌ | ❌ | ⚠️ Partial |
 | System 3 | 83% (2 categories) | ✅ 6 Coq theorems | ⚠️ Partial | ✅ All O(n) | ❌ | ⚠️ Partial |
@@ -772,7 +772,7 @@ The system provides formal guarantees on robustness, correctness, and explainabi
 1. Formal adversarial robustness (unique among SOA systems)
 2. Formal verification pipeline — CLARA math-core in `t27/proofs/trinity/` (132 `Qed.`, 32 `Admitted`, ledger F-2 [PROVEN where Qed.]); program-wide `trinity-s3ai` corpus 2,027 `Qed.` / 0 real `Admitted.` across 100 `.v` files (ledger F-1, machine-counted by `count_admitted_honest.py`)
 3. Guaranteed polynomial-time guarantees
-4. Energy efficiency (49× vs GPU)
+4. Energy efficiency (49× vs GPU `[MEASURED — evidence pending; see DISCREPANCIES.md D-12]`)
 5. Ternary logic K3 with bounded rationality
 6. GF16 encoding with optimal φ constants
 
